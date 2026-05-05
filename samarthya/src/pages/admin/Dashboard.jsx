@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, Briefcase, FileText } from "lucide-react";
+import { FiStar, FiUsers, FiBriefcase, FiFileText } from "react-icons/fi";
 
 import {
   LineChart,
@@ -91,21 +91,21 @@ const Dashboard = () => {
           title="Manage Users"
           desc="View and control all users"
           color="bg-cyan-600"
-          icon={<Users />}
+          icon={<FiUsers />}
         />
 
         <ActionCard
           title="Manage Jobs"
           desc="Monitor all job postings"
           color="bg-emerald-800"
-          icon={<Briefcase />}
+          icon={<FiBriefcase />}
         />
 
         <ActionCard
           title="Reports"
           desc="View complaints & reports"
           color="bg-gray-800"
-          icon={<FileText />}
+          icon={<FiFileText />}
         />
 
       </div>
