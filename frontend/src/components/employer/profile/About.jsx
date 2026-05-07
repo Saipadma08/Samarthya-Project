@@ -1,6 +1,6 @@
 import React from 'react'
 
-const About = () => {
+const About = ({profile}) => {
   return (
     <div className="bg-white rounded-xl shadow p-5 mt-5">
         <p className="text-lg lg:text-xl font-semibold mb-2">
@@ -8,9 +8,7 @@ const About = () => {
         </p>
 
         <p className="text-gray-700">
-            I hire workers for household services, cleaning,
-            cooking, and event work. I prefer verified workers
-            and long-term hiring.
+            {profile?.about || "No description added yet"}
         </p>
     </div>
   )

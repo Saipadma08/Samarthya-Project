@@ -5,6 +5,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 
+import {
+  DEFAULT_PROFILE_IMAGE,
+  DEFAULT_COVER_IMAGE
+} from "../../constants/defaultImages";
+
 const EditProfile = () => {
 
   const navigate = useNavigate();
@@ -152,7 +157,7 @@ const EditProfile = () => {
         {/* 🔹 PROFILE IMAGE */}
         <div className="flex flex-col items-center gap-3">
           <img
-            src={profilePreview || "https://via.placeholder.com/100"}
+            src={profilePreview || DEFAULT_PROFILE_IMAGE}
             className="w-24 h-24 rounded-full object-cover border"
           />
           <label className="cursor-pointer bg-cyan-600 text-white px-4 py-2 rounded-lg">
@@ -177,9 +182,7 @@ const EditProfile = () => {
         {/* 🔹 COVER IMAGE */}
         <div className="flex flex-col gap-2">
           <label className="font-medium">Cover Image</label>
-          {coverPreview && (
-            <img src={coverPreview} className="h-32 w-full object-cover rounded-lg" />
-          )}
+            <img src={coverPreview || DEFAULT_COVER_IMAGE} className="h-32 w-full object-cover rounded-lg" />
           <label className="cursor-pointer border-2 border-dashed p-4 text-center rounded-lg hover:bg-gray-50">
             Upload Cover Image
             <input

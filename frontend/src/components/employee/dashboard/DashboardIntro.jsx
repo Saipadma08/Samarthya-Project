@@ -10,7 +10,7 @@ const DashboardIntro = () => {
       withCredentials: true
     })
     .then((res) => {
-      setUser(res.data.user);   // ✅ store full user
+      setUser(res.data.user);  
     })
     .catch((err) => {
       console.log(err);

@@ -7,7 +7,32 @@ import QuickActions from "../../components/employer/dashboard/QuickActions";
 import RecentJobs from "../../components/employer/dashboard/RecentJobs";
 import RecentApplicants from "../../components/employer/dashboard/RecentApplicants";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const Dashboard = () => {
+
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/employer/profile-data", {
+      withCredentials: true
+    })
+    .then((res) => {
+      setUser(res.data.user);
+      setProfile(res.data.profile);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.log(err);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+
   return (
     <div className="w-full">
 
@@ -20,7 +45,7 @@ const Dashboard = () => {
 
           {/* Welcome */}
           <div>
-            <DashboardIntro/>
+            <DashboardIntro user={user}/>
           </div>
 
           {/* Complete profile */}
@@ -40,7 +65,7 @@ const Dashboard = () => {
 
         {/* RIGHT SIDE PROFILE CARD */}
         <div>
-          <ProfileCard/>
+          <ProfileCard user={user} profile={profile}/>
         </div>
         
 

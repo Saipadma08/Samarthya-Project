@@ -1,6 +1,6 @@
 import React from 'react'
 
-const JobsCategoryPosted = () => {
+const JobsCategoryPosted = ({profile}) => {
   return (
     <div className="bg-white rounded-xl shadow p-5 mt-5">
         <p className="text-lg lg:text-xl font-semibold mb-3">
@@ -8,14 +8,28 @@ const JobsCategoryPosted = () => {
         </p>
 
         <div className="flex flex-wrap gap-2">
-            {["Cleaning", "Cooking", "Photographer", "Tailor"].map((item) => (
-            <span
-                key={item}
+
+          {profile?.jobCategories?.length > 0 ? (
+
+            profile.jobCategories.map((jobCategory, index) => (
+
+              <span
+                key={index}
                 className="bg-cyan-100 text-cyan-700 px-3 py-1 rounded"
-            >
-                {item}
-            </span>
-            ))}
+              >
+                {jobCategory}
+              </span>
+
+            ))
+
+          ) : (
+
+            <p className="text-gray-500">
+              No catagory added
+            </p>
+
+          )}
+
         </div>
     </div>
   )
