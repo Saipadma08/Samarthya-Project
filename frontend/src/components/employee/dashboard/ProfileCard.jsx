@@ -1,4 +1,5 @@
 import React from 'react'
+import AvatarImage from '../../images/AvatarImage'
 
 const ProfileCard = ({ profileImage, name, jobType }) => {
   return (
@@ -6,11 +7,7 @@ const ProfileCard = ({ profileImage, name, jobType }) => {
 
         {/* image */}
         <div className="absolute top-0 left-0 w-full h-full">
-        <img
-            className="h-full w-full object-cover"
-            src={profileImage || defaultAvatar}
-            alt="Profile"
-        />
+          <AvatarImage profileImage={profileImage} />
         </div>
 
 
@@ -21,11 +18,11 @@ const ProfileCard = ({ profileImage, name, jobType }) => {
             {name || "Your Name"}
         </p>
 
-        <p className="text-gray-800 text-sm">
+        <p className="text-white text-sm">
             Employee
         </p>
 
-        <p className="text-gray-800 text-sm">
+        <p className="text-white text-sm">
             {jobType}
         </p>
 

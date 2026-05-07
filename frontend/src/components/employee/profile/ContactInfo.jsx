@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ContactInfo = () => {
+const ContactInfo = ({user,profile}) => {
   return (
     <div>
         <div className="bg-white rounded-xl shadow p-5 mt-5">
@@ -9,9 +9,9 @@ const ContactInfo = () => {
             Contact Info
             </p>
 
-            <p>Email: roshni@gmail.com</p>
-            <p>Phone: ********21</p>
-            <p>Location: Bhubaneswar</p>
+            <p>E-mail: {user?.email}</p>
+            <p>Phone no: {profile?.phone}</p>
+            <p>Location: {profile?.location || "Not specified"}</p>
 
         </div>
     </div>

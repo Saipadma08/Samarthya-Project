@@ -85,13 +85,13 @@ const Profile = () => {
 
       {/* Contact info */}
       <div>
-        <ContactInfo/>
+        <ContactInfo user={user} profile={profile}/>
       </div>
 
 
       {/* Skills */}
       <div>
-        <Skills/>
+        <Skills profile={profile}/>
       </div>
 
       {/* Work history */}

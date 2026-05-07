@@ -14,17 +14,42 @@ import HiringHistory from "../../components/employer/profile/HiringHistory";
 import ReviewSection from "../../components/employer/profile/ReviewSection";
 import TrustScoreDetails from "../../components/employer/profile/TrustScoreDetails";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const Profile = () => {
+
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/employer/profile-data", {
+      withCredentials: true
+    })
+    .then((res) => {
+      setUser(res.data.user);
+      setProfile(res.data.profile);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.log(err);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+
   return (
     <div className="w-full overflow-x-hidden">
 
-      {/* ================= MAIN CARD ================= */}
+      {/* MAIN CARD */}
 
       <div className="w-full min-h-100 rounded-xl shadow-md bg-white relative overflow-hidden">
 
         {/* Cover Image */}
         <div>
-          <CoverImage/>
+          <CoverImage coverImage={profile?.coverImage}/>
         </div>
 
         {/* content */}
@@ -32,12 +57,12 @@ const Profile = () => {
 
           {/* profile Image */}
           <div className="flex justify-center lg:justify-start">
-            <ProfileImage/>
+            <ProfileImage profileImage={user?.profileImage}/>
           </div>
 
           {/* employer info */}
           <div>
-            <EmployerInfo/>
+            <EmployerInfo user={user} profile={profile}/>
           </div>
 
           {/* trust card */}
@@ -55,17 +80,17 @@ const Profile = () => {
       {/* about */}
 
       <div>
-        <About/>
+        <About profile={profile}/>
       </div>
 
       {/* Contact Info */} 
       <div>
-        <ContactInfo/>
+        <ContactInfo user={user} profile={profile}/>
       </div>
 
       {/* Jobs Category Posted */}
       <div>
-        <JobsCategoryPosted/>
+        <JobsCategoryPosted profile={profile}/>
       </div>
 
       {/* Hiring History */} 

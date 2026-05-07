@@ -43,7 +43,7 @@ async function updateProfile(req, res) {
     let profileImageUrl;
     let coverImageUrl;
 
-    // 🔹 Upload profile image (if exists)
+    // Upload profile image (if exists)
     if (req.files?.profileImage?.[0]) {
       const file = req.files.profileImage[0];
 
@@ -61,7 +61,7 @@ async function updateProfile(req, res) {
       profileImageUrl = result.url;
     }
 
-    // 🔹 Upload cover image (if exists)
+    // Upload cover image (if exists)
     if (req.files?.coverImage?.[0]) {
       const file = req.files.coverImage[0];
 
@@ -91,21 +91,21 @@ async function updateProfile(req, res) {
       skills
     } = req.body;
 
-    // 🔹 Update USERS collection
+    // Update USERS collection
     await User.findByIdAndUpdate(userId, {
       name,
       email,
       ...(profileImageUrl && { profileImage: profileImageUrl })
     });
 
-    // 🔹 Parse skills safely
+    // Parse skills safely
     const parsedSkills = Array.isArray(skills)
       ? skills
       : skills
         ? skills.split(",").map(s => s.trim())
         : [];
 
-    // 🔹 Update EMPLOYEE PROFILE
+    // Update EMPLOYEE PROFILE
     const updatedProfile = await EmployeeProfile.findOneAndUpdate(
       { userId },
       {
