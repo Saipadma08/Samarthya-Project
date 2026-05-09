@@ -11,18 +11,12 @@ async function editAdminData(req, res) {
             });
         }
 
-        const { name, email, phone } = req.body;
+        const { name, email } = req.body;
 
         // validation
         if (!name || !email) {
             return res.status(400).json({
                 message: "Name and email are required"
-            });
-        }
-
-        if (phone && phone.length < 10) {
-            return res.status(400).json({
-                message: "Invalid phone number"
             });
         }
 
@@ -64,7 +58,6 @@ async function editAdminData(req, res) {
             {
                 name,
                 email,
-                phone,
 
                 ...(profileImageUrl && {
                     profileImage: profileImageUrl

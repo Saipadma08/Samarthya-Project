@@ -4,7 +4,8 @@ import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
-import {DEFAULT_PROFILE_IMAGE} from "../../constants/defaultImages";
+import { DEFAULT_PROFILE_IMAGE } from "../../constants/defaultImages";
+import { toast } from "react-toastify";
 
 const EditData = () => {
 
@@ -13,7 +14,6 @@ const EditData = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    phone: ""
   });
 
   const [profilePreview, setProfilePreview] = useState("");
@@ -22,8 +22,6 @@ const EditData = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const [message, setMessage] = useState("");
-
   // fetch current admin data
   useEffect(() => {
 
@@ -31,44 +29,43 @@ const EditData = () => {
       withCredentials: true
     })
 
-    .then((res) => {
+      .then((res) => {
 
-      const user = res.data.user;
+        const user = res.data.user;
 
-      setForm({
-        name: user.name || "",
-        email: user.email || "",
-        phone: user.phone || ""
+        setForm({
+          name: user.name || "",
+          email: user.email || "",
+        });
+
+        setProfilePreview(user.profileImage || "");
+
+        setLoading(false);
+
+      })
+
+      .catch((err) => {
+
+        console.log(err);
+
+        setLoading(false);
+
       });
-
-      setProfilePreview(user.profileImage || "");
-
-      setLoading(false);
-
-    })
-
-    .catch((err) => {
-
-      console.log(err);
-
-      setLoading(false);
-
-    });
 
   }, []);
 
   const handleChange = (e) => {
 
-        const { name, value } = e.target;
+    const { name, value } = e.target;
 
-        setForm((prev) => ({
-            ...prev,
-            [name]: value
-        }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: value
+    }));
 
-   };
+  };
 
-   const handleProfileImage = (e) => {
+  const handleProfileImage = (e) => {
 
     const file = e.target.files[0];
 
@@ -78,7 +75,7 @@ const EditData = () => {
 
     setProfilePreview(URL.createObjectURL(file));
 
-    };
+  };
 
   // handle input change
   const handleSubmit = async (e) => {
@@ -87,45 +84,47 @@ const EditData = () => {
 
     try {
 
-        const formData = new FormData();
+      const formData = new FormData();
 
-        formData.append("name", form.name);
-        formData.append("email", form.email);
-        formData.append("phone", form.phone);
+      formData.append("name", form.name);
+      formData.append("email", form.email);
 
-        // append image file
-        if (profileFile) {
-            formData.append("profileImage", profileFile);
-        }
+      // append image file
+      if (profileFile) {
+        formData.append("profileImage", profileFile);
+      }
 
-        const res = await axios.put(
+      const res = await axios.put(
 
         "http://localhost:3000/api/admin/edit-data",
 
         formData,
 
         {
-            withCredentials: true,
-            headers: {
+          withCredentials: true,
+          headers: {
             "Content-Type": "multipart/form-data"
-            }
+          }
         }
 
-        );
+      );
 
-        setMessage(res.data.message);
+      toast.success("Data updated successfully!", {
+        position: "top-right",
+        autoClose: 1500,
+      });
 
-        setTimeout(() => {
-            navigate("/admin/dashboard");
-        }, 1500);
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 1500);
+
+
 
     }
 
     catch (err) {
 
-        console.log(err);
-
-        setMessage("Failed to update admin data");
+      console.log(err);
 
     }
 
@@ -190,10 +189,10 @@ const EditData = () => {
             Upload Profile Image
 
             <input
-                type="file"
-                accept="image/*"
-                onChange={handleProfileImage}
-                className="hidden"
+              type="file"
+              accept="image/*"
+              onChange={handleProfileImage}
+              className="hidden"
             />
 
           </label>
@@ -249,23 +248,6 @@ const EditData = () => {
 
           </div>
 
-          {/* phone */}
-          <div className="md:col-span-2">
-
-            <label className="font-medium">
-              Phone
-            </label>
-
-            <input
-              type="text"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              className="input"
-            />
-
-          </div>
-
         </div>
 
         {/* button */}
@@ -283,17 +265,6 @@ const EditData = () => {
         >
           Save Changes
         </button>
-
-        {/* message */}
-        {
-          message && (
-
-            <p className="text-center text-green-600">
-              {message}
-            </p>
-
-          )
-        }
 
       </form>
 
