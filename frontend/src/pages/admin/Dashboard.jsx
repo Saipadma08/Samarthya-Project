@@ -1,6 +1,5 @@
 import React from "react";
 
-
 import DashboardIntro from "../../components/admin/dashboard/DashboardIntro"
 import CompleteProfile from "../../components/admin/dashboard/CompleteProfile";
 import ProfileCard from "../../components/admin/dashboard/ProfileCard";
@@ -9,8 +8,35 @@ import QuickActions from "../../components/admin/dashboard/QuickActions";
 import RecentUsers from "../../components/admin/dashboard/RecentUsers";
 import UserGrowthChart from "../../components/admin/dashboard/UserGrowthChart";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const Dashboard = () => {
 
+  const [admin, setAdmin] = useState(null);
+
+  useEffect(() => {
+
+    axios.get(
+      "http://localhost:3000/api/auth/me",
+      {
+        withCredentials: true
+      }
+    )
+
+      .then((res) => {
+
+        setAdmin(res.data.user);
+
+      })
+
+      .catch((err) => {
+
+        console.log(err);
+
+      });
+
+  }, []);
   return (
     <div className="w-full">
 
@@ -22,18 +48,18 @@ const Dashboard = () => {
 
           {/* Welcome */}
           <div>
-            <DashboardIntro/>
+            <DashboardIntro admin={admin} />
           </div>
 
           {/* Complete profile */}
           <div>
-            <CompleteProfile/>
+            <CompleteProfile />
           </div>
-          
+
 
           {/* Stats */}
           <div className="hidden sm:block">
-            <StatCard/>
+            <StatCard />
           </div>
 
         </div>
@@ -42,29 +68,29 @@ const Dashboard = () => {
 
         {/* RIGHT SIDE PROFILE CARD */}
         <div>
-          <ProfileCard/>
+          <ProfileCard admin={admin} />
         </div>
-        
+
 
       </div>
 
       {/* mobile view Stats */}
       <div className="block sm:hidden">
-        <StatCard/>
+        <StatCard />
       </div>
 
 
 
       {/* ================= QUICK ACTIONS ================= */}
       <div>
-        <QuickActions/>
+        <QuickActions />
       </div>
 
 
 
       {/* ================= RECENT USERS ================= */}
       <div>
-        <RecentUsers/>
+        <RecentUsers />
       </div>
 
 
@@ -72,7 +98,7 @@ const Dashboard = () => {
       {/* ================= USER GROWTH CHART ================= */}
 
       <div>
-        <UserGrowthChart/>
+        <UserGrowthChart />
       </div>
 
     </div>

@@ -1,32 +1,36 @@
 import React from 'react'
+import AvatarImage from '../../images/AvatarImage'
 
-const ProfileCard = () => {
+const ProfileCard = ({admin}) => {
   return (
     <div className="w-36 h-44 lg:w-60 lg:h-72 rounded-xl shadow-md bg-white relative overflow-hidden">
 
         {/* image */}
         <div className="absolute top-0 left-0 w-full h-full">
-        <img
-            className="h-full w-full object-cover"
-            src="https://i.pinimg.com/736x/1c/88/70/1c887069fec338e0ff5285bd5cbe7511.jpg"
-            alt=""
-        />
+          <AvatarImage profileImage={admin?.profileImage} />
         </div>
+
+        <div
+            className="
+            absolute
+            inset-0
+            bg-linear-to-t
+            from-black/80
+            via-black/20
+            to-transparent
+            "
+        />
 
 
         {/* text */}
         <div className="relative flex flex-col justify-end h-full p-4">
 
-        <p className="text-white text-md lg:text-2xl font-semibold">
-            Sakshi Kumari
+        <p className="text-white text-md lg:text-2xl font-semibold drop-shadow-lg">
+            {admin?.name}
         </p>
 
-        <p className="text-gray-200 text-sm">
-            Employer
-        </p>
-
-        <p className="text-gray-300 text-sm">
-            Administrator
+        <p className="text-gray-200 text-sm drop-shadow-lg">
+            {admin?.email}
         </p>
 
         </div>

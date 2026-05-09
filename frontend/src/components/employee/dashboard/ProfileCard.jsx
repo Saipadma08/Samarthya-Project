@@ -10,6 +10,17 @@ const ProfileCard = ({ profileImage, name, jobType }) => {
           <AvatarImage profileImage={profileImage} />
         </div>
 
+        <div
+            className="
+            absolute
+            inset-0
+            bg-linear-to-t
+            from-black/80
+            via-black/20
+            to-transparent
+            "
+        />
+
 
         {/* text */}
         <div className="relative flex flex-col justify-end h-full p-4">
