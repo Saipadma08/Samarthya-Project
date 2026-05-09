@@ -10,11 +10,21 @@ const ProfileCard = ({user, profile }) => {
             <AvatarImage profileImage={user?.profileImage} />
         </div>
 
+        <div
+            className="
+            absolute
+            inset-0
+            bg-linear-to-t
+            from-black/80
+            via-black/20
+            to-transparent
+            "
+        />
 
         {/* text */}
         <div className="relative flex flex-col justify-end h-full p-4">
 
-        <p className="text-white text-md lg:text-2xl font-semibold">
+        <p className="text-white text-md lg:text-2xl font-semibold brightness-90">
             {user?.name || "Your Name"}
         </p>
 

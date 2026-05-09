@@ -2,7 +2,7 @@ const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const DEFAULT_AVATAR = "https://images.unsplash.com/vector-1742875355318-00d715aec3e8?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+// const DEFAULT_AVATAR = "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_22_22%20AM.png?updatedAt=1778097457615";
 
 async function registerUser(req, res){
     const {name, email, password, role} = req.body;
@@ -28,7 +28,7 @@ async function registerUser(req, res){
         email,
         password: hash,
         role,
-        profileImage: DEFAULT_AVATAR,
+        // profileImage: DEFAULT_AVATAR,
         isVerified: false
     })
 
@@ -106,5 +106,19 @@ async function logoutUser(req, res){
 }
 
 
+//to get current logged in user data
+async function getCurrentUser(req, res) {
+  try {
+    const user = await userModel.findById(req.user.id)
+      .select("name email role profileImage");
 
-module.exports = { registerUser, loginUser, logoutUser }
+    res.json({ user });
+
+  } catch (err) {
+    res.status(500).json({
+      message: "Server error"
+    });
+  }
+}
+
+module.exports = { registerUser, loginUser, logoutUser, getCurrentUser }

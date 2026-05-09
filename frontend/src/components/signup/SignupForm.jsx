@@ -129,7 +129,7 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
             className="border border-white border-b-gray-400 p-2 rounded w-full pr-16"
           />
           <span
-            className="absolute right-3 top-2 cursor-pointer text-sm text-purple-700"
+            className="absolute right-3 top-4 cursor-pointer text-sm text-purple-700"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? "Hide" : "Show"}
@@ -148,7 +148,7 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
             className="border border-white border-b-gray-400 p-2 rounded w-full pr-16"
           />
           <span
-            className="absolute right-3 top-2 cursor-pointer text-sm text-purple-700"
+            className="absolute right-3 top-4 cursor-pointer text-sm text-purple-700"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
             {showConfirmPassword ? "Hide" : "Show"}

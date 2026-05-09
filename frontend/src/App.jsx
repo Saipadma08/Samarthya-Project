@@ -48,6 +48,7 @@ import AdminJobs from './pages/admin/Jobs'
 import AdminMessages from './pages/admin/Messages'
 import AdminReports from './pages/admin/Reports'
 import AdminSettings from './pages/admin/Settings'
+import AdminEditData from './pages/admin/EditData';
 
 const App = () => {
   return (
@@ -110,6 +111,7 @@ const App = () => {
           <Route path="messages" element={<AdminMessages  />} />
           <Route path="reports" element={<AdminReports />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="edit-data" element={<AdminEditData />} />
 
         </Route>
       </Routes>
