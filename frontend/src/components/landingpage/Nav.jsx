@@ -18,8 +18,9 @@ const Nav = () => {
 
         <div>
             <div className='flex gap-2'>
-                <HashLink smooth to="/#signup" className='bg-cyan-600 text-amber-50 font-medium text-[2vh] px-3 py-1 uppercase rounded-lg w-24 text-center'>Sign up</HashLink>
-                <Link to="/login" className='bg-cyan-600 text-amber-50 font-medium text-[2vh] px-3 py-1 uppercase rounded-lg w-24 text-center'>Log in</Link>
+                <Link to="/" className='bg-cyan-600 text-amber-50 font-medium text-xs lg:text-[2vh] px-0.5 lg:px-3 py-1 uppercase rounded-lg w-16 lg:w-24 text-center'>Home</Link>
+                <HashLink smooth to="/#signup" className='bg-cyan-600 text-amber-50 font-medium text-xs lg:text-[2vh] px-0.5 lg:px-3 py-1 uppercase rounded-lg w-16 lg:w-24 text-center'>Sign up</HashLink>
+                <Link to="/login" className='bg-cyan-600 text-amber-50 font-medium text-xs lg:text-[2vh] px-0.5 lg:px-3 py-1 uppercase rounded-lg w-16 lg:w-24 text-center'>Log in</Link>
             </div>
         </div>
     </div>

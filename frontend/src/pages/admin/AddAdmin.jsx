@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import MainBackgroundImg from "../../assets/main-background-4.png";
+import MainBackgroundImg from "../../assets/main-background-5.png";
 
 
 const AddAdmin = () => {

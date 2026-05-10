@@ -147,6 +147,21 @@ const LoginForm = () => {
         </span>
       </div>
 
+      <div className="text-right">
+
+          <Link
+              to="/forgot-password"
+              className="
+              text-sm
+              text-cyan-700
+              hover:underline
+              "
+          >
+              Forgot Password?
+          </Link>
+
+      </div>
+
       <p className="text-red-500 text-sm">{passwordErrorMsg}</p>
 
       <button className="bg-cyan-600 text-white py-2 mt-5 rounded-lg hover:bg-cyan-900 transition">

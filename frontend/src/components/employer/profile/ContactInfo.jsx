@@ -6,7 +6,7 @@ const ContactInfo = ({user, profile}) => {
         <p className="text-lg lg:text-xl font-semibold mb-3"> Contact Info </p> 
         <p>Email: {user?.email}</p> 
         <p>Phone: {profile?.phone}</p> 
-        <p>Location: {profile.location}</p> 
+        <p>Location: {profile?.location}</p> 
     </div> 
   )
 }

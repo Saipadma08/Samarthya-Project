@@ -4,7 +4,7 @@ import Footer from "../../components/landingpage/Footer";
 import SignupForm from "../../components/signup/SignupForm";
 import AnimationText from "../../components/signup/AnimationText";
 
-import MainBackgroundImg from "../../assets/main-background-4.png";
+import MainBackgroundImg from "../../assets/main-background-5.png";
 import SamarthyaText from "../../assets/Samarthya-text.png"
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";

@@ -6,6 +6,8 @@ import LandingPage from './pages/public/LandingPage'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import VerifyOtp from './pages/auth/verifyOtp';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 import MainLayout from './layout/MainLayout'
 
@@ -64,6 +66,8 @@ const App = () => {
         <Route path="/signup/:role" element={<Signup />} />
         <Route path='/verify-otp' element={<VerifyOtp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />

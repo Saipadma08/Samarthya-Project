@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiCheckCircle } from 'react-icons/fi';
+import { FiCheckCircle, FiClock, FiXCircle, FiAlertCircle } from 'react-icons/fi';
 
 const EmployeeInfo = ({ user, profile }) => {
   return (
@@ -35,8 +35,43 @@ const EmployeeInfo = ({ user, profile }) => {
 
         {/* Verified */}
         <div className="flex items-center gap-2 mt-2 text-cyan-700 text-sm lg:text-md">
-          <FiCheckCircle />
-          {user?.isVerified ? "Verified" : "Not Verified"}
+          {
+              user?.verificationStatus === "approved" ? (
+
+                  <div className="flex items-center gap-2 text-green-600 font-medium">
+                      <FiCheckCircle />
+                      <span>Verified Employer</span>
+                  </div>
+
+              )
+
+              : user?.verificationStatus === "pending" ? (
+
+                  <div className="flex items-center gap-2 text-yellow-500 font-medium">
+                      <FiClock />
+                      <span>Verification Pending</span>
+                  </div>
+
+              )
+
+              : user?.verificationStatus === "rejected" ? (
+
+                  <div className="flex items-center gap-2 text-red-500 font-medium">
+                      <FiXCircle />
+                      <span>Verification Rejected</span>
+                  </div>
+
+              )
+
+              : (
+
+                  <div className="flex items-center gap-2 text-gray-500 font-medium">
+                      <FiAlertCircle />
+                      <span>Not Verified</span>
+                  </div>
+
+              )
+          }
         </div>
 
       </div>
