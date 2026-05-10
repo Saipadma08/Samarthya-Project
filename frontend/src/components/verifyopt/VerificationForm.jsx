@@ -20,6 +20,8 @@ const VerificationForm = () => {
 
     const fromAddAdmin = location.state?.fromAddAdmin;
 
+    const fromForgotPassword = location.state?.fromForgotPassword;
+
     const [timeLeft, setTimeLeft] = useState(600);
 
     const [canResend, setCanResend] = useState(false);
@@ -32,8 +34,6 @@ const VerificationForm = () => {
     const email =
         location.state?.email ||
         localStorage.getItem("verificationEmail");
-
-    console.log(email);
 
     useEffect(() => {
 
@@ -99,7 +99,8 @@ const VerificationForm = () => {
                 {
                     email,
                     otp,
-                    fromAddAdmin
+                    fromAddAdmin,
+                    fromForgotPassword
                 },
 
                 {
@@ -111,20 +112,9 @@ const VerificationForm = () => {
             toast.success(
                 "Email verified successfully", {
                 position: "top-right",
-                autoClose: 2000,
+                autoClose: 1000,
             }
             );
-
-            // store logged in user
-
-            if (!fromAddAdmin) {
-
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(res.data.user)
-                );
-
-            }
 
             // redirect based on role
             const role = res.data.user.role;
@@ -138,23 +128,21 @@ const VerificationForm = () => {
                     return;
                 }
 
-                if (role === "employee") {
+                if (fromForgotPassword) {
 
-                    navigate("/employee/dashboard");
+                    navigate("/reset-password", {
+                        state: {
+                            email,
+                            otp,
+                            fromForgotPassword: true
+                        }
+                    });
 
+                    return;
                 }
 
-                else if (role === "employer") {
+                navigate("/login");
 
-                    navigate("/employer/dashboard");
-
-                }
-
-                else if (role === "admin") {
-
-                    navigate("/admin/dashboard");
-
-                }
 
             }, 1000);
 

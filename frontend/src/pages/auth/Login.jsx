@@ -7,7 +7,7 @@ import LoginForm from "../../components/login/LoginForm";
 import AnimationText from "../../components/login/AmimationText";
 import Footer from "../../components/landingpage/Footer";
 
-import MainBackgroundImg from "../../assets/main-background-4.png";
+import MainBackgroundImg from "../../assets/main-background-5.png";
 import SamarthyaText from "../../assets/Samarthya-text.png"
 
 const Login = () => {

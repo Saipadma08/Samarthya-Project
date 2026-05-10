@@ -16,5 +16,8 @@ router.post('/logout', authController.logoutUser)
 
 router.get('/me', authMiddleware, authController.getCurrentUser)  //for profile menu
 
+router.post("/forgot-password", authController.forgotPassword);
+
+router.post("/reset-password", authController.resetPassword);
 
 module.exports = router;

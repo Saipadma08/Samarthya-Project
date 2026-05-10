@@ -42,7 +42,7 @@ const SignupForm = ({ form, setForm, errors, setErrors }) => {
       newErrors.password = "Password required";
     }
     else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)) {
-      newErrors.password = "Weak password";
+      newErrors.password = "Password does not meet requirements";
     }
 
     if (form.password !== form.confirmPassword) {
@@ -89,7 +89,7 @@ const SignupForm = ({ form, setForm, errors, setErrors }) => {
               }
             });
 
-          }, 2000);
+          }, 1000);
         })
         .catch((err) => {
           console.log(err);
@@ -108,6 +108,22 @@ const SignupForm = ({ form, setForm, errors, setErrors }) => {
       <h2 className="text-3xl text-center text-black font-semibold my-5">
         Sign up
       </h2>
+
+      <div className="text-xs text-gray-500 px-1 mb-3">
+
+          <p>Password must contain:</p>
+
+          <ul className="list-disc pl-5">
+
+              <li>Minimum 8 characters</li>
+              <li>One uppercase letter</li>
+              <li>One lowercase letter</li>
+              <li>One number</li>
+              <li>One special character</li>
+
+          </ul>
+
+      </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
 

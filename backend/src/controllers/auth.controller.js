@@ -98,7 +98,7 @@ async function verifyOtp(req, res) {
 
     try {
 
-        const { email, otp, fromAddAdmin  } = req.body;
+        const { email, otp, fromAddAdmin, fromForgotPassword } = req.body;
 
         const user = await userModel.findOne({ email });
 
@@ -111,7 +111,7 @@ async function verifyOtp(req, res) {
         }
 
         // already verified
-        if (user.emailVerified) {
+        if (user.emailVerified && !fromForgotPassword) {
 
             return res.status(400).json({
                 message: "Email already verified"
@@ -138,7 +138,12 @@ async function verifyOtp(req, res) {
         }
 
         // verify email
-        user.emailVerified = true;
+        if (!fromForgotPassword) {
+
+            user.emailVerified = true;
+
+
+        }
 
         // remove OTP
         user.otp = undefined;
@@ -249,13 +254,13 @@ async function resendOtp(req, res) {
 
 }
 
-async function loginUser(req, res){
+async function loginUser(req, res) {
 
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     const user = await userModel.findOne({ email })
 
-    if(!user){
+    if (!user) {
         return res.status(401).json({
             message: "Invalid credentials"
         })
@@ -263,13 +268,13 @@ async function loginUser(req, res){
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if(!isPasswordValid){
+    if (!isPasswordValid) {
         return res.status(401).json({
             message: "Invalid credentials"
         })
     }
 
-    if (!user.isVerified) {
+    if (!user.emailVerified) {
 
         return res.status(403).json({
             message: "Please verify your email before logging in"
@@ -280,7 +285,7 @@ async function loginUser(req, res){
     const token = jwt.sign({
         id: user._id,
         role: user.role
-    }, process.env.JWT_SECRET,{expiresIn: "7d"})
+    }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
     res.cookie("token", token);
 
@@ -297,14 +302,14 @@ async function loginUser(req, res){
     })
 }
 
-async function logoutUser(req, res){
-    try{
+async function logoutUser(req, res) {
+    try {
         res.clearCookie("token");
         res.status(200).json({
             message: "Logged out successfully"
         })
     }
-    catch(err){
+    catch (err) {
         return res.status(500).json({ message: "Server error" });
     }
 }
@@ -312,17 +317,119 @@ async function logoutUser(req, res){
 
 //to get current logged in user data
 async function getCurrentUser(req, res) {
-  try {
-    const user = await userModel.findById(req.user.id)
-      .select("name email role profileImage");
+    try {
+        const user = await userModel.findById(req.user.id)
+            .select("name email role profileImage");
 
-    res.json({ user });
+        res.json({ user });
 
-  } catch (err) {
-    res.status(500).json({
-      message: "Server error"
-    });
-  }
+    } catch (err) {
+        res.status(500).json({
+            message: "Server error"
+        });
+    }
 }
 
-module.exports = { registerUser, verifyOtp, resendOtp, loginUser, logoutUser, getCurrentUser }
+async function forgotPassword(req, res) {
+
+    try {
+
+        const { email } = req.body;
+
+        const user = await userModel.findOne({ email });
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        // generate otp
+        const otp = generateOtp();
+
+        // otp expiry (10 mins)
+        const otpExpires =
+            new Date(Date.now() + 10 * 60 * 1000);
+
+        // save otp
+        user.otp = otp;
+        user.otpExpires = otpExpires;
+
+        await user.save();
+
+        // send email
+        await sendOtpEmail(email, otp);
+
+        res.status(200).json({
+            message: "OTP sent successfully"
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+}
+
+async function resetPassword(req, res) {
+
+    try {
+
+        const {
+            email,
+            newPassword
+        } = req.body;
+
+        const user =
+            await userModel.findOne({ email });
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        // hash new password
+        const hashedPassword =
+            await bcrypt.hash(newPassword, 10);
+
+        // update password
+        user.password = hashedPassword;
+
+        // clear otp
+        user.otp = undefined;
+        user.otpExpires = undefined;
+
+        await user.save();
+
+        res.status(200).json({
+            message:
+                "Password reset successfully"
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+}
+
+module.exports = { registerUser, verifyOtp, resendOtp, loginUser, logoutUser, getCurrentUser, forgotPassword, resetPassword }
