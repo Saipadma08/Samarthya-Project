@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-const SignupForm = ({ form, setForm, errors, setErrors}) => {
+const SignupForm = ({ form, setForm, errors, setErrors }) => {
 
   const navigate = useNavigate();
 
@@ -19,29 +19,29 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
     });
   };
 
-  const handleSubmit = (e) => { 
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     let newErrors = {};
 
-    if(!form.name){
+    if (!form.name) {
       newErrors.name = "Name required";
     }
-    else if(!/^[A-Za-z ]+$/.test(form.name)){
+    else if (!/^[A-Za-z ]+$/.test(form.name)) {
       newErrors.name = "Name can only contain letters";
     }
 
-    if(!form.email){
+    if (!form.email) {
       newErrors.email = "Email required";
     }
-    else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)){
+    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)) {
       newErrors.email = "Invalid email";
     }
 
-    if(!form.password){
+    if (!form.password) {
       newErrors.password = "Password required";
     }
-    else if( !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)){
+    else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)) {
       newErrors.password = "Weak password";
     }
 
@@ -58,42 +58,53 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
         password: form.password,
         role: form.role
       },
-      {
-        withCredentials: true
-      }
+        {
+          withCredentials: true
+        }
       )
-      .then((res) => {
+        .then((res) => {
 
-        setForm({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
+          setForm({
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          });
 
-        toast.success("Signup successful!", {
-          position: "top-right",
-          autoClose: 2000,
-        });
+          toast.success("OTP sent to the email!", {
+            position: "top-right",
+            autoClose: 2000,
+          });
 
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response?.data?.message || "Signup failed", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-      })
+          localStorage.setItem(
+            "verificationEmail",
+            form.email
+          );
+
+          setTimeout(() => {
+
+            navigate("/verify-otp", {
+              state: {
+                email: form.email
+              }
+            });
+
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.response?.data?.message || "Signup failed", {
+            position: "top-right",
+            autoClose: 4000,
+          });
+        })
 
     }
   };
 
   return (
     <div className="w-[85%] lg:w-[80%] bg-white  rounded-xl p-4 flex flex-col shadow-lg shadow-gray-600">
-      
+
       <h2 className="text-3xl text-center text-black font-semibold my-5">
         Sign up
       </h2>

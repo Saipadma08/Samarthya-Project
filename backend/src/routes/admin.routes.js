@@ -3,7 +3,7 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const roleMiddleware = require("../middlewares/role.middleware");
 
 const adminDashboardController = require("../controllers/adminDashboard.controller");
-const addAdmin = require("../controllers/adminAddAdmin.controller");
+const {addAdmin} = require("../controllers/adminAddAdmin.controller");
 const adminJobsController = require("../controllers/adminJobs.controller");
 const adminUsersController = require("../controllers/adminUsers.controller");
 const adminReportsController = require("../controllers/adminReports.controller");

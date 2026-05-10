@@ -2,54 +2,250 @@ const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// const DEFAULT_AVATAR = "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_22_22%20AM.png?updatedAt=1778097457615";
+const generateOtp = require("../utils/generateOtp");
+const sendOtpEmail = require("../services/mail.service");
 
-async function registerUser(req, res){
-    const {name, email, password, role} = req.body;
 
-    const isUserAlreadyExists = await userModel.findOne({ email });
+async function registerUser(req, res) {
 
-    if(isUserAlreadyExists){
-        return res.status(409).json({
-            message: "User already exists"
-        })
-    }
+    try {
 
-    if (role === "admin") {
-        return res.status(403).json({
-            message: "Admin cannot register"
-        });
-    }
+        const { name, email, password, role } = req.body;
 
-    const hash = await bcrypt.hash(password, 10);
+        const isUserAlreadyExists =
+            await userModel.findOne({ email });
 
-    const user = await userModel.create({
-        name,
-        email,
-        password: hash,
-        role,
-        // profileImage: DEFAULT_AVATAR,
-        isVerified: false
-    })
+        if (isUserAlreadyExists) {
 
-    const token = jwt.sign({
-        id: user._id,
-        role: user.role,
-    }, process.env.JWT_SECRET)
+            // allow retry if not verified
+            if (!isUserAlreadyExists.emailVerified) {
 
-    res.cookie("token", token)
+                await userModel.deleteOne({
+                    _id: isUserAlreadyExists._id
+                });
 
-    res.status(201).json({
-        message: "User registered successfully",
-        user: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            profileImage: user.profileImage,
-            isVerified: user.isVerified
+            }
+
+            else {
+
+                return res.status(409).json({
+                    message: "User already exists"
+                });
+
+            }
+
         }
-    })
+
+        if (role === "admin") {
+
+            return res.status(403).json({
+                message: "Admin cannot register"
+            });
+
+        }
+
+        const hash = await bcrypt.hash(password, 10);
+
+        // generate OTP
+        const otp = generateOtp();
+
+        // expiry = 10 minutes
+        const otpExpires =
+            new Date(Date.now() + 10 * 60 * 1000);
+
+        // create user
+        const user = await userModel.create({
+
+            name,
+            email,
+            password: hash,
+            role,
+
+            emailVerified: false,
+
+            otp,
+            otpExpires,
+
+            isVerified: false
+        });
+
+        // send email
+        await sendOtpEmail(email, otp);
+
+        res.status(201).json({
+
+            message:
+                "OTP sent to your email",
+
+            email: user.email
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+}
+
+async function verifyOtp(req, res) {
+
+    try {
+
+        const { email, otp, fromAddAdmin  } = req.body;
+
+        const user = await userModel.findOne({ email });
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        // already verified
+        if (user.emailVerified) {
+
+            return res.status(400).json({
+                message: "Email already verified"
+            });
+
+        }
+
+        // invalid OTP
+        if (user.otp !== otp) {
+
+            return res.status(400).json({
+                message: "Invalid OTP"
+            });
+
+        }
+
+        // expired OTP
+        if (user.otpExpires < new Date()) {
+
+            return res.status(400).json({
+                message: "OTP expired"
+            });
+
+        }
+
+        // verify email
+        user.emailVerified = true;
+
+        // remove OTP
+        user.otp = undefined;
+        user.otpExpires = undefined;
+
+        await user.save();
+
+        // login after verification
+        const token = jwt.sign({
+
+            id: user._id,
+            role: user.role
+
+        },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
+        );
+
+        if (!fromAddAdmin) {
+
+            res.cookie("token", token);
+
+        }
+
+        res.status(200).json({
+
+            message: "Email verified successfully",
+
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                profileImage: user.profileImage,
+                isVerified: user.isVerified
+            }
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+}
+
+async function resendOtp(req, res) {
+
+    try {
+
+        const { email } = req.body;
+
+        const user = await userModel.findOne({ email });
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        if (user.emailVerified) {
+
+            return res.status(400).json({
+                message: "Email already verified"
+            });
+
+        }
+
+        // generate new OTP
+        const otp = generateOtp();
+
+        // new expiry
+        const otpExpires =
+            new Date(Date.now() + 10 * 60 * 1000);
+
+        user.otp = otp;
+        user.otpExpires = otpExpires;
+
+        await user.save();
+
+        // send mail
+        await sendOtpEmail(email, otp);
+
+        res.status(200).json({
+            message: "OTP resent successfully"
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
 
 }
 
@@ -71,6 +267,14 @@ async function loginUser(req, res){
         return res.status(401).json({
             message: "Invalid credentials"
         })
+    }
+
+    if (!user.isVerified) {
+
+        return res.status(403).json({
+            message: "Please verify your email before logging in"
+        });
+
     }
 
     const token = jwt.sign({
@@ -121,4 +325,4 @@ async function getCurrentUser(req, res) {
   }
 }
 
-module.exports = { registerUser, loginUser, logoutUser, getCurrentUser }
+module.exports = { registerUser, verifyOtp, resendOtp, loginUser, logoutUser, getCurrentUser }

@@ -37,39 +37,76 @@ const LoginForm = () => {
 
     if (error) return;
 
-    axios.post('http://localhost:3000/api/auth/login', {email, password}, { withCredentials: true })
-    .then((res) => {
+   const res = await axios.post(
+      'http://localhost:3000/api/auth/login',
+      { email, password },
+      { withCredentials: true }
+    )
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(res.data.user)
-      );
+      .then((res) => {
 
-      toast.success("Login successful!", {
-        position: "top-right",
-        autoClose: 1500,
+        localStorage.setItem(
+          "user",
+          JSON.stringify(res.data.user)
+        );
+
+        toast.success("Login successful!", {
+          position: "top-right",
+          autoClose: 1500,
+        });
+
+        if (res.data.user.role === "employee") {
+
+          setTimeout(() => {
+            navigate("/employee/dashboard");
+          }, 2000);
+
+        }
+
+        else if (res.data.user.role === "employer") {
+
+          setTimeout(() => {
+            navigate("/employer/dashboard");
+          }, 2000);
+
+        }
+
+        else if (res.data.user.role === "admin") {
+
+          setTimeout(() => {
+            navigate("/admin/dashboard");
+          }, 2000);
+
+        }
+
+      })
+
+      .catch((err) => {
+
+        console.log(err);
+
+        // unverified account
+        if (
+          err.response?.status === 403 &&
+          err.response?.data?.message.includes("verify")
+        ) {
+
+          toast.warning("Please verify your email first");
+
+          navigate("/verify-otp", {
+            state: {
+              email: email
+            }
+          });
+
+          return;
+        }
+
+        toast.error(
+          err.response?.data?.message || "Login failed"
+        );
+
       });
-
-      if(res.data.user.role === "employee"){
-        setTimeout(() => {
-          navigate("/employee/dashboard");
-        }, 2000);
-      }
-      else if(res.data.user.role === "employer"){
-        setTimeout(() => {
-          navigate("/employer/dashboard");
-        }, 2000);
-      }
-      else if(res.data.user.role === "admin"){
-        setTimeout(() => {
-          navigate("/admin/dashboard");
-        }, 2000);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      alert("Login failed");
-    })
 
   };
 
