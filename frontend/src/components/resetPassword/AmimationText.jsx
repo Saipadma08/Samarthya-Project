@@ -15,7 +15,7 @@ const AnimationText = () => {
                 transition={{ delay: 0.2, duration: 1 }}
             >
                 <div className='text-white bg-blue-800 py-3 px-6 rounded-full'>
-                    Recover Access
+                    fortified account
                 </div>
             </motion.div>
 
@@ -27,7 +27,7 @@ const AnimationText = () => {
                 transition={{ delay: 0.2, duration: 2 }}
             >
                 <p className='text-white bg-amber-400 py-3 px-6 rounded-full'>
-                    Verify Securely
+                    Simple & Secure
                 </p>
             </motion.div>
 
@@ -39,7 +39,7 @@ const AnimationText = () => {
                 transition={{ delay: 0.2, duration: 3 }}
             >
                 <p className='text-white bg-emerald-700 py-3 px-6 rounded-full'>
-                    Protect Your Account
+                    Privacy First
                 </p>
             </motion.div>
 

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 import Nav from "../../components/landingpage/Nav";
 import AnimationText from "../../components/forgotPassword/AmimationText";
@@ -15,6 +16,8 @@ import SamarthyaText from "../../assets/Samarthya-text.png"
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
+
+    const location = useLocation();
 
     const [email, setEmail] = useState("");
 
@@ -45,7 +48,8 @@ const ForgotPassword = () => {
 
                     email,
 
-                    fromForgotPassword: true
+                    fromForgotPassword: true,
+                    fromSettings: location.state?.fromSettings
 
                 }
 

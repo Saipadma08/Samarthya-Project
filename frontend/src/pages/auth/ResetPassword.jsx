@@ -96,11 +96,29 @@ const ResetPassword = () => {
 
             toast.success(res.data.message);
 
-            setTimeout(() => {
+            if (location.state?.fromSettings) {
 
-                navigate("/login");
+                const user = JSON.parse(localStorage.getItem("user"));
 
-            }, 1500);
+                setTimeout(() => {
+
+                    navigate(`/${user.role}/settings`);
+
+                }, 1500);
+
+
+            }
+
+            else {
+
+                setTimeout(() => {
+
+                    navigate("/login");
+
+                }, 1500);
+
+            }
+
 
         }
 
@@ -139,7 +157,7 @@ const ResetPassword = () => {
 
                     <div className="text-sm lg:text-lg text-mauve-700 font-medium p-5 flex flex-col text-center">
                         <p className="mt-0 lg:mt-15">
-                            Forgot your password? Verify your identity and set a new password securely.
+                            Create a new, strong password to regain access and ensure your account remains protected.
                         </p>
 
                         <div className="hidden lg:block py-5">

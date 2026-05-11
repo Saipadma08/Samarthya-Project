@@ -3,7 +3,7 @@ import React from 'react'
 const DashboardHeader = ({admin}) => {
   return (
     <div>
-        <p className="text-2xl lg:text-4xl text-cyan-700 font-semibold">
+        <p className="text-2xl text-cyan-700 font-semibold">
             Welcome, {admin?.name}
         </p>
 

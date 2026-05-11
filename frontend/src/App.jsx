@@ -14,6 +14,8 @@ import MainLayout from './layout/MainLayout'
 import About from './pages/public/About'
 import ContactUs from './pages/public/ContactUs'
 
+import Settings from './pages/settings/Settings'
+
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
 // ✅ Employee pages
@@ -25,7 +27,6 @@ import EmployeeComplaint from './pages/employee/Complaint'
 import EmployeeConnections from './pages/employee/Connections'
 import EmployeeFindJobs from './pages/employee/FindJobs'
 import EmployeeMessages from './pages/employee/Messages'
-import EmployeeSettings from './pages/employee/Settings'
 import EmployeeTrustScore from './pages/employee/TrustScore'
 import EmployeeWorkHistory from './pages/employee/WorkHistory'
 
@@ -39,7 +40,6 @@ import EmployerMyJobs from './pages/employer/MyJobs'
 import EmployerApplications from './pages/employer/Applications'
 import EmployerMessages from './pages/employer/Messages'
 import EmployerConnections from './pages/employer/Connections'
-import EmployerSettings from './pages/employer/Settings'
 import EmployerComplaint from './pages/employer/Complaint'
 
 
@@ -50,7 +50,6 @@ import AdminUsers from './pages/admin/Users'
 import AdminJobs from './pages/admin/Jobs'
 import AdminMessages from './pages/admin/Messages'
 import AdminReports from './pages/admin/Reports'
-import AdminSettings from './pages/admin/Settings'
 import AdminEditData from './pages/admin/EditData';
 
 const App = () => {
@@ -82,7 +81,7 @@ const App = () => {
           <Route path="connections" element={<EmployeeConnections />} />
           <Route path="find-jobs" element={<EmployeeFindJobs />} />
           <Route path="messages" element={<EmployeeMessages  />} />
-          <Route path="settings" element={<EmployeeSettings />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="trust-score" element={<EmployeeTrustScore />} />
           <Route path="work-history" element={<EmployeeWorkHistory />} />
           <Route path="edit-profile" element={<EmployeeEditProfile />} />
@@ -100,7 +99,7 @@ const App = () => {
           <Route path="applicants" element={<EmployerApplications />} />
           <Route path="messages" element={<EmployerMessages />} />
           <Route path="connections" element={<EmployerConnections />} />
-          <Route path="settings" element={<EmployerSettings />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="complaint" element={<EmployerComplaint />} />
           <Route path="edit-profile" element={<EmployerEditProfile />} />
 
@@ -116,7 +115,7 @@ const App = () => {
           <Route path="jobs" element={<AdminJobs />} />
           <Route path="messages" element={<AdminMessages  />} />
           <Route path="reports" element={<AdminReports />} />
-          <Route path="settings" element={<AdminSettings />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="edit-data" element={<AdminEditData />} />
 
         </Route>

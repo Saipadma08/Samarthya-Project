@@ -134,7 +134,8 @@ const VerificationForm = () => {
                         state: {
                             email,
                             otp,
-                            fromForgotPassword: true
+                            fromForgotPassword: true,
+                            fromSettings: location.state?.fromSettings
                         }
                     });
 

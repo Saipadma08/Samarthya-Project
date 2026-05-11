@@ -432,4 +432,67 @@ async function resetPassword(req, res) {
 
 }
 
-module.exports = { registerUser, verifyOtp, resendOtp, loginUser, logoutUser, getCurrentUser, forgotPassword, resetPassword }
+async function changePassword(req, res) {
+
+    try {
+
+        const {
+            currentPassword,
+            newPassword
+        } = req.body;
+
+        const user =
+            await userModel.findById(req.user.id);
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        // check current password
+        const isMatch =
+            await bcrypt.compare(
+                currentPassword,
+                user.password
+            );
+
+        if (!isMatch) {
+
+            return res.status(400).json({
+                message: "Current password is incorrect"
+            });
+
+        }
+
+        // hash new password
+        const hashedPassword =
+            await bcrypt.hash(newPassword, 10);
+
+        // update password
+        user.password = hashedPassword;
+
+        await user.save();
+
+        res.status(200).json({
+            message:
+                "Password changed successfully"
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+}
+
+module.exports = { registerUser, verifyOtp, resendOtp, loginUser, logoutUser, getCurrentUser, forgotPassword, resetPassword, changePassword }

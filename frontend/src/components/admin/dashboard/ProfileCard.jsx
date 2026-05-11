@@ -25,13 +25,13 @@ const ProfileCard = ({admin}) => {
         {/* text */}
         <div className="relative flex flex-col justify-end h-full p-4">
 
-        <p className="text-white text-md lg:text-2xl font-semibold drop-shadow-lg">
-            {admin?.name}
-        </p>
+          <p className="text-white text-md lg:text-2xl font-semibold drop-shadow-lg">
+              {admin?.name}
+          </p>
 
-        <p className="text-gray-200 text-sm drop-shadow-lg">
-            {admin?.email}
-        </p>
+          <p className="text-gray-200 text-sm drop-shadow-lg">
+              {admin?.email}
+          </p>
 
         </div>
 
