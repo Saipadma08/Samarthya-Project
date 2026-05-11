@@ -46,6 +46,18 @@ const usersSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+
+    pendingEmail: {
+        type: String
+    },
+
+    emailChangeOtp: {
+        type: String
+    },
+
+    emailChangeOtpExpires: {
+        type: Date
+    },
 },
     { timestamps: true }
 )

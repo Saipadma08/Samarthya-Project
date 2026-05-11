@@ -192,6 +192,7 @@ const VerificationForm = () => {
                     Verify OTP
                 </h1>
 
+
                 <p className="text-gray-500 mt-3 text-sm">
 
                     Enter the OTP sent to
@@ -200,6 +201,12 @@ const VerificationForm = () => {
                         {" "} {email}
                     </span>
 
+                </p>
+
+                <p className="text-xs text-gray-400 text-center leading-5">
+                    Didn't receive the OTP?
+                    Check your spam folder or make sure the entered
+                    email address is correct.
                 </p>
 
             </div>

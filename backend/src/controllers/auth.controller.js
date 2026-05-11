@@ -495,4 +495,171 @@ async function changePassword(req, res) {
 
 }
 
-module.exports = { registerUser, verifyOtp, resendOtp, loginUser, logoutUser, getCurrentUser, forgotPassword, resetPassword, changePassword }
+async function requestEmailChange(req, res) {
+
+    try {
+
+        const { currentPassword, newEmail } = req.body;
+
+        const user = await userModel.findById(req.user.id);
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        // password check
+        const isPasswordValid =
+            await bcrypt.compare(
+                currentPassword,
+                user.password
+            );
+
+        if (!isPasswordValid) {
+
+            return res.status(401).json({
+                message: "Incorrect password"
+            });
+
+        }
+
+        // email already exists
+        const existingUser =
+            await userModel.findOne({
+                email: newEmail
+            });
+
+        if (existingUser) {
+
+            return res.status(409).json({
+                message: "Email already in use"
+            });
+
+        }
+
+        // generate otp
+        const otp = generateOtp();
+
+        const otpExpires =
+            new Date(Date.now() + 10 * 60 * 1000);
+
+        user.pendingEmail = newEmail;
+
+        user.emailChangeOtp = otp;
+
+        user.emailChangeOtpExpires =
+            otpExpires;
+
+        await user.save();
+
+        await sendOtpEmail(newEmail, otp);
+
+        res.status(200).json({
+
+            message:
+                "OTP sent to new email"
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+}
+
+async function verifyEmailChangeOtp(req, res) {
+
+    try {
+
+        const { otp } = req.body;
+
+        const user =
+            await userModel.findById(req.user.id);
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "User not found"
+            });
+
+        }
+
+        if (user.emailChangeOtp !== otp) {
+
+            return res.status(400).json({
+                message: "Invalid OTP"
+            });
+
+        }
+
+        if (
+            user.emailChangeOtpExpires
+            < new Date()
+        ) {
+
+            return res.status(400).json({
+                message: "OTP expired"
+            });
+
+        }
+
+        // update email
+        user.email = user.pendingEmail;
+
+        // clear temp fields
+        user.pendingEmail = undefined;
+
+        user.emailChangeOtp = undefined;
+
+        user.emailChangeOtpExpires =
+            undefined;
+
+        await user.save();
+
+        res.status(200).json({
+
+            message:
+                "Email updated successfully",
+
+            email: user.email
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+}
+
+module.exports = { 
+    registerUser, 
+    verifyOtp, 
+    resendOtp, 
+    loginUser, 
+    logoutUser, 
+    getCurrentUser, 
+    forgotPassword, 
+    resetPassword, 
+    changePassword,
+    requestEmailChange,
+    verifyEmailChangeOtp
+ }

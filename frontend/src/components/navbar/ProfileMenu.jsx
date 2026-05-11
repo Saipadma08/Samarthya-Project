@@ -187,7 +187,7 @@ const ProfileMenu = () => {
 
               {/* COMMON */}
               <Link
-                to="/settings"
+                to={`/${user?.role}/settings`}
                 className="px-4 py-3 hover:bg-gray-100"
               >
                 Settings

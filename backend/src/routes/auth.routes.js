@@ -22,4 +22,8 @@ router.post("/reset-password", authController.resetPassword);
 
 router.put("/change-password", authMiddleware, authController.changePassword);
 
+router.put("/change-email", authMiddleware, authController.requestEmailChange);
+
+router.put("/verify-email-change", authMiddleware, authController.verifyEmailChangeOtp);
+
 module.exports = router;

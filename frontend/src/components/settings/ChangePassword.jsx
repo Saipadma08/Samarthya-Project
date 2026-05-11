@@ -106,7 +106,7 @@ const ChangePassword = () => {
             className="flex flex-col gap-4"
         >
 
-            <h2 className="text-2xl font-semibold">
+            <h2 className="text-2xl font-semibold text-center">
                 Change Password
             </h2>
 
