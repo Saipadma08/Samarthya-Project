@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 import SearchBar from "../components/navbar/SearchBar";
 import ContactAndAbout from "../components/navbar/ContactAndAbout";
@@ -11,6 +12,10 @@ import SamarthyaText from "../assets/Samarthya-text.png";
 
 
 const Navbar = () => {
+
+  const location = useLocation();
+  const hideSearchBar = location.pathname.includes("/search");
+
   return (
     <div className="h-28 lg:h-16 bg-white sticky top-0 z-50 shadow-sm shadow-gray-300 px-6">
 
@@ -19,7 +24,7 @@ const Navbar = () => {
 
 
         {/* LEFT SIDE */}
-        <div className="flex items-center gap-6 w-full lg:w-auto justify-end">
+        <div className="flex items-center gap-6 lg:gap-55 w-full lg:w-auto justify-center">
 
           <div
             className="block lg:hidden w-12 h-12 rounded-full shadow-2xl overflow-hidden bg-cover bg-center mx-2"
@@ -35,8 +40,13 @@ const Navbar = () => {
           </div>
 
           <div>
-            <SearchBar />
+            {
+                !hideSearchBar && (
+                  <SearchBar />
+                )
+              }
           </div>
+
 
         </div>
 

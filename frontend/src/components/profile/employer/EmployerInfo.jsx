@@ -8,7 +8,7 @@ const EmployerInfo = ({user, profile}) => {
             </p>
 
             <p className="text-sm lg:text-md font-semibold text-gray-700">
-                Employer • {profile?.employerType || "Type specified"}
+                Employer • {profile?.employerType || "Type unspecified"}
             </p>
 
             <p className="text-gray-600 text-sm lg:text-md">
