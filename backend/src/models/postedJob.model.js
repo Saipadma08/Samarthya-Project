@@ -34,36 +34,40 @@ const postedJobSchema = new mongoose.Schema(
 
     urgency: {
       type: String,
-      required: true,
+      default: "Normal",
     },
 
     jobType: {
       type: String,
-      required: true,
+      default: "One-time",
     },
 
     workersNeeded: {
       type: Number,
-      required: true,
+      default: 1,
     },
 
     skills: {
       type: String,
-      required: true,
     },
 
     status: {
       type: String,
       default: "Active",
     },
+
+    action: {
+      type: String,
+      default: "Pending",
+    },
   },
 
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-const postedJobModel = mongoose.model(
-  "postedjobs",
+module.exports = mongoose.model(
+  "PostedJob",
   postedJobSchema
 );
-
-module.exports = postedJobModel;
