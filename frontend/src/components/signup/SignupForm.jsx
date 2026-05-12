@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-const SignupForm = ({ form, setForm, errors, setErrors}) => {
+const SignupForm = ({ form, setForm, errors, setErrors }) => {
 
   const navigate = useNavigate();
 
@@ -19,30 +19,30 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
     });
   };
 
-  const handleSubmit = (e) => { 
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     let newErrors = {};
 
-    if(!form.name){
+    if (!form.name) {
       newErrors.name = "Name required";
     }
-    else if(!/^[A-Za-z ]+$/.test(form.name)){
+    else if (!/^[A-Za-z ]+$/.test(form.name)) {
       newErrors.name = "Name can only contain letters";
     }
 
-    if(!form.email){
+    if (!form.email) {
       newErrors.email = "Email required";
     }
-    else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)){
+    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)) {
       newErrors.email = "Invalid email";
     }
 
-    if(!form.password){
+    if (!form.password) {
       newErrors.password = "Password required";
     }
-    else if( !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)){
-      newErrors.password = "Weak password";
+    else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)) {
+      newErrors.password = "Password does not meet requirements";
     }
 
     if (form.password !== form.confirmPassword) {
@@ -58,45 +58,72 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
         password: form.password,
         role: form.role
       },
-      {
-        withCredentials: true
-      }
+        {
+          withCredentials: true
+        }
       )
-      .then((res) => {
+        .then((res) => {
 
-        setForm({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
+          setForm({
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          });
 
-        toast.success("Signup successful!", {
-          position: "top-right",
-          autoClose: 2000,
-        });
+          toast.success("OTP sent to the email!", {
+            position: "top-right",
+            autoClose: 2000,
+          });
 
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response?.data?.message || "Signup failed", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-      })
+          localStorage.setItem(
+            "verificationEmail",
+            form.email
+          );
+
+          setTimeout(() => {
+
+            navigate("/verify-otp", {
+              state: {
+                email: form.email
+              }
+            });
+
+          }, 1000);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.response?.data?.message || "Signup failed", {
+            position: "top-right",
+            autoClose: 4000,
+          });
+        })
 
     }
   };
 
   return (
     <div className="w-[85%] lg:w-[80%] bg-white  rounded-xl p-4 flex flex-col shadow-lg shadow-gray-600">
-      
+
       <h2 className="text-3xl text-center text-black font-semibold my-5">
         Sign up
       </h2>
+
+      <div className="text-xs text-gray-500 px-1 mb-3">
+
+          <p>Password must contain:</p>
+
+          <ul className="list-disc pl-5">
+
+              <li>Minimum 8 characters</li>
+              <li>One uppercase letter</li>
+              <li>One lowercase letter</li>
+              <li>One number</li>
+              <li>One special character</li>
+
+          </ul>
+
+      </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
 
@@ -129,7 +156,7 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
             className="border border-white border-b-gray-400 p-2 rounded w-full pr-16"
           />
           <span
-            className="absolute right-3 top-2 cursor-pointer text-sm text-purple-700"
+            className="absolute right-3 top-4 cursor-pointer text-sm text-purple-700"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? "Hide" : "Show"}
@@ -148,7 +175,7 @@ const SignupForm = ({ form, setForm, errors, setErrors}) => {
             className="border border-white border-b-gray-400 p-2 rounded w-full pr-16"
           />
           <span
-            className="absolute right-3 top-2 cursor-pointer text-sm text-purple-700"
+            className="absolute right-3 top-4 cursor-pointer text-sm text-purple-700"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
             {showConfirmPassword ? "Hide" : "Show"}

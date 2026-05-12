@@ -5,11 +5,20 @@ import {ToastContainer} from 'react-toastify';
 import LandingPage from './pages/public/LandingPage'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
+import VerifyOtp from './pages/auth/verifyOtp';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 import MainLayout from './layout/MainLayout'
 
 import About from './pages/public/About'
 import ContactUs from './pages/public/ContactUs'
+
+import Settings from './pages/settings/Settings'
+
+import PublicProfile from './pages/profile/PublicProfile';
+
+import Search from './pages/search/Search';
 
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
@@ -22,7 +31,6 @@ import EmployeeComplaint from './pages/employee/Complaint'
 import EmployeeConnections from './pages/employee/Connections'
 import EmployeeFindJobs from './pages/employee/FindJobs'
 import EmployeeMessages from './pages/employee/Messages'
-import EmployeeSettings from './pages/employee/Settings'
 import EmployeeTrustScore from './pages/employee/TrustScore'
 import EmployeeWorkHistory from './pages/employee/WorkHistory'
 
@@ -36,7 +44,6 @@ import EmployerMyJobs from './pages/employer/MyJobs'
 import EmployerApplications from './pages/employer/Applications'
 import EmployerMessages from './pages/employer/Messages'
 import EmployerConnections from './pages/employer/Connections'
-import EmployerSettings from './pages/employer/Settings'
 import EmployerComplaint from './pages/employer/Complaint'
 
 
@@ -47,7 +54,7 @@ import AdminUsers from './pages/admin/Users'
 import AdminJobs from './pages/admin/Jobs'
 import AdminMessages from './pages/admin/Messages'
 import AdminReports from './pages/admin/Reports'
-import AdminSettings from './pages/admin/Settings'
+import AdminEditData from './pages/admin/EditData';
 
 const App = () => {
   return (
@@ -60,10 +67,15 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
 
         <Route path="/signup/:role" element={<Signup />} />
+        <Route path='/verify-otp' element={<VerifyOtp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
+
+
 
         {/* ================= EMPLOYEE ================= */}
         <Route path="/employee" element={<ProtectedRoute allowedRole="employee"> <MainLayout role="employee" /> </ProtectedRoute>}>
@@ -75,10 +87,12 @@ const App = () => {
           <Route path="connections" element={<EmployeeConnections />} />
           <Route path="find-jobs" element={<EmployeeFindJobs />} />
           <Route path="messages" element={<EmployeeMessages  />} />
-          <Route path="settings" element={<EmployeeSettings />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="trust-score" element={<EmployeeTrustScore />} />
           <Route path="work-history" element={<EmployeeWorkHistory />} />
           <Route path="edit-profile" element={<EmployeeEditProfile />} />
+          <Route path="search" element={<Search />} />
+          <Route path="profile/:userId" element={<PublicProfile />} />
 
         </Route>
 
@@ -93,9 +107,11 @@ const App = () => {
           <Route path="applicants" element={<EmployerApplications />} />
           <Route path="messages" element={<EmployerMessages />} />
           <Route path="connections" element={<EmployerConnections />} />
-          <Route path="settings" element={<EmployerSettings />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="complaint" element={<EmployerComplaint />} />
           <Route path="edit-profile" element={<EmployerEditProfile />} />
+          <Route path="search" element={<Search />} />
+          <Route path="profile/:userId" element={<PublicProfile />} />
 
         </Route>
 
@@ -109,7 +125,10 @@ const App = () => {
           <Route path="jobs" element={<AdminJobs />} />
           <Route path="messages" element={<AdminMessages  />} />
           <Route path="reports" element={<AdminReports />} />
-          <Route path="settings" element={<AdminSettings />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="edit-data" element={<AdminEditData />} />
+          <Route path="search" element={<Search />} />
+          <Route path="profile/:userId" element={<PublicProfile />} />
 
         </Route>
       </Routes>

@@ -14,7 +14,7 @@ const Logout = ({ collapsed }) => {
   
       localStorage.removeItem("user");
 
-      toast.success("Logged out successfully");
+      toast.success("Logged out successfully",{autoClose: 1000 });
 
       setTimeout(() => {
         navigate("/login");

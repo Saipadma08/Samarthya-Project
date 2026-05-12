@@ -21,7 +21,7 @@ async function getProfile(req, res) {
     const userId = req.user.id;
 
     const user = await User.findById(userId)
-      .select("name email profileImage isVerified");
+      .select("name email profileImage isVerified role");
 
     const profile = await EmployeeProfile.findOne({ userId });
 
@@ -45,11 +45,21 @@ async function updateProfile(req, res) {
 
     // Upload profile image (if exists)
     if (req.files?.profileImage?.[0]) {
+
       const file = req.files.profileImage[0];
 
-      // validation
-      if (!file.mimetype.startsWith("image/")) {
-        return res.status(400).json({ message: "Profile image must be an image file" });
+      // allowed image types
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      // image validation
+      if (!allowedTypes.includes(file.mimetype)) {
+        return res.status(400).json({
+          message: "Only JPG, PNG, and WEBP images are allowed"
+        });
       }
 
       const result = await uploadFile(
@@ -63,11 +73,21 @@ async function updateProfile(req, res) {
 
     // Upload cover image (if exists)
     if (req.files?.coverImage?.[0]) {
+
       const file = req.files.coverImage[0];
 
-      // validation
-      if (!file.mimetype.startsWith("image/")) {
-        return res.status(400).json({ message: "Cover image must be an image file" });
+      // allowed image types
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      // image validation
+      if (!allowedTypes.includes(file.mimetype)) {
+        return res.status(400).json({
+          message: "Only JPG, PNG, and WEBP images are allowed"
+        });
       }
 
       const result = await uploadFile(
@@ -118,7 +138,7 @@ async function updateProfile(req, res) {
         skills: parsedSkills,
         ...(coverImageUrl && { coverImage: coverImageUrl })
       },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: "after" }
     );
 
     res.json({
@@ -127,6 +147,12 @@ async function updateProfile(req, res) {
     });
 
   } catch (err) {
+    // duplicate email error
+    if (err.code === 11000) {
+      return res.status(409).json({
+        message: "Email already exists"
+      });
+    }
     console.log(err);
     res.status(500).json({ message: "Server error" });
   }

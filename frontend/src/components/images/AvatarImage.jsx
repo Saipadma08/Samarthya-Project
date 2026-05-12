@@ -5,7 +5,7 @@ const AvatarImage = ({profileImage}) => {
   return (
     <div className="w-full h-full">
       <img
-            className="w-full h-full object-cover brightness-90"
+            className="w-full h-full object-cover"
             src={profileImage || DEFAULT_AVATAR_IMAGE}
             alt="Avatar"
           />

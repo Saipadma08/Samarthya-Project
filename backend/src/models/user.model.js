@@ -14,12 +14,14 @@ const usersSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    role:{
+    role: {
         type: String,
-        enum:['employee','employer','admin'],
+        enum: ['employee', 'employer', 'admin'],
         required: true,
     },
     profileImage: String,
+
+    // trust badge system
     isVerified: {
         type: Boolean,
         default: false
@@ -34,8 +36,35 @@ const usersSchema = new mongoose.Schema({
         enum: ["none", "pending", "approved", "rejected"],
         default: "none"
     },
+
+    // email verification system
+    emailVerified: {
+        type: Boolean,
+        default: false
+    },
+
+    otp: String,
+
+    otpExpires: Date,
+
+    verificationCreatedAt: {
+        type: Date,
+        default: Date.now
+    },
+
+    pendingEmail: {
+        type: String
+    },
+
+    emailChangeOtp: {
+        type: String
+    },
+
+    emailChangeOtpExpires: {
+        type: Date
+    },
 },
-{ timestamps: true }
+    { timestamps: true }
 )
 
 const userModel = mongoose.model("users", usersSchema);

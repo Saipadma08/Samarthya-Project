@@ -21,7 +21,7 @@ async function getProfile(req, res) {
     const userId = req.user.id;
 
     const user = await User.findById(userId)
-      .select("name email profileImage isVerified");
+      .select("name email profileImage isVerified role");
 
     const profile = await EmployerProfile.findOne({ userId });
 
@@ -33,7 +33,7 @@ async function getProfile(req, res) {
   } catch (err) {
 
     console.log(err);
-    
+
     res.status(500).json({
       message: "Server error"
     });
@@ -53,9 +53,17 @@ async function updateProfile(req, res) {
 
       const file = req.files.profileImage[0];
 
-      if (!file.mimetype.startsWith("image/")) {
+      // allowed image types
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      // image validation
+      if (!allowedTypes.includes(file.mimetype)) {
         return res.status(400).json({
-          message: "Profile image must be an image"
+          message: "Only JPG, PNG, and WEBP images are allowed"
         });
       }
 
@@ -73,9 +81,17 @@ async function updateProfile(req, res) {
 
       const file = req.files.coverImage[0];
 
-      if (!file.mimetype.startsWith("image/")) {
+      // allowed image types
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      // image validation
+      if (!allowedTypes.includes(file.mimetype)) {
         return res.status(400).json({
-          message: "Cover image must be an image"
+          message: "Only JPG, PNG, and WEBP images are allowed"
         });
       }
 
@@ -142,7 +158,7 @@ async function updateProfile(req, res) {
 
         {
           upsert: true,
-          new: true
+          returnDocument: "after"
         }
       );
 
@@ -152,6 +168,14 @@ async function updateProfile(req, res) {
     });
 
   } catch (err) {
+
+    // duplicate email error
+    if (err.code === 11000) {
+      return res.status(409).json({
+        message: "Email already exists"
+      });
+    }
+
     console.log(err);
 
     res.status(500).json({
