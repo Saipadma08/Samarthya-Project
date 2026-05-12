@@ -13,6 +13,7 @@ const {
 
 const {
   adminUsersController,
+  getSingleUser,
   deleteUser,
 } = require("../controllers/adminUsers.controller");
 
@@ -60,6 +61,13 @@ router.get(
   authMiddleware,
   roleMiddleware("admin"),
   adminUsersController
+);
+
+router.get(
+  "/users/:id",
+  authMiddleware,
+  roleMiddleware("admin"),
+  getSingleUser
 );
 
 router.delete(

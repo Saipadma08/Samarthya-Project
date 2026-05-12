@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate,useSearchParams} from "react-router-dom";
+
 import axios from "axios";
 
 const Users = () => {
+
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
 
   const roleFilter = searchParams.get("role");
 
   const [search, setSearch] = useState("");
+
   const [selectedUser, setSelectedUser] = useState(null);
+
   const [editUser, setEditUser] = useState(null);
+
   const [usersData, setUsersData] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     fetchUsers();
+
   }, []);
 
   const fetchUsers = async () => {
@@ -40,6 +49,7 @@ const Users = () => {
       setLoading(false);
 
     }
+
   };
 
   // REMOVE USER
@@ -62,6 +72,7 @@ const Users = () => {
       console.log(error);
 
     }
+
   };
 
   // FILTER USERS
@@ -75,9 +86,11 @@ const Users = () => {
 
     const matchesSearch =
       user.name.toLowerCase().includes(search.toLowerCase()) ||
+
       user.email.toLowerCase().includes(search.toLowerCase());
 
     return matchesRole && matchesSearch;
+
   });
 
   return (
@@ -140,9 +153,25 @@ const Users = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
 
-        {/* TOTAL */}
+        {/* TOTAL USERS */}
 
-        <div className="relative overflow-hidden bg-gradient-to-br from-cyan-600 to-cyan-800 rounded-3xl p-6 shadow-xl">
+        <div
+          onClick={() => navigate("/admin/users")}
+          className={`
+          relative overflow-hidden
+          rounded-3xl p-6 shadow-xl
+          cursor-pointer
+          hover:scale-105
+          transition duration-300
+          bg-gradient-to-br from-cyan-600 to-cyan-800
+
+          ${
+            !roleFilter
+              ? "ring-4 ring-cyan-300"
+              : ""
+          }
+        `}
+        >
 
           <div className="absolute -right-5 -top-5 w-20 h-20 bg-white/10 rounded-full"></div>
 
@@ -162,7 +191,23 @@ const Users = () => {
 
         {/* EMPLOYEES */}
 
-        <div className="relative overflow-hidden bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-3xl p-6 shadow-xl">
+        <div
+          onClick={() => navigate("/admin/users?role=employee")}
+          className={`
+          relative overflow-hidden
+          rounded-3xl p-6 shadow-xl
+          cursor-pointer
+          hover:scale-105
+          transition duration-300
+          bg-gradient-to-br from-emerald-500 to-emerald-700
+
+          ${
+            roleFilter === "employee"
+              ? "ring-4 ring-emerald-300"
+              : ""
+          }
+        `}
+        >
 
           <div className="absolute -right-5 -top-5 w-20 h-20 bg-white/10 rounded-full"></div>
 
@@ -188,7 +233,23 @@ const Users = () => {
 
         {/* EMPLOYERS */}
 
-        <div className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-6 shadow-xl">
+        <div
+          onClick={() => navigate("/admin/users?role=employer")}
+          className={`
+          relative overflow-hidden
+          rounded-3xl p-6 shadow-xl
+          cursor-pointer
+          hover:scale-105
+          transition duration-300
+          bg-gradient-to-br from-blue-500 to-blue-700
+
+          ${
+            roleFilter === "employer"
+              ? "ring-4 ring-blue-300"
+              : ""
+          }
+        `}
+        >
 
           <div className="absolute -right-5 -top-5 w-20 h-20 bg-white/10 rounded-full"></div>
 
@@ -214,7 +275,23 @@ const Users = () => {
 
         {/* ADMINS */}
 
-        <div className="relative overflow-hidden bg-gradient-to-br from-violet-600 to-violet-800 rounded-3xl p-6 shadow-xl">
+        <div
+          onClick={() => navigate("/admin/users?role=admin")}
+          className={`
+          relative overflow-hidden
+          rounded-3xl p-6 shadow-xl
+          cursor-pointer
+          hover:scale-105
+          transition duration-300
+          bg-gradient-to-br from-violet-600 to-violet-800
+
+          ${
+            roleFilter === "admin"
+              ? "ring-4 ring-violet-300"
+              : ""
+          }
+        `}
+        >
 
           <div className="absolute -right-5 -top-5 w-20 h-20 bg-white/10 rounded-full"></div>
 
@@ -244,11 +321,11 @@ const Users = () => {
 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
 
-        {/* HEADER */}
+        {/* TABLE HEADER */}
 
         <div className="px-4 sm:px-6 py-5 border-b border-slate-200">
 
-          <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
+          <h2 className="text-lg sm:text-xl font-semibold text-slate-800 capitalize">
 
             {
               roleFilter
@@ -322,14 +399,28 @@ const Users = () => {
 
                         <div className="flex items-center gap-4 min-w-[220px]">
 
-                          <img
-                            src={
-                              user.profileImage ||
-                              "https://i.pravatar.cc/150?img=11"
-                            }
-                            alt="user"
-                            className="w-12 h-12 rounded-full object-cover"
-                          />
+                        {
+                  user.profileImage ? (
+
+                  <img
+                   src={user.profileImage}
+                  alt="user"
+                  className="w-12 h-12 rounded-full object-cover"
+                 />
+
+            ) : (
+
+             <div className=" w-12 h-12 rounded-full
+      bg-gradient-to-r from-cyan-500 to-blue-600
+      flex items-center justify-center
+      text-white font-bold text-lg
+    "
+    >
+      {user.name?.charAt(0).toUpperCase()}
+    </div>
+
+  )
+}
 
                           <div>
 
@@ -357,8 +448,10 @@ const Users = () => {
                           ${
                             user.role === "employee"
                               ? "bg-emerald-100 text-emerald-700"
+
                               : user.role === "employer"
                               ? "bg-cyan-100 text-cyan-700"
+
                               : "bg-violet-100 text-violet-700"
                           }
                         `}
@@ -392,7 +485,9 @@ const Users = () => {
                       <td className="px-6 py-5">
 
                         <span className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">
+
                           Active
+
                         </span>
 
                       </td>
@@ -410,12 +505,12 @@ const Users = () => {
                             View
                           </button>
 
-                        <button
-                          onClick={() => setEditUser(user)}
-                           className="text-blue-600 hover:underline"
-                        >
-                        Edit
-                      </button>
+                          <button
+                            onClick={() => setEditUser(user)}
+                            className="text-blue-600 hover:underline"
+                          >
+                            Edit
+                          </button>
 
                           <button className="text-orange-500 hover:underline">
                             Block
@@ -457,127 +552,161 @@ const Users = () => {
 
       </div>
 
-      {/* MODAL */}
 
       {
-        selectedUser && (
+  selectedUser && (
 
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
 
-            <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
+      <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
 
-              <div className="bg-gradient-to-r from-cyan-600 to-blue-700 p-6 text-white relative">
+        <div className="bg-gradient-to-r from-cyan-600 to-blue-700 p-6 text-white relative">
 
-                <button
-                  onClick={() => setSelectedUser(null)}
-                  className="absolute top-4 right-4 text-white text-xl"
-                >
-                  ✕
-                </button>
+          <button
+            onClick={() => setSelectedUser(null)}
+            className="absolute top-4 right-4 text-white text-xl"
+          >
+            ✕
+          </button>
 
-                <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center">
 
-                  <img
-                    src={selectedUser.profileImage}
-                    alt="user"
-                    className="w-24 h-24 rounded-full border-4 border-white object-cover"
-                  />
+         {
+  selectedUser.profileImage ? (
 
-                  <h2 className="mt-4 text-2xl font-bold">
-                    {selectedUser.name}
-                  </h2>
+    <img
+      src={selectedUser.profileImage}
+      alt="user"
+      className="w-24 h-24 rounded-full border-4 border-white object-cover"
+    />
 
-                  <p className="text-cyan-100 break-all text-center">
-                    {selectedUser.email}
-                  </p>
+  ) : (
 
-                </div>
+    <div
+      className="
+      w-24 h-24 rounded-full
+      border-4 border-white
+      bg-white/20
+      flex items-center justify-center
+      text-white text-4xl font-bold
+    "
+    >
+      {selectedUser.name?.charAt(0).toUpperCase()}
+    </div>
 
-              </div>
+  )
+}
 
-              <div className="p-6 space-y-4">
+            <h2 className="mt-4 text-2xl font-bold">
+              {selectedUser.name}
+            </h2>
 
-                <div className="flex justify-between border-b pb-3">
-                  <span className="text-slate-500 font-medium">Role</span>
-                  <span className="font-semibold capitalize">
-                    {selectedUser.role}
-                  </span>
-                </div>
-
-                <div className="flex justify-between border-b pb-3">
-                  <span className="text-slate-500 font-medium">Status</span>
-
-                  <span
-                    className={`font-semibold
-                    ${
-                      selectedUser.isBlocked
-                        ? "text-red-500"
-                        : "text-green-600"
-                    }`}
-                  >
-                    {
-                      selectedUser.isBlocked
-                        ? "Blocked"
-                        : "Active"
-                    }
-                  </span>
-
-                </div>
-
-                <div className="flex justify-between border-b pb-3">
-                  <span className="text-slate-500 font-medium">
-                    Verified
-                  </span>
-
-                  <span className="font-semibold">
-                    {
-                      selectedUser.isVerified
-                        ? "Yes"
-                        : "No"
-                    }
-                  </span>
-
-                </div>
-
-                <div className="flex justify-between border-b pb-3">
-                  <span className="text-slate-500 font-medium">
-                    Joined
-                  </span>
-
-                  <span className="font-semibold">
-                    {
-                      new Date(
-                        selectedUser.createdAt
-                      ).toLocaleDateString()
-                    }
-                  </span>
-
-                </div>
-
-              </div>
-
-              <div className="p-5 bg-slate-50 flex justify-end">
-
-                <button
-                  onClick={() => setSelectedUser(null)}
-                  className="bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2 rounded-xl transition"
-                >
-                  Close
-                </button>
-
-              </div>
-
-            </div>
+            <p className="text-cyan-100 break-all text-center">
+              {selectedUser.email}
+            </p>
 
           </div>
 
-        )
-      }
+        </div>
 
+        <div className="p-6 space-y-4">
 
-    {/* Edit */}
+          <div className="flex justify-between border-b pb-3">
 
-    {/* ================= EDIT USER MODAL ================= */}
+            <span className="text-slate-500 font-medium">
+              Role
+            </span>
+
+            <span className="font-semibold capitalize">
+              {selectedUser.role}
+            </span>
+
+          </div>
+
+          <div className="flex justify-between border-b pb-3">
+
+            <span className="text-slate-500 font-medium">
+              Status
+            </span>
+
+            <span
+              className={`font-semibold
+              ${
+                selectedUser.isBlocked
+                  ? "text-red-500"
+                  : "text-green-600"
+              }`}
+            >
+              {
+                selectedUser.isBlocked
+                  ? "Blocked"
+                  : "Active"
+              }
+            </span>
+
+          </div>
+
+          <div className="flex justify-between border-b pb-3">
+
+            <span className="text-slate-500 font-medium">
+              Verified
+            </span>
+
+            <span className="font-semibold">
+
+              {
+                selectedUser.isVerified
+                  ? "Yes"
+                  : "No"
+              }
+
+            </span>
+
+          </div>
+
+          <div className="flex justify-between border-b pb-3">
+
+            <span className="text-slate-500 font-medium">
+              Joined
+            </span>
+
+            <span className="font-semibold">
+
+              {
+                new Date(
+                  selectedUser.createdAt
+                ).toLocaleDateString()
+              }
+
+            </span>
+
+          </div>
+
+        </div>
+
+        <div className="p-5 bg-slate-50 flex justify-end">
+         
+         <button
+                 onClick={() => navigate(`/admin/users/${selectedUser._id}`)}
+            className="bg-blue-600 hover:bg-blue-700 text-white mr-3 px-5 py-2 rounded-xl">
+             User Details
+          </button>
+ 
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white mr-3 px-5 py-2 rounded-xl">
+              View Profile
+          </button>
+          
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+}
+
 
 {
   editUser && (
@@ -585,8 +714,6 @@ const Users = () => {
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
 
       <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
-
-        {/* HEADER */}
 
         <div className="bg-gradient-to-r from-blue-600 to-violet-700 p-6 text-white relative">
 
@@ -599,15 +726,31 @@ const Users = () => {
 
           <div className="flex items-center gap-4">
 
-            <img
-              src={
-                editUser.profileImage ||
-                "https://i.pravatar.cc/150?img=11"
-              }
-              alt="user"
-              className="w-20 h-20 rounded-full border-4 border-white object-cover"
-            />
+          {
+  editUser.profileImage ? (
 
+    <img
+      src={editUser.profileImage}
+      alt="user"
+      className="w-20 h-20 rounded-full border-4 border-white object-cover"
+    />
+
+  ) : (
+
+    <div
+      className="
+      w-20 h-20 rounded-full
+      border-4 border-white
+      bg-white/20
+      flex items-center justify-center
+      text-white text-3xl font-bold
+    "
+    >
+      {editUser.name?.charAt(0).toUpperCase()}
+    </div>
+
+  )
+}
             <div>
 
               <h2 className="text-2xl font-bold">
@@ -624,11 +767,7 @@ const Users = () => {
 
         </div>
 
-        {/* BODY */}
-
         <div className="p-6 space-y-5">
-
-          {/* ROLE */}
 
           <div>
 
@@ -656,8 +795,6 @@ const Users = () => {
             </select>
 
           </div>
-
-          {/* VERIFIED */}
 
           <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
 
@@ -694,8 +831,6 @@ const Users = () => {
 
           </div>
 
-          {/* BLOCK STATUS */}
-
           <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
 
             <div>
@@ -731,8 +866,6 @@ const Users = () => {
 
           </div>
 
-          {/* ADMIN NOTE */}
-
           <div>
 
             <label className="text-sm font-medium text-slate-600">
@@ -748,8 +881,6 @@ const Users = () => {
           </div>
 
         </div>
-
-        {/* FOOTER */}
 
         <div className="bg-slate-50 px-6 py-5 flex justify-end gap-3">
 
@@ -774,9 +905,6 @@ const Users = () => {
 
   )
 }
-
-
-
 
     </div>
 

@@ -189,13 +189,13 @@ const Jobs = () => {
 
 <div className="bg-cyan-50 rounded-2xl p-4 shadow-sm">
   <p className="text-cyan-700 text-sm">
-    One-time
+     Action
   </p>
 
   <h2 className="text-2xl font-bold text-cyan-700 mt-2">
     {
       jobsData.filter(
-        (job) => job.jobType === "One-time"
+        (job) => job.jobType === "Pending"
       ).length
     }
   </h2>

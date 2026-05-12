@@ -55,6 +55,7 @@ import AdminJobs from './pages/admin/Jobs'
 import AdminMessages from './pages/admin/Messages'
 import AdminReports from './pages/admin/Reports'
 import AdminEditData from './pages/admin/EditData';
+import UserProfile from "./pages/Admin/UserProfile";
 
 const App = () => {
   return (
@@ -122,6 +123,7 @@ const App = () => {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path='add-admin' element={<AddAdmin />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="/admin/users/:id" element={<UserProfile />} />
           <Route path="jobs" element={<AdminJobs />} />
           <Route path="messages" element={<AdminMessages  />} />
           <Route path="reports" element={<AdminReports />} />
