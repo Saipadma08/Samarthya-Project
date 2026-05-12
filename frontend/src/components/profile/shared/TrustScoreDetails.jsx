@@ -10,7 +10,6 @@ const TrustScoreDetails = () => {
             </p>
     
             <p>Trust Score: 4.2</p>
-            <p>Phone Verified ✔</p>
             <p>ID Verified ✔</p>
             <p>No complaints</p>
     

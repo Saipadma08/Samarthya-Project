@@ -1,5 +1,5 @@
 import React from 'react'
-import DefaultCoverImage from '../../images/CoverImage';
+import DefaultCoverImage from '../../images/CoverImage'
 
 const CoverImage = ({coverImage}) => {
   return (

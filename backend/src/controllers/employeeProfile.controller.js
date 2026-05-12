@@ -21,7 +21,7 @@ async function getProfile(req, res) {
     const userId = req.user.id;
 
     const user = await User.findById(userId)
-      .select("name email profileImage isVerified");
+      .select("name email profileImage isVerified role");
 
     const profile = await EmployeeProfile.findOne({ userId });
 
