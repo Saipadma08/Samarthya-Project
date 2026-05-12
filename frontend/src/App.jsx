@@ -16,6 +16,10 @@ import ContactUs from './pages/public/ContactUs'
 
 import Settings from './pages/settings/Settings'
 
+import PublicProfile from './pages/profile/PublicProfile';
+
+import Search from './pages/search/Search';
+
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
 // ✅ Employee pages
@@ -71,6 +75,8 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
 
+
+
         {/* ================= EMPLOYEE ================= */}
         <Route path="/employee" element={<ProtectedRoute allowedRole="employee"> <MainLayout role="employee" /> </ProtectedRoute>}>
 
@@ -85,6 +91,8 @@ const App = () => {
           <Route path="trust-score" element={<EmployeeTrustScore />} />
           <Route path="work-history" element={<EmployeeWorkHistory />} />
           <Route path="edit-profile" element={<EmployeeEditProfile />} />
+          <Route path="search" element={<Search />} />
+          <Route path="profile/:userId" element={<PublicProfile />} />
 
         </Route>
 
@@ -102,6 +110,8 @@ const App = () => {
           <Route path="settings" element={<Settings />} />
           <Route path="complaint" element={<EmployerComplaint />} />
           <Route path="edit-profile" element={<EmployerEditProfile />} />
+          <Route path="search" element={<Search />} />
+          <Route path="profile/:userId" element={<PublicProfile />} />
 
         </Route>
 
@@ -117,6 +127,8 @@ const App = () => {
           <Route path="reports" element={<AdminReports />} />
           <Route path="settings" element={<Settings />} />
           <Route path="edit-data" element={<AdminEditData />} />
+          <Route path="search" element={<Search />} />
+          <Route path="profile/:userId" element={<PublicProfile />} />
 
         </Route>
       </Routes>
