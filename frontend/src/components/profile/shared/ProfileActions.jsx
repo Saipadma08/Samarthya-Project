@@ -8,7 +8,8 @@ import { FiMessageCircle } from "react-icons/fi";
 const ProfileActions = ({
   currentUser,
   viewedUser,
-  connectionStatus
+  connectionStatus,
+  isPublicView = false
 }) => {
 
   // own profile
@@ -47,6 +48,11 @@ const ProfileActions = ({
       </div>
 
     );
+  }
+
+  // PUBLIC VIEW
+  if (isPublicView) {
+    return null;
   }
 
   // CONNECT

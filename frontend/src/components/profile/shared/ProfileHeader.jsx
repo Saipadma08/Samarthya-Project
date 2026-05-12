@@ -39,7 +39,7 @@ const ProfileHeader = ({currentUser, user, profile, children}) => {
 
           {/* action buttons */}
           <div className="flex items-end justify-end lg:justify-center text-sm lg:text-md">
-            <ProfileActions currentUser={currentUser} viewedUser={user} connectionStatus="none"/>
+            <ProfileActions currentUser={currentUser} viewedUser={user} connectionStatus="none" isPublicView={true}/>
           </div>
 
         </div>

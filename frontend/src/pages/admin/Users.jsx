@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate,useSearchParams} from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import axios from "axios";
 
@@ -95,7 +95,7 @@ const Users = () => {
 
   return (
 
-    <div className="min-h-screen bg-[#f5f7fb] p-3 sm:p-5 lg:p-6 overflow-x-hidden">
+    <div id="main-content" className="min-h-screen bg-[#f5f7fb] p-3 sm:p-5 lg:p-6 overflow-x-hidden">
 
       {/* HEADER */}
 
@@ -107,7 +107,7 @@ const Users = () => {
             className="
             text-3xl lg:text-4xl
             font-extrabold
-            bg-gradient-to-r
+            bg-linear-to-r
             from-cyan-600
             via-blue-600
             to-violet-600
@@ -127,7 +127,7 @@ const Users = () => {
 
         {/* SEARCH */}
 
-        <div className="w-full lg:w-[350px]">
+        <div className="w-full lg:w-87.5">
 
           <input
             type="text"
@@ -163,13 +163,12 @@ const Users = () => {
           cursor-pointer
           hover:scale-105
           transition duration-300
-          bg-gradient-to-br from-cyan-600 to-cyan-800
+          bg-linear-to-br from-cyan-600 to-cyan-800
 
-          ${
-            !roleFilter
+          ${!roleFilter
               ? "ring-4 ring-cyan-300"
               : ""
-          }
+            }
         `}
         >
 
@@ -199,13 +198,12 @@ const Users = () => {
           cursor-pointer
           hover:scale-105
           transition duration-300
-          bg-gradient-to-br from-emerald-500 to-emerald-700
+          bg-linear-to-br from-emerald-500 to-emerald-700
 
-          ${
-            roleFilter === "employee"
+          ${roleFilter === "employee"
               ? "ring-4 ring-emerald-300"
               : ""
-          }
+            }
         `}
         >
 
@@ -241,13 +239,12 @@ const Users = () => {
           cursor-pointer
           hover:scale-105
           transition duration-300
-          bg-gradient-to-br from-blue-500 to-blue-700
+          bg-linear-to-br from-blue-500 to-blue-700
 
-          ${
-            roleFilter === "employer"
+          ${roleFilter === "employer"
               ? "ring-4 ring-blue-300"
               : ""
-          }
+            }
         `}
         >
 
@@ -283,13 +280,12 @@ const Users = () => {
           cursor-pointer
           hover:scale-105
           transition duration-300
-          bg-gradient-to-br from-violet-600 to-violet-800
+          bg-linear-to-br from-violet-600 to-violet-800
 
-          ${
-            roleFilter === "admin"
+          ${roleFilter === "admin"
               ? "ring-4 ring-violet-300"
               : ""
-          }
+            }
         `}
         >
 
@@ -350,7 +346,7 @@ const Users = () => {
 
             <div className="overflow-x-auto">
 
-              <table className="min-w-[900px] w-full">
+              <table className="min-w-225 w-full">
 
                 <thead className="bg-slate-100 text-slate-600 text-sm">
 
@@ -397,30 +393,30 @@ const Users = () => {
 
                       <td className="px-6 py-5">
 
-                        <div className="flex items-center gap-4 min-w-[220px]">
+                        <div className="flex items-center gap-4 min-w-55">
 
-                        {
-                  user.profileImage ? (
+                          {
+                            user.profileImage ? (
 
-                  <img
-                   src={user.profileImage}
-                  alt="user"
-                  className="w-12 h-12 rounded-full object-cover"
-                 />
+                              <img
+                                src={user.profileImage}
+                                alt="user"
+                                className="w-12 h-12 rounded-full object-cover"
+                              />
 
-            ) : (
+                            ) : (
 
-             <div className=" w-12 h-12 rounded-full
-      bg-gradient-to-r from-cyan-500 to-blue-600
+                              <div className=" w-12 h-12 rounded-full
+      bg-linear-to-r from-cyan-500 to-blue-600
       flex items-center justify-center
       text-white font-bold text-lg
     "
-    >
-      {user.name?.charAt(0).toUpperCase()}
-    </div>
+                              >
+                                {user.name?.charAt(0).toUpperCase()}
+                              </div>
 
-  )
-}
+                            )
+                          }
 
                           <div>
 
@@ -445,15 +441,14 @@ const Users = () => {
                         <span
                           className={`px-4 py-1 rounded-full text-sm font-medium
 
-                          ${
-                            user.role === "employee"
+                          ${user.role === "employee"
                               ? "bg-emerald-100 text-emerald-700"
 
                               : user.role === "employer"
-                              ? "bg-cyan-100 text-cyan-700"
+                                ? "bg-cyan-100 text-cyan-700"
 
-                              : "bg-violet-100 text-violet-700"
-                          }
+                                : "bg-violet-100 text-violet-700"
+                            }
                         `}
                         >
 
@@ -496,7 +491,7 @@ const Users = () => {
 
                       <td className="px-6 py-5">
 
-                        <div className="flex flex-wrap justify-center gap-3 min-w-[220px]">
+                        <div className="flex flex-wrap justify-center gap-3 min-w-55">
 
                           <button
                             onClick={() => setSelectedUser(user)}
@@ -554,357 +549,361 @@ const Users = () => {
 
 
       {
-  selectedUser && (
+        selectedUser && (
 
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
 
-      <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
+            <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
 
-        <div className="bg-gradient-to-r from-cyan-600 to-blue-700 p-6 text-white relative">
+              <div className="bg-linear-to-r from-cyan-600 to-blue-700 p-6 text-white relative">
 
-          <button
-            onClick={() => setSelectedUser(null)}
-            className="absolute top-4 right-4 text-white text-xl"
-          >
-            ✕
-          </button>
+                <button
+                  onClick={() => setSelectedUser(null)}
+                  className="absolute top-4 right-4 text-white text-xl"
+                >
+                  ✕
+                </button>
 
-          <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center">
 
-         {
-  selectedUser.profileImage ? (
+                  {
+                    selectedUser.profileImage ? (
 
-    <img
-      src={selectedUser.profileImage}
-      alt="user"
-      className="w-24 h-24 rounded-full border-4 border-white object-cover"
-    />
+                      <img
+                        src={selectedUser.profileImage}
+                        alt="user"
+                        className="w-24 h-24 rounded-full border-4 border-white object-cover"
+                      />
 
-  ) : (
+                    ) : (
 
-    <div
-      className="
+                      <div
+                        className="
       w-24 h-24 rounded-full
       border-4 border-white
       bg-white/20
       flex items-center justify-center
       text-white text-4xl font-bold
     "
-    >
-      {selectedUser.name?.charAt(0).toUpperCase()}
-    </div>
+                      >
+                        {selectedUser.name?.charAt(0).toUpperCase()}
+                      </div>
 
-  )
-}
+                    )
+                  }
 
-            <h2 className="mt-4 text-2xl font-bold">
-              {selectedUser.name}
-            </h2>
+                  <h2 className="mt-4 text-2xl font-bold">
+                    {selectedUser.name}
+                  </h2>
 
-            <p className="text-cyan-100 break-all text-center">
-              {selectedUser.email}
-            </p>
+                  <p className="text-cyan-100 break-all text-center">
+                    {selectedUser.email}
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div className="p-6 space-y-4">
+
+                <div className="flex justify-between border-b pb-3">
+
+                  <span className="text-slate-500 font-medium">
+                    Role
+                  </span>
+
+                  <span className="font-semibold capitalize">
+                    {selectedUser.role}
+                  </span>
+
+                </div>
+
+                <div className="flex justify-between border-b pb-3">
+
+                  <span className="text-slate-500 font-medium">
+                    Status
+                  </span>
+
+                  <span
+                    className={`font-semibold
+              ${selectedUser.isBlocked
+                        ? "text-red-500"
+                        : "text-green-600"
+                      }`}
+                  >
+                    {
+                      selectedUser.isBlocked
+                        ? "Blocked"
+                        : "Active"
+                    }
+                  </span>
+
+                </div>
+
+                <div className="flex justify-between border-b pb-3">
+
+                  <span className="text-slate-500 font-medium">
+                    Verified
+                  </span>
+
+                  <span className="font-semibold">
+
+                    {
+                      selectedUser.isVerified
+                        ? "Yes"
+                        : "No"
+                    }
+
+                  </span>
+
+                </div>
+
+                <div className="flex justify-between border-b pb-3">
+
+                  <span className="text-slate-500 font-medium">
+                    Joined
+                  </span>
+
+                  <span className="font-semibold">
+
+                    {
+                      new Date(
+                        selectedUser.createdAt
+                      ).toLocaleDateString()
+                    }
+
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div className="p-5 bg-slate-50 flex justify-end">
+
+                <button
+                  onClick={() => navigate(`/admin/users/${selectedUser._id}`)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white mr-3 px-5 py-2 rounded-xl">
+                  User Details
+                </button>
+
+                <button
+                  onClick={() =>
+                    navigate(`/admin/profile/${selectedUser._id}`)
+                  }
+                  className="
+            bg-blue-600 hover:bg-blue-700
+            text-white mr-3 px-5 py-2 rounded-xl
+            "
+                >
+                  View Profile
+                </button>
+
+
+              </div>
+
+            </div>
 
           </div>
 
-        </div>
-
-        <div className="p-6 space-y-4">
-
-          <div className="flex justify-between border-b pb-3">
-
-            <span className="text-slate-500 font-medium">
-              Role
-            </span>
-
-            <span className="font-semibold capitalize">
-              {selectedUser.role}
-            </span>
-
-          </div>
-
-          <div className="flex justify-between border-b pb-3">
-
-            <span className="text-slate-500 font-medium">
-              Status
-            </span>
-
-            <span
-              className={`font-semibold
-              ${
-                selectedUser.isBlocked
-                  ? "text-red-500"
-                  : "text-green-600"
-              }`}
-            >
-              {
-                selectedUser.isBlocked
-                  ? "Blocked"
-                  : "Active"
-              }
-            </span>
-
-          </div>
-
-          <div className="flex justify-between border-b pb-3">
-
-            <span className="text-slate-500 font-medium">
-              Verified
-            </span>
-
-            <span className="font-semibold">
-
-              {
-                selectedUser.isVerified
-                  ? "Yes"
-                  : "No"
-              }
-
-            </span>
-
-          </div>
-
-          <div className="flex justify-between border-b pb-3">
-
-            <span className="text-slate-500 font-medium">
-              Joined
-            </span>
-
-            <span className="font-semibold">
-
-              {
-                new Date(
-                  selectedUser.createdAt
-                ).toLocaleDateString()
-              }
-
-            </span>
-
-          </div>
-
-        </div>
-
-        <div className="p-5 bg-slate-50 flex justify-end">
-         
-         <button
-                 onClick={() => navigate(`/admin/users/${selectedUser._id}`)}
-            className="bg-blue-600 hover:bg-blue-700 text-white mr-3 px-5 py-2 rounded-xl">
-             User Details
-          </button>
- 
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white mr-3 px-5 py-2 rounded-xl">
-              View Profile
-          </button>
-          
-
-        </div>
-
-      </div>
-
-    </div>
-
-  )
-}
+        )
+      }
 
 
-{
-  editUser && (
+      {
+        editUser && (
 
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
 
-      <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
+            <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
 
-        <div className="bg-gradient-to-r from-blue-600 to-violet-700 p-6 text-white relative">
+              <div className="bg-linear-to-r from-blue-600 to-violet-700 p-6 text-white relative">
 
-          <button
-            onClick={() => setEditUser(null)}
-            className="absolute top-4 right-4 text-2xl"
-          >
-            ✕
-          </button>
+                <button
+                  onClick={() => setEditUser(null)}
+                  className="absolute top-4 right-4 text-2xl"
+                >
+                  ✕
+                </button>
 
-          <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4">
 
-          {
-  editUser.profileImage ? (
+                  {
+                    editUser.profileImage ? (
 
-    <img
-      src={editUser.profileImage}
-      alt="user"
-      className="w-20 h-20 rounded-full border-4 border-white object-cover"
-    />
+                      <img
+                        src={editUser.profileImage}
+                        alt="user"
+                        className="w-20 h-20 rounded-full border-4 border-white object-cover"
+                      />
 
-  ) : (
+                    ) : (
 
-    <div
-      className="
+                      <div
+                        className="
       w-20 h-20 rounded-full
       border-4 border-white
       bg-white/20
       flex items-center justify-center
       text-white text-3xl font-bold
     "
-    >
-      {editUser.name?.charAt(0).toUpperCase()}
-    </div>
+                      >
+                        {editUser.name?.charAt(0).toUpperCase()}
+                      </div>
 
-  )
-}
-            <div>
+                    )
+                  }
+                  <div>
 
-              <h2 className="text-2xl font-bold">
-                {editUser.name}
-              </h2>
+                    <h2 className="text-2xl font-bold">
+                      {editUser.name}
+                    </h2>
 
-              <p className="text-blue-100">
-                {editUser.email}
-              </p>
+                    <p className="text-blue-100">
+                      {editUser.email}
+                    </p>
 
-            </div>
+                  </div>
 
-          </div>
+                </div>
 
-        </div>
+              </div>
 
-        <div className="p-6 space-y-5">
+              <div className="p-6 space-y-5">
 
-          <div>
+                <div>
 
-            <label className="text-sm font-medium text-slate-600">
-              User Role
-            </label>
+                  <label className="text-sm font-medium text-slate-600">
+                    User Role
+                  </label>
 
-            <select
-              defaultValue={editUser.role}
-              className="w-full mt-2 border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-            >
+                  <select
+                    defaultValue={editUser.role}
+                    className="w-full mt-2 border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                  >
 
-              <option value="employee">
-                Employee
-              </option>
+                    <option value="employee">
+                      Employee
+                    </option>
 
-              <option value="employer">
-                Employer
-              </option>
+                    <option value="employer">
+                      Employer
+                    </option>
 
-              <option value="admin">
-                Admin
-              </option>
+                    <option value="admin">
+                      Admin
+                    </option>
 
-            </select>
+                  </select>
 
-          </div>
+                </div>
 
-          <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
+                <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
 
-            <div>
+                  <div>
 
-              <h3 className="font-semibold text-slate-800">
-                Account Verification
-              </h3>
+                    <h3 className="font-semibold text-slate-800">
+                      Account Verification
+                    </h3>
 
-              <p className="text-sm text-slate-500">
-                Approve this account officially
-              </p>
+                    <p className="text-sm text-slate-500">
+                      Approve this account officially
+                    </p>
 
-            </div>
+                  </div>
 
-            <button
-              className={`px-5 py-2 rounded-xl text-white font-medium
+                  <button
+                    className={`px-5 py-2 rounded-xl text-white font-medium
 
-              ${
-                editUser.isVerified
-                  ? "bg-green-600"
-                  : "bg-orange-500"
-              }
+              ${editUser.isVerified
+                        ? "bg-green-600"
+                        : "bg-orange-500"
+                      }
             `}
-            >
+                  >
 
-              {
-                editUser.isVerified
-                  ? "Verified"
-                  : "Verify"
-              }
+                    {
+                      editUser.isVerified
+                        ? "Verified"
+                        : "Verify"
+                    }
 
-            </button>
+                  </button>
 
-          </div>
+                </div>
 
-          <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
+                <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
 
-            <div>
+                  <div>
 
-              <h3 className="font-semibold text-slate-800">
-                Account Status
-              </h3>
+                    <h3 className="font-semibold text-slate-800">
+                      Account Status
+                    </h3>
 
-              <p className="text-sm text-slate-500">
-                Block suspicious accounts
-              </p>
+                    <p className="text-sm text-slate-500">
+                      Block suspicious accounts
+                    </p>
+
+                  </div>
+
+                  <button
+                    className={`px-5 py-2 rounded-xl text-white font-medium
+
+              ${editUser.isBlocked
+                        ? "bg-red-600"
+                        : "bg-emerald-600"
+                      }
+            `}
+                  >
+
+                    {
+                      editUser.isBlocked
+                        ? "Blocked"
+                        : "Active"
+                    }
+
+                  </button>
+
+                </div>
+
+                <div>
+
+                  <label className="text-sm font-medium text-slate-600">
+                    Admin Remarks
+                  </label>
+
+                  <textarea
+                    rows="4"
+                    placeholder="Write remarks or verification notes..."
+                    className="w-full mt-2 border border-slate-300 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  />
+
+                </div>
+
+              </div>
+
+              <div className="bg-slate-50 px-6 py-5 flex justify-end gap-3">
+
+                <button
+                  onClick={() => setEditUser(null)}
+                  className="px-5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  className="px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                >
+                  Save Changes
+                </button>
+
+              </div>
 
             </div>
 
-            <button
-              className={`px-5 py-2 rounded-xl text-white font-medium
-
-              ${
-                editUser.isBlocked
-                  ? "bg-red-600"
-                  : "bg-emerald-600"
-              }
-            `}
-            >
-
-              {
-                editUser.isBlocked
-                  ? "Blocked"
-                  : "Active"
-              }
-
-            </button>
-
           </div>
 
-          <div>
-
-            <label className="text-sm font-medium text-slate-600">
-              Admin Remarks
-            </label>
-
-            <textarea
-              rows="4"
-              placeholder="Write remarks or verification notes..."
-              className="w-full mt-2 border border-slate-300 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            />
-
-          </div>
-
-        </div>
-
-        <div className="bg-slate-50 px-6 py-5 flex justify-end gap-3">
-
-          <button
-            onClick={() => setEditUser(null)}
-            className="px-5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100"
-          >
-            Cancel
-          </button>
-
-          <button
-            className="px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium"
-          >
-            Save Changes
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  )
-}
+        )
+      }
 
     </div>
 
