@@ -1,27 +1,68 @@
 const jwt = require("jsonwebtoken");
 
-async function authMiddleware (req, res, next){
-    try{
-        const token = req.cookies.token;
+async function authMiddleware(
+  req,
+  res,
+  next
+) {
 
-        if(!token){
-            return res.status(401).json({
-                message: "Unauthorized"
-            })
-        }
+  try {
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let token = null;
 
-        req.user = decoded;
+    // cookie token
+    if (req.cookies.token) {
 
-        next();
+      token =
+        req.cookies.token;
     }
-    catch(err){
 
-        return res.status(401).json({
-            message: "Invalid token"
-        })
+    // bearer token
+    if (
+      !token &&
+      req.headers.authorization
+    ) {
+
+      const authHeader =
+        req.headers.authorization;
+
+      if (
+        authHeader.startsWith(
+          "Bearer "
+        )
+      ) {
+
+        token =
+          authHeader.split(" ")[1];
+      }
     }
+
+    if (!token) {
+
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const decoded =
+      jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
+
+    req.user = decoded;
+
+    next();
+
+  } catch (err) {
+
+    console.log(err);
+
+    return res.status(401).json({
+      message: "Invalid token",
+    });
+  }
 }
 
-module.exports = authMiddleware;
+module.exports =
+  authMiddleware;

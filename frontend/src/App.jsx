@@ -33,7 +33,7 @@ import EmployerProfile from './pages/employer/Profile'
 import EmployerEditProfile from './pages/employer/EditProfile'
 import EmployerPostJob from './pages/employer/PostJob'
 import EmployerMyJobs from './pages/employer/MyJobs'
-import EmployerApplications from './pages/employer/Applications'
+import EmployerApplicants from './pages/employer/Applicants'
 import EmployerMessages from './pages/employer/Messages'
 import EmployerConnections from './pages/employer/Connections'
 import EmployerSettings from './pages/employer/Settings'
@@ -90,7 +90,7 @@ const App = () => {
           <Route path="profile" element={<EmployerProfile />} />
           <Route path="post-job" element={<EmployerPostJob />} />
           <Route path="posted-jobs" element={<EmployerMyJobs />} />
-          <Route path="applicants" element={<EmployerApplications />} />
+          <Route path="applicants" element={<EmployerApplicants />} />
           <Route path="messages" element={<EmployerMessages />} />
           <Route path="connections" element={<EmployerConnections />} />
           <Route path="settings" element={<EmployerSettings />} />

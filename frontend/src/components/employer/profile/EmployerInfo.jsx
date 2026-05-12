@@ -17,11 +17,11 @@ const EmployerInfo = ({user, profile}) => {
         </p>
 
         <p className="text-gray-600 text-sm lg:text-md">
-            Jobs Posted: {profile.jobsPosted}
+            Jobs Posted: {profile?.jobsPosted}
         </p>
 
         <p className="text-gray-600 text-sm lg:text-md">
-            Workers Hired: {profile.workersHired}
+            Workers Hired: {profile?.workersHired}
         </p>
 
         <div className="flex items-center gap-2 mt-2 text-cyan-700 text-sm lg:text-md">

@@ -16,6 +16,8 @@ const settingsRoutes = require("./routes/settings.routes");
 const notificationRoutes = require("./routes/notification.routes");
 const searchRoutes = require("./routes/search.routes");
 
+const postedJobRoutes = require("./routes/postedJob.routes");
+const applicationRoutes = require("./routes/application.routes");
 
 const app = express();
 
@@ -41,5 +43,8 @@ app.use("/api/settings", settingsRoutes);
 
 app.use("/api/notification", notificationRoutes);
 app.use("/api/search", searchRoutes);
+
+app.use("/api/postedjobs", postedJobRoutes); 
+app.use("/api/applications",applicationRoutes);
 
 module.exports = app;
