@@ -48,7 +48,7 @@ const ProfileHeader = ({currentUser, user, profile, isPublicView, children}) => 
 
 
           <div>
-            <ConnectionsCount/>
+            <ConnectionsCount userId={user?._id}/>
           </div>
           
         </div>
