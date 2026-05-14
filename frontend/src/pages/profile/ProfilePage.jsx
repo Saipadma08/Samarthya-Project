@@ -5,7 +5,6 @@ import ProfileHeader from '../../components/profile/shared/ProfileHeader'
 import EmployeeInfo from '../../components/profile/employee/EmployeeInfo'
 import EmployerInfo from '../../components/profile/employer/EmployerInfo'
 
-import VerificationBadge from '../../components/profile/shared/VerificationBadge'
 
 import About from '../../components/profile/shared/About'
 import ContactInfo from '../../components/profile/shared/ContactInfo'
@@ -22,11 +21,11 @@ import Certifications from '../../components/profile/employee/Certifications'
 import ProfessionalLinks from '../../components/profile/employee/ProfessionalLinks'
 
 
-const ProfilePage = ({currentUser, user, profile }) => {
+const ProfilePage = ({currentUser, user, profile, isPublicView }) => {
   return (
     <div>
 
-      <ProfileHeader currentUser={currentUser} user={user} profile={profile}>
+      <ProfileHeader currentUser={currentUser} user={user} profile={profile} isPublicView={isPublicView}>
 
           {
             user?.role === "employee"
@@ -34,9 +33,6 @@ const ProfilePage = ({currentUser, user, profile }) => {
             : <EmployerInfo user={user} profile={profile} />
           }
 
-          <div>
-            <VerificationBadge/>
-          </div>
 
       </ProfileHeader>
 

@@ -20,7 +20,7 @@ const postedJobRoutes = require("./routes/postedJob.routes");
 const applicationRoutes = require("./routes/application.routes");
 const profileRoutes = require("./routes/profile.routes");
 
-
+const blockRoutes= require("./routes/block.routes");
 
 const app = express();
 
@@ -44,13 +44,14 @@ app.use("/api/connections", connectionRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/settings", settingsRoutes);
 
-app.use("/api/notification", notificationRoutes);
-app.use("/api/search", searchRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.use("/api/postedjobs", postedJobRoutes); 
 app.use("/api/applications",applicationRoutes);
 app.use("/api/profile", profileRoutes);
 
 app.use("/api/search", searchRoutes);
+
+app.use("/api/block", blockRoutes);
 
 module.exports = app;

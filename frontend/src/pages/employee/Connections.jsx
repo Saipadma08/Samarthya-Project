@@ -1,11 +1,9 @@
-import React from 'react'
+import ConnectionsPage from "../connections/ConnectionsPage";
 
-const Connections = () => {
-  return (
-    <div>
-      Connections page
-    </div>
-  )
+const Connections=()=>{
+
+ return <ConnectionsPage/>
+
 }
 
-export default Connections
+export default Connections;

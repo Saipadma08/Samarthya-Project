@@ -8,11 +8,12 @@ import ProfileImage from '../shared/ProfileImage';
 import VerificationBadge from '../shared/VerificationBadge'
 import TrustCard from '../shared/TrustCard'
 import ProfileActions from '../shared/ProfileActions'
+import ConnectionsCount from './ConnectionsCount';
 
 
-const ProfileHeader = ({currentUser, user, profile, children}) => {
+const ProfileHeader = ({currentUser, user, profile, isPublicView, children}) => {
   return (
-    <div className="w-full min-h-100 rounded-xl shadow-md bg-white relative overflow-hidden">
+    <div className="w-full min-h-100 rounded-xl shadow-md bg-white relative overflow-visible">
 
         {/* Cover Image */}
         <div>
@@ -30,6 +31,9 @@ const ProfileHeader = ({currentUser, user, profile, children}) => {
           {/* employee info */}
           <div>
             {children}
+            <div>
+              <VerificationBadge/>
+            </div>
           </div>
 
           {/* trust card */}
@@ -38,10 +42,15 @@ const ProfileHeader = ({currentUser, user, profile, children}) => {
           </div>
 
           {/* action buttons */}
-          <div className="flex items-end justify-end lg:justify-center text-sm lg:text-md">
-            <ProfileActions currentUser={currentUser} viewedUser={user} connectionStatus="none" isPublicView={true}/>
+          <div className="flex items-end justify-end lg:justify-e d text-sm lg:text-md relative">
+            <ProfileActions currentUser={currentUser} viewedUser={user} isPublicView={isPublicView}/>
           </div>
 
+
+          <div>
+            <ConnectionsCount/>
+          </div>
+          
         </div>
 
     </div>

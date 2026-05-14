@@ -3,6 +3,7 @@ import React from "react";
 import ProfilePage from "./ProfilePage";
 
 const InlineProfileView = ({
+  currentUser,
   user,
   profile
 }) => {
@@ -10,8 +11,10 @@ const InlineProfileView = ({
   return (
 
     <ProfilePage
+      currentUser={currentUser}
       user={user}
       profile={profile}
+      isPublicView={true}
     />
 
   );

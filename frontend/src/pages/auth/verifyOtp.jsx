@@ -8,7 +8,6 @@ import VerificationForm from '../../components/verifyopt/VerificationForm';
 import Footer from "../../components/landingpage/Footer";
 
 import MainBackgroundImg from "../../assets/main-background-5.png";
-import SamarthyaText from "../../assets/Samarthya-text.png"
 
 
 
@@ -26,9 +25,6 @@ const verifyOtp = () => {
                 className="min-h-screen flex flex-col items-center bg-cover bg-center"
                 style={{ backgroundImage: `url(${MainBackgroundImg})` }}
             >
-                <div className='my-7 block lg:hidden'>
-                    <div className='w-28 h-6 shadow-2xl flex overflow-hidden bg-cover bg-center' style={{ backgroundImage: `url(${SamarthyaText})` }}></div>
-                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2">
 
