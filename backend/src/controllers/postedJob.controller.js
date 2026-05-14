@@ -349,6 +349,76 @@ const getAllJobsForEmployees =
     }
   };
 
+  const getSingleJob = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const job =
+      await PostedJob.findById(
+        req.params.jobId
+      );
+
+    if (!job) {
+
+      return res.status(404).json({
+
+        success: false,
+
+        message: "Job not found",
+      });
+    }
+
+    const employer =
+      await User.findById(
+        job.employerId
+      );
+
+    const employerProfile =
+      await EmployerProfile.findOne({
+
+        userId:
+          job.employerId,
+      });
+
+    const updatedJob = {
+
+      ...job._doc,
+
+      employerName:
+        employer?.name ||
+        "Employer",
+
+      companyName:
+        employerProfile
+          ?.companyName ||
+        "Independent Employer",
+
+      employerProfile,
+    };
+
+    res.status(200).json({
+
+      success: true,
+
+      job: updatedJob,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
 
   createPostedJob,
@@ -360,4 +430,6 @@ module.exports = {
   updateJobStatus,
 
   getAllJobsForEmployees,
+
+  getSingleJob,
 };

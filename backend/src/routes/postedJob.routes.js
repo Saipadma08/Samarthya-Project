@@ -1,9 +1,10 @@
 const express = require("express");
 
-const authMiddleware =
-  require("../middlewares/auth.middleware");
-
 const router = express.Router();
+
+const authMiddleware = require(
+  "../middlewares/auth.middleware"
+);
 
 const {
   createPostedJob,
@@ -11,7 +12,10 @@ const {
   getEmployerJobs,
   updateJobStatus,
   getAllJobsForEmployees,
-} = require("../controllers/postedJob.controller");
+  getSingleJob,
+} = require(
+  "../controllers/postedJob.controller"
+);
 
 router.post(
   "/create",
@@ -20,9 +24,9 @@ router.post(
 );
 
 router.get(
-  "/",
+  "/employer",
   authMiddleware,
-  getAllPostedJobs
+  getEmployerJobs
 );
 
 router.get(
@@ -36,10 +40,11 @@ router.patch(
   authMiddleware,
   updateJobStatus
 );
+
 router.get(
-  "/employer",
+  "/:jobId",
   authMiddleware,
-  getEmployerJobs
+  getSingleJob
 );
 
 module.exports = router;

@@ -184,6 +184,8 @@ async function updateProfile(req, res) {
   }
 }
 
+
+
 module.exports = {
   employerProfileController,
   getProfile,

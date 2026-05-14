@@ -32,6 +32,7 @@ const Sidebar = ({ collapsed, setCollapsed, role }) => {
       { name: "Home", path: "/employee/dashboard", icon: <FiHome /> },
       { name: "Profile", path: "/employee/profile", icon: <FiUser /> },
       { name: "Find Jobs", path: "/employee/find-jobs", icon: <FiBriefcase /> },
+      { name: "Saved Jobs", path: "/employee/saved-jobs", icon: <FiStar /> },
       { name: "Applications", path: "/employee/applications", icon: <FiBriefcase /> },
       { name: "Messages", path: "/employee/messages", icon: <FiMessageSquare /> },
       { name: "Connections", path: "/employee/connections", icon: <FiUsers /> },

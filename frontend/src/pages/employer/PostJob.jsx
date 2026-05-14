@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+
+import { locations } from "../../utils/locationOptions";
 
 const PostJob = () => {
 
+  const [loading, setLoading] =
+    useState(false);
+
   const categoryJobs = {
+
     Low: [
       "Cleaning",
       "Cooking",
@@ -47,6 +54,7 @@ const PostJob = () => {
   const paymentRanges = {
 
     "One-time": {
+
       Low: {
         Cleaning: "₹300 - ₹700",
         Cooking: "₹500 - ₹1200",
@@ -88,89 +96,44 @@ const PostJob = () => {
     },
 
     Daily: {
+
       Low: {
         Cleaning: "₹500 - ₹1200/day",
         Cooking: "₹800 - ₹2000/day",
-        "Dish Washing": "₹400 - ₹900/day",
-        Sweeping: "₹400 - ₹800/day",
-        Gardening: "₹700 - ₹1800/day",
-        Laundry: "₹500 - ₹1000/day",
-        "Car Washing": "₹500 - ₹1200/day",
-        "Office Cleaning": "₹1000 - ₹2500/day",
-        "Delivery Helper": "₹700 - ₹1800/day",
-        "Pet Care": "₹800 - ₹2000/day",
       },
 
       Medium: {
         Electrician: "₹1500 - ₹4000/day",
         Plumber: "₹1200 - ₹3500/day",
-        Driver: "₹1000 - ₹3000/day",
-        Receptionist: "₹8000 - ₹15000/day",
-        "Security Guard": "₹1000 - ₹2800/day",
-        "Data Entry": "₹800 - ₹2000/day",
-        "Store Assistant": "₹800 - ₹1800/day",
-        Tailoring: "₹1200 - ₹3500/day",
-        Beautician: "₹2000 - ₹6000/day",
-        "Machine Operator": "₹2500 - ₹7000/day",
       },
 
       High: {
         "Software Developer": "₹8000 - ₹30000/day",
         "Web Designer": "₹5000 - ₹20000/day",
-        Accountant: "₹4000 - ₹15000/day",
-        "Digital Marketing": "₹5000 - ₹18000/day",
-        "Graphic Designer": "₹4000 - ₹15000/day",
-        "Project Manager": "₹10000 - ₹40000/day",
-        "HR Manager": "₹6000 - ₹20000/day",
-        Nurse: "₹3000 - ₹12000/day",
-        Teacher: "₹2000 - ₹8000/day",
-        "Business Consultant": "₹10000 - ₹50000/day",
       },
     },
 
     Contract: {
+
       Low: {
         Cleaning: "₹5000 - ₹15000/month",
         Cooking: "₹8000 - ₹25000/month",
-        "Dish Washing": "₹4000 - ₹12000/month",
-        Sweeping: "₹4000 - ₹10000/month",
-        Gardening: "₹7000 - ₹20000/month",
-        Laundry: "₹5000 - ₹14000/month",
-        "Car Washing": "₹5000 - ₹15000/month",
-        "Office Cleaning": "₹10000 - ₹30000/month",
-        "Delivery Helper": "₹8000 - ₹22000/month",
-        "Pet Care": "₹8000 - ₹25000/month",
       },
 
       Medium: {
         Electrician: "₹20000 - ₹60000/month",
         Plumber: "₹18000 - ₹55000/month",
-        Driver: "₹15000 - ₹45000/month",
-        Receptionist: "₹50000 - ₹100000/month",
-        "Security Guard": "₹15000 - ₹35000/month",
-        "Data Entry": "₹12000 - ₹30000/month",
-        "Store Assistant": "₹12000 - ₹28000/month",
-        Tailoring: "₹18000 - ₹50000/month",
-        Beautician: "₹25000 - ₹80000/month",
-        "Machine Operator": "₹30000 - ₹90000/month",
       },
 
       High: {
         "Software Developer": "₹50000 - ₹300000/month",
         "Web Designer": "₹40000 - ₹200000/month",
-        Accountant: "₹30000 - ₹150000/month",
-        "Digital Marketing": "₹35000 - ₹180000/month",
-        "Graphic Designer": "₹30000 - ₹150000/month",
-        "Project Manager": "₹80000 - ₹400000/month",
-        "HR Manager": "₹50000 - ₹200000/month",
-        Nurse: "₹25000 - ₹100000/month",
-        Teacher: "₹20000 - ₹80000/month",
-        "Business Consultant": "₹100000 - ₹500000/month",
       },
     },
   };
 
   const defaultPayments = {
+
     Cleaning: "300",
     Cooking: "500",
     "Dish Washing": "300",
@@ -206,40 +169,64 @@ const PostJob = () => {
   };
 
   const [job, setJob] = useState({
+
     category: "Low",
+
     title: "Cleaning",
+
     description: "",
+
     payment: "300",
+
+    state: "",
+
+    city: "",
+
     location: "",
+
     urgency: "Normal",
+
     jobType: "One-time",
+
     workersNeeded: 1,
+
     skills: "",
   });
 
   const handleCategoryChange = (e) => {
 
-    const selectedCategory = e.target.value;
+    const selectedCategory =
+      e.target.value;
 
     const firstJob =
       categoryJobs[selectedCategory][0];
 
     setJob({
+
       ...job,
+
       category: selectedCategory,
+
       title: firstJob,
-      payment: defaultPayments[firstJob],
+
+      payment:
+        defaultPayments[firstJob],
     });
   };
 
   const handleTitleChange = (e) => {
 
-    const selectedTitle = e.target.value;
+    const selectedTitle =
+      e.target.value;
 
     setJob({
+
       ...job,
+
       title: selectedTitle,
-      payment: defaultPayments[selectedTitle],
+
+      payment:
+        defaultPayments[selectedTitle],
     });
   };
 
@@ -247,49 +234,93 @@ const PostJob = () => {
 
     try {
 
+      setLoading(true);
+
       if (
         !job.title ||
         !job.description ||
         !job.payment ||
         !job.location
       ) {
-        alert("Please fill all required fields ❌");
+
+        toast.error(
+          "Please fill all required fields"
+        );
+
         return;
       }
 
-      const response = await axios.post(
-        "http://localhost:3000/api/postedjobs/create",
+      if (Number(job.payment) < 300) {
 
-        {
-          category: job.category,
-          title: job.title,
-          description: job.description,
-          payment: Number(job.payment),
-          location: job.location,
-          urgency: job.urgency,
-          jobType: job.jobType,
-          workersNeeded: Number(job.workersNeeded),
-          skills: job.skills,
-        },
+        toast.error(
+          "Payment must be at least ₹300"
+        );
 
-        {
-          withCredentials: true,
-        }
+        return;
+      }
+
+      if (
+        Number(job.workersNeeded) < 1
+      ) {
+
+        toast.error(
+          "Workers needed must be at least 1"
+        );
+
+        return;
+      }
+
+      const response =
+        await axios.post(
+
+          "http://localhost:3000/api/postedjobs/create",
+
+          {
+            category: job.category,
+            title: job.title,
+            description: job.description,
+            payment: Number(job.payment),
+            location: job.location,
+            urgency: job.urgency,
+            jobType: job.jobType,
+            workersNeeded:
+              Number(job.workersNeeded),
+            skills: job.skills,
+          },
+
+          {
+            withCredentials: true,
+          }
+        );
+
+      toast.success(
+        "Job posted successfully"
       );
-
-      alert("Job Posted Successfully ✅");
 
       console.log(response.data);
 
       setJob({
+
         category: "Low",
+
         title: "Cleaning",
+
         description: "",
+
         payment: "300",
+
+        state: "",
+
+        city: "",
+
         location: "",
+
         urgency: "Normal",
+
         jobType: "One-time",
+
         workersNeeded: 1,
+
         skills: "",
       });
 
@@ -297,83 +328,106 @@ const PostJob = () => {
 
       console.log(error);
 
-      alert("Failed to post job ❌");
+      toast.error(
+        error.response?.data?.message ||
+        "Failed to post job"
+      );
+
+    } finally {
+
+      setLoading(false);
     }
   };
 
   return (
 
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto px-3">
 
-      <p className="text-2xl font-semibold mb-6 text-center">
+      <p className="text-[24px] font-semibold mb-5 text-center">
+
         Post a New Job
+
       </p>
 
-      <div className="bg-white p-6 rounded-xl shadow space-y-6">
+      <div className="bg-white p-4 rounded-2xl shadow space-y-4">
 
         <div>
+
           <label className="text-sm font-medium">
+
             Job Category
+
           </label>
 
           <select
-            className="w-full mt-1 p-3 border rounded-lg"
+            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
             value={job.category}
             onChange={handleCategoryChange}
           >
+
             <option>Low</option>
             <option>Medium</option>
             <option>High</option>
+
           </select>
+
         </div>
 
         <div>
+
           <label className="text-sm font-medium">
+
             Job Title
+
           </label>
 
           <select
-            className="w-full mt-1 p-3 border rounded-lg"
+            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
             value={job.title}
             onChange={handleTitleChange}
           >
-            {categoryJobs[job.category].map(
-              (title, index) => (
-                <option
-                  key={index}
-                  value={title}
-                >
-                  {title}
-                </option>
+
+            {
+              categoryJobs[job.category].map(
+                (title, index) => (
+
+                  <option
+                    key={index}
+                    value={title}
+                  >
+                    {title}
+                  </option>
+                )
               )
-            )}
+            }
+
           </select>
+
         </div>
 
-        <div className="text-sm p-4 rounded-lg bg-cyan-50 border border-cyan-100">
+        <div className="text-sm p-3 rounded-lg bg-cyan-50 border border-cyan-100">
 
-          {job.category === "Low" ? (
-            <p className="text-cyan-700">
-              ⚡ Instant Job: First employee who
-              accepts gets assigned automatically.
-            </p>
-          ) : (
-            <p className="text-yellow-700">
-              📋 Multiple applicants can apply.
-              You can select workers manually.
-            </p>
-          )}
+          <p className="text-gray-600 text-[13px]">
+
+            📋 Multiple applicants can apply.
+            You can select workers manually.
+
+          </p>
 
         </div>
 
         <div>
+
           <label className="text-sm font-medium">
+
             Job Description
+
           </label>
 
           <textarea
-            rows={4}
-            className="w-full mt-1 p-3 border rounded-lg"
+            rows={3}
+            maxLength={500}
+            className="w-full mt-1 p-3 border rounded-lg resize-none"
             placeholder="Describe the work..."
             value={job.description}
             onChange={(e) =>
@@ -383,25 +437,43 @@ const PostJob = () => {
               })
             }
           />
+
+          <p className="text-xs text-gray-500 mt-1">
+
+            {job.description.length}/500
+
+          </p>
+
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <div>
+
             <label className="text-sm font-medium">
+
               Payment (₹)
+
             </label>
 
             <p className="text-xs text-cyan-600 mt-1 mb-1">
+
               Suggested Range:
               {" "}
               {
-                paymentRanges[job.jobType]?.[job.category]?.[job.title]
+                paymentRanges[
+                  job.jobType
+                ]?.[
+                  job.category
+                ]?.[
+                  job.title
+                ]
               }
+
             </p>
 
             <input
-              className="w-full mt-1 p-3 border rounded-lg"
+              className="w-full mt-1 h-[46px] px-3 border rounded-lg"
               placeholder="Enter payment"
               value={job.payment}
               onChange={(e) =>
@@ -411,37 +483,143 @@ const PostJob = () => {
                 })
               }
             />
+
+            {
+              Number(job.payment) < 300 && (
+
+                <p className="text-red-500 text-xs mt-1">
+
+                  Minimum payment should be ₹300
+
+                </p>
+              )
+            }
+
           </div>
 
-          <div>
-            <label className="text-sm font-medium">
-              Location
-            </label>
+          <div className="grid grid-cols-1 gap-4">
 
-            <input
-              className="w-full mt-1 p-3 border rounded-lg"
-              placeholder="e.g. Bhubaneswar"
-              value={job.location}
-              onChange={(e) =>
-                setJob({
-                  ...job,
-                  location: e.target.value
-                })
-              }
-            />
+            <div>
+
+              <label className="text-sm font-medium">
+
+                State
+
+              </label>
+
+              <select
+                className="w-full mt-1 h-[46px] px-3 border rounded-lg outline-none focus:border-cyan-500"
+                value={job.state}
+                onChange={(e) =>
+
+                  setJob({
+
+                    ...job,
+
+                    state: e.target.value,
+
+                    city: "",
+
+                    location: "",
+                  })
+                }
+              >
+
+                <option value="">
+
+                  Select State
+
+                </option>
+
+                {
+                  Object.keys(locations).map(
+                    (state) => (
+
+                      <option
+                        key={state}
+                        value={state}
+                      >
+
+                        {state}
+
+                      </option>
+                    )
+                  )
+                }
+
+              </select>
+
+            </div>
+
+            <div>
+
+              <label className="text-sm font-medium">
+
+                City
+
+              </label>
+
+              <select
+                className="w-full mt-1 h-[46px] px-3 border rounded-lg outline-none focus:border-cyan-500 disabled:bg-gray-100"
+                value={job.city}
+                disabled={!job.state}
+                onChange={(e) =>
+
+                  setJob({
+
+                    ...job,
+
+                    city: e.target.value,
+
+                    location:
+                      `${e.target.value}, ${job.state}`,
+                  })
+                }
+              >
+
+                <option value="">
+
+                  Select City
+
+                </option>
+
+                {
+                  job.state &&
+                  locations[job.state].map(
+                    (city) => (
+
+                      <option
+                        key={city}
+                        value={city}
+                      >
+
+                        {city}
+
+                      </option>
+                    )
+                  )
+                }
+
+              </select>
+
+            </div>
+
           </div>
 
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <div>
+
             <label className="text-sm font-medium">
+
               Job Type
+
             </label>
 
             <select
-              className="w-full mt-1 p-3 border rounded-lg"
+              className="w-full mt-1 h-[46px] px-3 border rounded-lg"
               value={job.jobType}
               onChange={(e) =>
                 setJob({
@@ -450,19 +628,27 @@ const PostJob = () => {
                 })
               }
             >
+
               <option>One-time</option>
               <option>Daily</option>
               <option>Contract</option>
+
             </select>
+
           </div>
 
           <div>
+
             <label className="text-sm font-medium">
+
               Workers Needed
+
             </label>
 
             <input
-              className="w-full mt-1 p-3 border rounded-lg"
+              type="number"
+              min="1"
+              className="w-full mt-1 h-[46px] px-3 border rounded-lg"
               placeholder="e.g. 2"
               value={job.workersNeeded}
               onChange={(e) =>
@@ -472,17 +658,21 @@ const PostJob = () => {
                 })
               }
             />
+
           </div>
 
         </div>
 
         <div>
+
           <label className="text-sm font-medium">
+
             Required Skills (optional)
+
           </label>
 
           <input
-            className="w-full mt-1 p-3 border rounded-lg"
+            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
             placeholder="e.g. cleaning, cooking"
             value={job.skills}
             onChange={(e) =>
@@ -492,15 +682,19 @@ const PostJob = () => {
               })
             }
           />
+
         </div>
 
         <div>
+
           <label className="text-sm font-medium">
+
             Urgency Level
+
           </label>
 
           <select
-            className="w-full mt-1 p-3 border rounded-lg"
+            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
             value={job.urgency}
             onChange={(e) =>
               setJob({
@@ -509,17 +703,27 @@ const PostJob = () => {
               })
             }
           >
+
             <option>Normal</option>
             <option>Urgent</option>
             <option>Immediate</option>
+
           </select>
+
         </div>
 
         <button
           onClick={handlePostJob}
-          className="w-full bg-cyan-600 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition"
+          disabled={loading}
+          className="w-full bg-cyan-600 text-white h-[46px] rounded-lg text-sm font-semibold hover:opacity-90 transition disabled:opacity-60"
         >
-          Post Job
+
+          {
+            loading
+            ? "Posting..."
+            : "Post Job"
+          }
+
         </button>
 
       </div>

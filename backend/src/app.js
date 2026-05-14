@@ -20,7 +20,7 @@ const postedJobRoutes = require("./routes/postedJob.routes");
 const applicationRoutes = require("./routes/application.routes");
 const profileRoutes = require("./routes/profile.routes");
 
-
+const savedJobRoutes = require("./routes/savedJob.routes");
 
 const app = express();
 
@@ -52,5 +52,7 @@ app.use("/api/applications",applicationRoutes);
 app.use("/api/profile", profileRoutes);
 
 app.use("/api/search", searchRoutes);
+
+app.use("/api/savedjobs", savedJobRoutes);
 
 module.exports = app;

@@ -5,6 +5,10 @@ import React, {
 
 import axios from "axios";
 
+import Select from "react-select";
+
+import { useNavigate } from "react-router-dom";
+
 import {
   MapPin,
   Bookmark,
@@ -14,26 +18,32 @@ import {
   Briefcase,
 } from "lucide-react";
 
+import {
+  toast
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 const FindJobs = () => {
+
+  const navigate =
+    useNavigate();
 
   const [jobs, setJobs] =
     useState([]);
 
+  const [savedJobs, setSavedJobs] =
+    useState([]);
+
   const [
-    selectedStates,
-    setSelectedStates,
-  ] = useState([]);
+    selectedState,
+    setSelectedState,
+  ] = useState(null);
 
   const [
     selectedCities,
     setSelectedCities,
   ] = useState([]);
-
-  const [savedJobs, setSavedJobs] =
-    useState([]);
-
-  const [selectedJob, setSelectedJob] =
-    useState(null);
 
   const locationData = {
 
@@ -65,106 +75,66 @@ const FindJobs = () => {
     ],
   };
 
-  const fetchJobs = async () => {
+  const stateOptions =
+    Object.keys(locationData).map(
+      (state) => ({
+        value: state,
+        label: state,
+      })
+    );
 
-    try {
+  const cityOptions =
+    selectedState
+      ? locationData[
+          selectedState.value
+        ].map((city) => ({
+          value: city,
+          label: city,
+        }))
+      : [];
 
-      const token =
-  localStorage.getItem("token");
+  const fetchJobs =
+    async () => {
 
-      const response =
-        await axios.get(
+      try {
 
-          "http://localhost:3000/api/postedjobs/all",
+        const token =
+          localStorage.getItem(
+            "token"
+          );
 
-          {
-            headers: {
-              Authorization:
-                `Bearer ${token}`,
-            },
-          }
+        const response =
+          await axios.get(
+
+            "http://localhost:3000/api/postedjobs/all",
+
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
+          );
+
+        setJobs(
+          response.data.jobs || []
         );
 
-      console.log(
-        response.data.jobs
-      );
+      } catch (error) {
 
-      setJobs(
-        response.data.jobs || []
-      );
+        console.log(error);
 
-    } catch (error) {
-
-      console.log(error);
-    }
-  };
+        toast.error(
+          "Failed to fetch jobs"
+        );
+      }
+    };
 
   useEffect(() => {
 
     fetchJobs();
 
   }, []);
-
-  const toggleState = (state) => {
-
-    if (
-      selectedStates.includes(
-        state
-      )
-    ) {
-
-      setSelectedStates(
-
-        selectedStates.filter(
-          (item) =>
-            item !== state
-        )
-      );
-
-      setSelectedCities(
-
-        selectedCities.filter(
-          (city) =>
-
-            !locationData[
-              state
-            ].includes(city)
-        )
-      );
-
-    } else {
-
-      setSelectedStates([
-        ...selectedStates,
-        state,
-      ]);
-    }
-  };
-
-  const toggleCity = (city) => {
-
-    if (
-      selectedCities.includes(
-        city
-      )
-    ) {
-
-      setSelectedCities(
-
-        selectedCities.filter(
-          (item) =>
-            item !== city
-        )
-      );
-
-    } else {
-
-      setSelectedCities([
-        ...selectedCities,
-        city,
-      ]);
-    }
-  };
 
   const filteredJobs =
     jobs.filter((job) => {
@@ -176,128 +146,113 @@ const FindJobs = () => {
         return true;
       }
 
-      const jobLocation =
-        job.location
-          ?.trim()
-          .toLowerCase();
-
       return selectedCities.some(
-        (city) => {
+        (city) =>
 
-          return jobLocation?.includes(
-
-            city
-              .trim()
-              .toLowerCase()
-          );
-        }
+          job.location
+            ?.toLowerCase()
+            .includes(
+              city.value.toLowerCase()
+            )
       );
     });
 
-  const saveJob = (jobId) => {
-
-    if (
-      savedJobs.includes(jobId)
-    ) {
-
-      setSavedJobs(
-
-        savedJobs.filter(
-          (id) =>
-            id !== jobId
-        )
-      );
-
-    } else {
-
-      setSavedJobs([
-        ...savedJobs,
-        jobId,
-      ]);
-    }
-  };
-
-  const shareJob = async (
-    job
-  ) => {
+  const saveJob =
+  async (jobId) => {
 
     try {
 
-      await navigator.share({
+      const token =
+        localStorage.getItem(
+          "token"
+        );
 
-        title: job.title,
+      const response =
+        await axios.post(
 
-        text:
-          `${job.title} in ${job.location}`,
+          "http://localhost:3000/api/savedjobs/save",
 
-        url:
-          window.location.href,
-      });
+          {
+            jobId,
+          },
+
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      toast.success(
+        response.data.message
+      );
+
+      if (
+        savedJobs.includes(jobId)
+      ) {
+
+        setSavedJobs(
+
+          savedJobs.filter(
+            (id) =>
+              id !== jobId
+          )
+        );
+
+      } else {
+
+        setSavedJobs([
+          ...savedJobs,
+          jobId,
+        ]);
+      }
 
     } catch (error) {
 
       console.log(error);
+
+      toast.error(
+        "Failed to save job"
+      );
     }
   };
+  const shareJob =
+    async (job) => {
 
-  const applyJob = async (
-  jobId
-) => {
+      try {
 
-  try {
+        await navigator.share({
 
-    const token =
-      localStorage.getItem(
-        "token"
-      );
+          title:
+            job.title,
 
-    if (!token) {
+          text:
+            `${job.title} in ${job.location}`,
 
-      alert(
-        "Please login again"
-      );
+          url:
+            `${window.location.origin}/employee/job/${job._id}`,
+        });
 
-      return;
-    }
+        toast.success(
+          "Job shared successfully"
+        );
 
-    const response =
-      await axios.post(
+      } catch (error) {
 
-        "http://localhost:3000/api/applications/apply",
+        console.log(error);
 
-        {
-          jobId,
-        },
-
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        }
-      );
-
-    alert(
-      response.data.message
-    );
-
-  } catch (error) {
-
-    console.log(error);
-
-    alert(
-
-      error.response?.data
-        ?.message ||
-
-      "Application failed"
-    );
-  }
-};
+        toast.error(
+          "Sharing failed"
+        );
+      }
+    };
 
   return (
 
     <div className="max-w-7xl mx-auto p-6">
+
+      {/* HEADER */}
 
       <div className="bg-white rounded-3xl shadow-md p-6 border border-gray-100 mb-8">
 
@@ -313,7 +268,7 @@ const FindJobs = () => {
 
             <p className="text-gray-500 mt-2">
 
-              Explore opportunities based on your preferred cities
+              Discover opportunities based on preferred cities
 
             </p>
 
@@ -339,99 +294,78 @@ const FindJobs = () => {
 
         </div>
 
-        <div className="mt-8">
+        {/* FILTERS */}
 
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
 
-            Choose Preferred States
+          <div>
 
-          </h2>
+            <label className="block mb-2 font-semibold text-gray-700">
 
-          <div className="flex flex-wrap gap-3">
+              Search State
 
-            {Object.keys(
-              locationData
-            ).map((state) => (
+            </label>
 
-              <button
-                key={state}
-                onClick={() =>
-                  toggleState(
-                    state
-                  )
-                }
+            <Select
+              options={
+                stateOptions
+              }
 
-                className={`px-5 py-2 rounded-xl border transition ${
-                  selectedStates.includes(
-                    state
-                  )
+              value={
+                selectedState
+              }
 
-                    ? "bg-cyan-600 text-white border-cyan-600"
+              onChange={(
+                value
+              ) => {
 
-                    : "bg-white text-gray-700 border-gray-300"
-                }`}
-              >
+                setSelectedState(
+                  value
+                );
 
-                {state}
+                setSelectedCities(
+                  []
+                );
+              }}
 
-              </button>
-            ))}
+              placeholder="Select state..."
+            />
+
+          </div>
+
+          <div>
+
+            <label className="block mb-2 font-semibold text-gray-700">
+
+              Search Cities
+
+            </label>
+
+            <Select
+              options={
+                cityOptions
+              }
+
+              isMulti
+
+              value={
+                selectedCities
+              }
+
+              onChange={
+                setSelectedCities
+              }
+
+              placeholder="Select cities..."
+            />
 
           </div>
 
         </div>
 
-        {selectedStates.length >
-          0 && (
-
-          <div className="mt-8">
-
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-
-              Choose Preferred Cities
-
-            </h2>
-
-            <div className="flex flex-wrap gap-3">
-
-              {selectedStates.flatMap(
-                (state) =>
-
-                  locationData[
-                    state
-                  ].map((city) => (
-
-                    <button
-                      key={city}
-                      onClick={() =>
-                        toggleCity(
-                          city
-                        )
-                      }
-
-                      className={`px-5 py-2 rounded-xl border transition ${
-                        selectedCities.includes(
-                          city
-                        )
-
-                          ? "bg-green-500 text-white border-green-500"
-
-                          : "bg-white text-gray-700 border-gray-300"
-                      }`}
-                    >
-
-                      {city}
-
-                    </button>
-                  ))
-              )}
-
-            </div>
-
-          </div>
-        )}
-
       </div>
+
+      {/* JOB CARDS */}
 
       <div className="grid lg:grid-cols-2 gap-6">
 
@@ -440,6 +374,7 @@ const FindJobs = () => {
 
             <div
               key={job._id}
+
               className="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden hover:shadow-2xl transition duration-300"
             >
 
@@ -464,7 +399,9 @@ const FindJobs = () => {
 
                         <h2 className="text-2xl font-bold text-gray-800">
 
-                          {job.title}
+                          {
+                            job.title
+                          }
 
                         </h2>
 
@@ -472,6 +409,7 @@ const FindJobs = () => {
 
                           {
                             job.companyName ||
+
                             "Independent Employer"
                           }
 
@@ -480,7 +418,9 @@ const FindJobs = () => {
                         <p className="text-sm text-gray-400">
 
                           Posted by {
+
                             job.employerName
+
                           }
 
                         </p>
@@ -521,6 +461,8 @@ const FindJobs = () => {
 
                   <div className="flex gap-2">
 
+                    {/* SAVE */}
+
                     <button
                       onClick={() =>
                         saveJob(
@@ -539,25 +481,35 @@ const FindJobs = () => {
                       }`}
                     >
 
-                      <Bookmark size={20} />
+                      <Bookmark
+                        size={20}
+                      />
 
                     </button>
 
+                    {/* SHARE */}
+
                     <button
                       onClick={() =>
-                        shareJob(job)
+                        shareJob(
+                          job
+                        )
                       }
 
                       className="p-3 rounded-xl bg-gray-100 text-gray-600"
                     >
 
-                      <Share2 size={20} />
+                      <Share2
+                        size={20}
+                      />
 
                     </button>
 
                   </div>
 
                 </div>
+
+                {/* DESCRIPTION */}
 
                 <p className="text-gray-600 leading-relaxed mb-6">
 
@@ -567,13 +519,17 @@ const FindJobs = () => {
 
                 </p>
 
+                {/* INFO */}
+
                 <div className="grid grid-cols-2 gap-4 mb-6">
 
                   <div className="bg-gray-50 p-4 rounded-2xl">
 
                     <div className="flex items-center gap-2 text-gray-500 mb-2">
 
-                      <IndianRupee size={16} />
+                      <IndianRupee
+                        size={16}
+                      />
 
                       <span className="text-sm">
 
@@ -597,7 +553,9 @@ const FindJobs = () => {
 
                     <div className="flex items-center gap-2 text-gray-500 mb-2">
 
-                      <MapPin size={16} />
+                      <MapPin
+                        size={16}
+                      />
 
                       <span className="text-sm">
 
@@ -619,36 +577,26 @@ const FindJobs = () => {
 
                 </div>
 
-                <div className="flex gap-3">
+                {/* BUTTON */}
 
-                  <button
-                    onClick={() =>
-                      applyJob(
-                        job._id
-                      )
-                    }
+                <button
 
-                    className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-xl font-medium transition"
-                  >
+                  onClick={() =>
 
-                    Apply
+                    navigate(
 
-                  </button>
+                      `/employee/job/${job._id}`
+                    )
+                  }
 
-                  <button
-                    className="bg-gray-100 hover:bg-gray-200 px-4 rounded-xl transition"
-                    onClick={() =>
-                      setSelectedJob(
-                        job
-                      )
-                    }
-                  >
+                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-xl font-medium transition flex items-center justify-center gap-2"
+                >
 
-                    <Eye size={22} />
+                  <Eye size={20} />
 
-                  </button>
+                  View Details
 
-                </div>
+                </button>
 
               </div>
 
@@ -657,109 +605,6 @@ const FindJobs = () => {
         )}
 
       </div>
-
-      {selectedJob && (
-
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-
-          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-
-            <div className="p-6 border-b flex items-center justify-between">
-
-              <div>
-
-                <h2 className="text-3xl font-bold text-gray-800">
-
-                  {
-                    selectedJob.title
-                  }
-
-                </h2>
-
-              </div>
-
-              <button
-                onClick={() =>
-                  setSelectedJob(
-                    null
-                  )
-                }
-
-                className="text-3xl text-gray-500 hover:text-red-500"
-              >
-
-                ×
-
-              </button>
-
-            </div>
-
-            <div className="p-6 space-y-6">
-
-              <div className="grid grid-cols-2 gap-4">
-
-                <div className="bg-gray-50 p-5 rounded-2xl">
-
-                  <p className="text-gray-500">
-
-                    Employer Name
-
-                  </p>
-
-                  <p className="font-semibold text-lg">
-
-                    {
-                      selectedJob.employerName
-                    }
-
-                  </p>
-
-                </div>
-
-                <div className="bg-gray-50 p-5 rounded-2xl">
-
-                  <p className="text-gray-500">
-
-                    Company Name
-
-                  </p>
-
-                  <p className="font-semibold text-lg">
-
-                    {
-                      selectedJob.companyName
-                    }
-
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div className="bg-gray-50 p-6 rounded-2xl">
-
-                <h3 className="text-2xl font-semibold mb-4 text-gray-800">
-
-                  Description
-
-                </h3>
-
-                <p className="text-gray-600 leading-relaxed">
-
-                  {
-                    selectedJob.description
-                  }
-
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      )}
 
     </div>
   );

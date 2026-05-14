@@ -6,6 +6,7 @@ const {employerProfileController, getProfile, updateProfile} = require("../contr
 const employerPostJobController = require("../controllers/employerPostJob.controller");
 const employerJobsPostedController = require("../controllers/employerJobsPosted.controller");
 const employerApplicantsController = require("../controllers/employerApplicants.controller");
+
 const multer = require("multer");
 
 
@@ -34,5 +35,6 @@ router.put("/profile-data", authMiddleware, roleMiddleware("employer"),
 
         updateProfile
 );
+
 
 module.exports = router;
