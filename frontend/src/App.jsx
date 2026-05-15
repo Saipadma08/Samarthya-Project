@@ -62,6 +62,7 @@ import AdminJobs from './pages/admin/Jobs'
 import AdminMessages from './pages/admin/Messages'
 import AdminReports from './pages/admin/Reports'
 import AdminEditData from './pages/admin/EditData';
+import Contacts from './pages/admin/Contacts';
 
 const App = () => {
   return (
@@ -149,6 +150,7 @@ const App = () => {
           <Route path="search" element={<Search />} />
           <Route path="profile/:userId" element={<PublicProfile />} />
           <Route path="profile-view/:userId" element={<UserProfileView/>} />
+          <Route path="contacts" element={<Contacts  />} />
 
         </Route>
       </Routes>
