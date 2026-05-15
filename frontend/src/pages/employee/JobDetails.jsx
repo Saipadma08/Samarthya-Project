@@ -304,15 +304,15 @@ const JobDetails = () => {
 
                   <div className="flex flex-wrap gap-2 mt-4">
 
-                    <span className="px-3 py-[5px] rounded-full text-[11px] font-medium bg-green-100 text-green-700">
+                    <span className="px-3 py-1.25 rounded-full text-[11px] font-medium bg-green-100 text-green-700">
                       {job.status}
                     </span>
 
-                    <span className="px-3 py-[5px] rounded-full text-[11px] font-medium bg-yellow-100 text-yellow-700">
+                    <span className="px-3 py-1.25 rounded-full text-[11px] font-medium bg-yellow-100 text-yellow-700">
                       {job.jobType}
                     </span>
 
-                    <span className="px-3 py-[5px] rounded-full text-[11px] font-medium bg-purple-100 text-purple-700">
+                    <span className="px-3 py-1.25 rounded-full text-[11px] font-medium bg-purple-100 text-purple-700">
                       {job.urgency}
                     </span>
 
@@ -324,18 +324,18 @@ const JobDetails = () => {
 
               {/* BUTTONS */}
 
-              <div className="flex flex-col gap-2 w-full lg:w-[200px]">
+              <div className="flex flex-col gap-2 w-full lg:w-50">
 
                 <button
                     onClick={handleApply}
-                    className="h-[46px] lg:h-[52px] rounded-[16px] bg-[#119dc7] text-white text-[15px] lg:text-[18px] font-semibold hover:bg-[#0e8cb2] transition"
+                    className="h-11.5 lg:h-13 rounded-2xl bg-[#119dc7] text-white text-[15px] lg:text-[18px] font-semibold hover:bg-[#0e8cb2] transition"
                     >
                     Apply Now
                     </button>
 
                <button
                 onClick={handleSaveJob}
-                className={`w-full h-[42px] rounded-[14px] border text-[14px] font-semibold transition flex items-center justify-center gap-2 ${
+                className={`w-full h-10.5 rounded-[14px] border text-[14px] font-semibold transition flex items-center justify-center gap-2 ${
                     saved
                     ? "bg-[#e6f7fd] border-[#119dc7] text-[#119dc7]"
                     : "border-[#119dc7] text-[#119dc7] hover:bg-[#f2fbfe]"
@@ -354,7 +354,7 @@ const JobDetails = () => {
 
                 <button
                   onClick={handleShare}
-                  className="h-[46px] lg:h-[52px] rounded-[16px] border border-gray-300 text-[#111827] text-[15px] lg:text-[18px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-50 transition"
+                  className="h-11.5 lg:h-13 rounded-2xl border border-gray-300 text-[#111827] text-[15px] lg:text-[18px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-50 transition"
                 >
 
                   <Share2 className="w-5 h-5" />
@@ -567,7 +567,7 @@ const JobDetails = () => {
       "Employer profile feature coming soon"
     )
   }
-  className="mt-4 h-[42px] w-full rounded-[12px] border border-[#119dc7] text-[#119dc7] text-[13px] sm:text-[14px] font-semibold hover:bg-cyan-50 transition"
+  className="mt-4 h-10.5 w-full rounded-xl border border-[#119dc7] text-[#119dc7] text-[13px] sm:text-[14px] font-semibold hover:bg-cyan-50 transition"
 >
   View Employer Profile
 </button>

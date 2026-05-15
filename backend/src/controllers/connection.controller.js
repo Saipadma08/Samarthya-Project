@@ -154,27 +154,6 @@ async function acceptRequest(req, res) {
 
   try {
 
-    const me =
-      await User.findById(
-        currentUserId
-      );
-
-    if (
-
-      me.blockedUsers.includes(
-        otherUserId
-      )
-
-    ) {
-
-      return res.json({
-
-        status: "blocked"
-
-      });
-
-    }
-
     const userId = req.user.id;
 
     const connection =
@@ -192,8 +171,7 @@ async function acceptRequest(req, res) {
 
       return res.status(404).json({
 
-        message:
-          "Request not found"
+        message: "Request not found"
 
       });
 
@@ -205,8 +183,9 @@ async function acceptRequest(req, res) {
 
     res.json({
 
-      message:
-        "Connection accepted"
+      message: "Connection accepted",
+
+      connection
 
     });
 
@@ -217,7 +196,9 @@ async function acceptRequest(req, res) {
     console.log(err);
 
     res.status(500).json({
+
       message: "Server error"
+
     });
 
   }

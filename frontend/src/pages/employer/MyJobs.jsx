@@ -5,7 +5,7 @@ import React, {
 
 import axios from "axios";
 
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 import {
   Briefcase,
@@ -403,7 +403,7 @@ const MyJobs = () => {
 
                     </div>
 
-                    <div className="w-full lg:w-[260px] flex flex-col gap-4">
+                    <div className="w-full lg:w-65 flex flex-col gap-4">
 
                       <div className="bg-cyan-50 text-cyan-700 rounded-2xl px-4 py-4 text-center">
 

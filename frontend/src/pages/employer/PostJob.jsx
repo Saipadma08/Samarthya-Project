@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 import { locations } from "../../utils/locationOptions";
 
@@ -360,7 +360,7 @@ const PostJob = () => {
           </label>
 
           <select
-            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
+            className="w-full mt-1 h-11.5 px-3 border rounded-lg"
             value={job.category}
             onChange={handleCategoryChange}
           >
@@ -382,7 +382,7 @@ const PostJob = () => {
           </label>
 
           <select
-            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
+            className="w-full mt-1 h-11.5 px-3 border rounded-lg"
             value={job.title}
             onChange={handleTitleChange}
           >
@@ -473,7 +473,7 @@ const PostJob = () => {
             </p>
 
             <input
-              className="w-full mt-1 h-[46px] px-3 border rounded-lg"
+              className="w-full mt-1 h-11.5 px-3 border rounded-lg"
               placeholder="Enter payment"
               value={job.payment}
               onChange={(e) =>
@@ -508,7 +508,7 @@ const PostJob = () => {
               </label>
 
               <select
-                className="w-full mt-1 h-[46px] px-3 border rounded-lg outline-none focus:border-cyan-500"
+                className="w-full mt-1 h-11.5 px-3 border rounded-lg outline-none focus:border-cyan-500"
                 value={job.state}
                 onChange={(e) =>
 
@@ -560,7 +560,7 @@ const PostJob = () => {
               </label>
 
               <select
-                className="w-full mt-1 h-[46px] px-3 border rounded-lg outline-none focus:border-cyan-500 disabled:bg-gray-100"
+                className="w-full mt-1 h-11.5 px-3 border rounded-lg outline-none focus:border-cyan-500 disabled:bg-gray-100"
                 value={job.city}
                 disabled={!job.state}
                 onChange={(e) =>
@@ -619,7 +619,7 @@ const PostJob = () => {
             </label>
 
             <select
-              className="w-full mt-1 h-[46px] px-3 border rounded-lg"
+              className="w-full mt-1 h-11.5 px-3 border rounded-lg"
               value={job.jobType}
               onChange={(e) =>
                 setJob({
@@ -648,7 +648,7 @@ const PostJob = () => {
             <input
               type="number"
               min="1"
-              className="w-full mt-1 h-[46px] px-3 border rounded-lg"
+              className="w-full mt-1 h-11.5 px-3 border rounded-lg"
               placeholder="e.g. 2"
               value={job.workersNeeded}
               onChange={(e) =>
@@ -672,7 +672,7 @@ const PostJob = () => {
           </label>
 
           <input
-            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
+            className="w-full mt-1 h-11.5 px-3 border rounded-lg"
             placeholder="e.g. cleaning, cooking"
             value={job.skills}
             onChange={(e) =>
@@ -694,7 +694,7 @@ const PostJob = () => {
           </label>
 
           <select
-            className="w-full mt-1 h-[46px] px-3 border rounded-lg"
+            className="w-full mt-1 h-11.5 px-3 border rounded-lg"
             value={job.urgency}
             onChange={(e) =>
               setJob({
@@ -715,7 +715,7 @@ const PostJob = () => {
         <button
           onClick={handlePostJob}
           disabled={loading}
-          className="w-full bg-cyan-600 text-white h-[46px] rounded-lg text-sm font-semibold hover:opacity-90 transition disabled:opacity-60"
+          className="w-full bg-cyan-600 text-white h-11.5 rounded-lg text-sm font-semibold hover:opacity-90 transition disabled:opacity-60"
         >
 
           {

@@ -467,8 +467,6 @@ hover:bg-gray-100
 
   }, [viewedUser]);
 
-  if (!viewedUser) return null;
-
   useEffect(() => {
 
     function handleClickOutside(event) {
@@ -500,7 +498,7 @@ hover:bg-gray-100
 
   }, []);
 
-
+  if (!viewedUser) return null;
 
   const isOwnProfile = String(currentUserId) === String(viewedUser?._id);
 

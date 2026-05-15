@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Users = () => {
@@ -679,17 +679,15 @@ const Users = () => {
               <div className="p-5 bg-slate-50 flex justify-end">
 
 
-                <button
-                  onClick={() =>
-                    navigate(`/admin/profile/${selectedUser._id}`)
-                  }
+                <Link
+                    to={`/admin/profile/${selectedUser._id}`}
                   className="
-            bg-blue-600 hover:bg-blue-700
-            text-white mr-3 px-5 py-2 rounded-xl
-            "
+                  bg-blue-600 hover:bg-blue-700
+                  text-white mr-3 px-5 py-2 rounded-xl
+                    "
                 >
                   View Profile
-                </button>
+                </Link>
 
 
               </div>

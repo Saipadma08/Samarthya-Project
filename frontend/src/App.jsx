@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import {ToastContainer} from 'react-toastify';
-import { Toaster } from "react-hot-toast";
 
 import LandingPage from './pages/public/LandingPage'
 import Login from './pages/auth/Login'
@@ -22,6 +21,8 @@ import PublicProfile from './pages/profile/PublicProfile';
 import Search from './pages/search/Search';
 
 import UserProfileView from './pages/profile/UserProfileView';
+
+import ScrollToTop from './components/scrollTop/ScrollToTop';
 
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
@@ -66,11 +67,10 @@ const App = () => {
   return (
     <BrowserRouter>
 
+      <ScrollToTop />
+
       <ToastContainer />
-       <Toaster
-    position="top-right"
-    reverseOrder={false}
-  />
+    
       <Routes>
         {/* Public */}
         <Route path="/" element={<LandingPage />} />
