@@ -1,4 +1,5 @@
 import React from 'react'
+import SocketProvider from './context/SocketContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import {ToastContainer} from 'react-toastify';
 
@@ -23,6 +24,8 @@ import Search from './pages/search/Search';
 import UserProfileView from './pages/profile/UserProfileView';
 
 import ScrollToTop from './components/scrollTop/ScrollToTop';
+
+import NotificationsPage from './pages/notifications/NotificationsPage';
 
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
@@ -66,96 +69,99 @@ import Contacts from './pages/admin/Contacts';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <SocketProvider>
+      <BrowserRouter>
 
-      <ScrollToTop />
+        <ScrollToTop />
 
-      <ToastContainer />
-    
-      <Routes>
-        {/* Public */}
-        <Route path="/" element={<LandingPage />} />
-
-        <Route path="/signup/:role" element={<Signup />} />
-        <Route path='/verify-otp' element={<VerifyOtp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<ContactUs />} />
-
-        
-
-
-
-        {/* ================= EMPLOYEE ================= */}
-        <Route path="/employee" element={<ProtectedRoute allowedRole="employee"> <MainLayout role="employee" /> </ProtectedRoute>}>
-
-          <Route path="dashboard" element={<EmployeeDashboard />} />
-          <Route path="profile" element={<EmployeeProfile />} />
-          <Route path="applications" element={<EmployeeApplications />} />
-          <Route path="complaint" element={<EmployeeComplaint />} />
-          <Route path="connections" element={<EmployeeConnections />} />
-          <Route path="find-jobs" element={<EmployeeFindJobs />} />
-          <Route path="messages" element={<EmployeeMessages  />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="trust-score" element={<EmployeeTrustScore />} />
-          <Route path="work-history" element={<EmployeeWorkHistory />} />
-          <Route path="edit-profile" element={<EmployeeEditProfile />} />
-          <Route path="search" element={<Search />} />
-          <Route path="profile/:userId" element={<PublicProfile />} />
-          <Route path="profile-view/:userId" element={<UserProfileView/>} />
-
-          <Route path="/employee/job/:jobId" element={<JobDetails />} />
-          <Route path="/employee/saved-jobs" element={<SavedJobs />} />
-          
-        
-        
-        </Route>
-
-
-        {/* ================= EMPLOYER ================= */}
-        <Route path="/employer" element={<ProtectedRoute allowedRole="employer"> <MainLayout role="employer" /> </ProtectedRoute>}>
-
-          <Route path="dashboard" element={<EmployerDashboard />} />
-          <Route path="profile" element={<EmployerProfile />} />
-          <Route path="post-job" element={<EmployerPostJob />} />
-          <Route path="posted-jobs" element={<EmployerMyJobs />} />
-          <Route path="applicants" element={<EmployerApplicants />} />
-          <Route path="messages" element={<EmployerMessages />} />
-          <Route path="connections" element={<EmployerConnections />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="complaint" element={<EmployerComplaint />} />
-          <Route path="edit-profile" element={<EmployerEditProfile />} />
-          <Route path="search" element={<Search />} />
-          <Route path="profile/:userId" element={<PublicProfile />} />
-          <Route path="profile-view/:userId" element={<UserProfileView/>} />
-          <Route path="view-applicants" element={<ApplicantsPage />} />
-
-        </Route>
-
-
-        {/* ================= ADMIN ================= */}
-        <Route path="/admin" element={<ProtectedRoute allowedRole="admin"> <MainLayout role="admin" /> </ProtectedRoute>}>
-
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path='add-admin' element={<AddAdmin />} />
-          <Route path="users" element={<AdminUsers />} />
-          <Route path="jobs" element={<AdminJobs />} />
-          <Route path="messages" element={<AdminMessages  />} />
-          <Route path="reports" element={<AdminReports />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="edit-data" element={<AdminEditData />} />
-          <Route path="search" element={<Search />} />
-          <Route path="profile/:userId" element={<PublicProfile />} />
-          <Route path="profile-view/:userId" element={<UserProfileView/>} />
-          <Route path="contacts" element={<Contacts  />} />
-
-        </Route>
-      </Routes>
+        <ToastContainer />
       
-    </BrowserRouter>
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<LandingPage />} />
+
+          <Route path="/signup/:role" element={<Signup />} />
+          <Route path='/verify-otp' element={<VerifyOtp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<ContactUs />} />
+
+
+
+          {/* ================= EMPLOYEE ================= */}
+          <Route path="/employee" element={<ProtectedRoute allowedRole="employee"> <MainLayout role="employee" /> </ProtectedRoute>}>
+
+            <Route path="dashboard" element={<EmployeeDashboard />} />
+            <Route path="profile" element={<EmployeeProfile />} />
+            <Route path="applications" element={<EmployeeApplications />} />
+            <Route path="complaint" element={<EmployeeComplaint />} />
+            <Route path="connections" element={<EmployeeConnections />} />
+            <Route path="find-jobs" element={<EmployeeFindJobs />} />
+            <Route path="messages" element={<EmployeeMessages  />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="trust-score" element={<EmployeeTrustScore />} />
+            <Route path="work-history" element={<EmployeeWorkHistory />} />
+            <Route path="edit-profile" element={<EmployeeEditProfile />} />
+            <Route path="search" element={<Search />} />
+            <Route path="profile/:userId" element={<PublicProfile />} />
+            <Route path="profile-view/:userId" element={<UserProfileView/>} />
+            <Route path="notifications" element={<NotificationsPage/>} />
+
+
+            <Route path="/employee/job/:jobId" element={<JobDetails />} />
+            <Route path="/employee/saved-jobs" element={<SavedJobs />} />
+            
+          
+          
+          </Route>
+
+
+          {/* ================= EMPLOYER ================= */}
+          <Route path="/employer" element={<ProtectedRoute allowedRole="employer"> <MainLayout role="employer" /> </ProtectedRoute>}>
+
+            <Route path="dashboard" element={<EmployerDashboard />} />
+            <Route path="profile" element={<EmployerProfile />} />
+            <Route path="post-job" element={<EmployerPostJob />} />
+            <Route path="posted-jobs" element={<EmployerMyJobs />} />
+            <Route path="applicants" element={<EmployerApplicants />} />
+            <Route path="messages" element={<EmployerMessages />} />
+            <Route path="connections" element={<EmployerConnections />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="complaint" element={<EmployerComplaint />} />
+            <Route path="edit-profile" element={<EmployerEditProfile />} />
+            <Route path="search" element={<Search />} />
+            <Route path="profile/:userId" element={<PublicProfile />} />
+            <Route path="profile-view/:userId" element={<UserProfileView/>} />
+            <Route path="view-applicants" element={<ApplicantsPage />} />
+            <Route path="notifications" element={<NotificationsPage/>} />
+
+          </Route>
+
+
+          {/* ================= ADMIN ================= */}
+          <Route path="/admin" element={<ProtectedRoute allowedRole="admin"> <MainLayout role="admin" /> </ProtectedRoute>}>
+
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path='add-admin' element={<AddAdmin />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="jobs" element={<AdminJobs />} />
+            <Route path="messages" element={<AdminMessages  />} />
+            <Route path="reports" element={<AdminReports />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="edit-data" element={<AdminEditData />} />
+            <Route path="search" element={<Search />} />
+            <Route path="profile/:userId" element={<PublicProfile />} />
+            <Route path="profile-view/:userId" element={<UserProfileView/>} />
+            <Route path="contacts" element={<Contacts  />} />
+
+          </Route>
+        </Routes>
+        
+      </BrowserRouter>
+    </SocketProvider>
   )
 }
 
