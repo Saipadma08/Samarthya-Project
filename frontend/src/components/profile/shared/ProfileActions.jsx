@@ -6,7 +6,7 @@ import { FiUserPlus } from "react-icons/fi";
 import { FiMessageCircle } from "react-icons/fi";
 import { FiMoreVertical } from "react-icons/fi";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const ProfileActions = ({
   currentUser,
@@ -29,6 +29,7 @@ const ProfileActions = ({
 
   const [showMenu, setShowMenu] = useState(false);
 
+  const menuRef = useRef(null);
 
   async function handleConnect() {
 
@@ -184,73 +185,73 @@ const ProfileActions = ({
 
   async function handleRemoveConnection() {
 
-  try {
+    try {
 
-    await axios.delete(
+      await axios.delete(
 
-      `http://localhost:3000/api/connections/remove/${viewedUser._id}`,
+        `http://localhost:3000/api/connections/remove/${viewedUser._id}`,
 
-      {
-        withCredentials:true
-      }
+        {
+          withCredentials: true
+        }
 
-    );
+      );
 
-    setConnectionData({
+      setConnectionData({
 
-      status:"none",
-      incoming:false,
-      connectionId:null
+        status: "none",
+        incoming: false,
+        connectionId: null
 
-    });
+      });
 
-    setShowMenu(false);
+      setShowMenu(false);
+
+    }
+
+    catch (err) {
+
+      console.log(err);
+
+    }
 
   }
-
-  catch(err){
-
-    console.log(err);
-
-  }
-
-}
 
 
 
   async function handleCancelRequest() {
 
-  try {
+    try {
 
-    await axios.delete(
+      await axios.delete(
 
-      `http://localhost:3000/api/connections/cancel/${viewedUser._id}`,
+        `http://localhost:3000/api/connections/cancel/${viewedUser._id}`,
 
-      {
-        withCredentials:true
-      }
+        {
+          withCredentials: true
+        }
 
-    );
+      );
 
-    setConnectionData({
+      setConnectionData({
 
-      status:"none",
-      incoming:false,
-      connectionId:null
+        status: "none",
+        incoming: false,
+        connectionId: null
 
-    });
+      });
 
-    setShowMenu(false);
+      setShowMenu(false);
+
+    }
+
+    catch (err) {
+
+      console.log(err);
+
+    }
 
   }
-
-  catch(err){
-
-    console.log(err);
-
-  }
-
-}
 
 
   function renderMenuItems() {
@@ -468,6 +469,37 @@ hover:bg-gray-100
 
   if (!viewedUser) return null;
 
+  useEffect(() => {
+
+    function handleClickOutside(event) {
+
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+
+        setShowMenu(false);
+
+      }
+
+    }
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+    return () => {
+
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+
+    };
+
+  }, []);
+
 
 
   const isOwnProfile = String(currentUserId) === String(viewedUser?._id);
@@ -475,7 +507,7 @@ hover:bg-gray-100
 
   const threeDotMenu = (
 
-    <div className="relative">
+    <div ref={menuRef} className="relative">
 
       <button
         onClick={() =>
