@@ -406,11 +406,9 @@ const Users = () => {
 
                             ) : (
 
-                              <div className=" w-12 h-12 rounded-full
-      bg-linear-to-r from-cyan-500 to-blue-600
-      flex items-center justify-center
-      text-white font-bold text-lg
-    "
+                              <div className=" w-12 h-12 rounded-full bg-linear-to-r from-cyan-500 to-blue-600
+                             flex items-center justify-center
+                             text-white font-bold text-lg"
                               >
                                 {user.name?.charAt(0).toUpperCase()}
                               </div>
@@ -679,12 +677,6 @@ const Users = () => {
               </div>
 
               <div className="p-5 bg-slate-50 flex justify-end">
-
-                <button
-                  onClick={() => navigate(`/admin/users/${selectedUser._id}`)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white mr-3 px-5 py-2 rounded-xl">
-                  User Details
-                </button>
 
                 <button
                   onClick={() =>

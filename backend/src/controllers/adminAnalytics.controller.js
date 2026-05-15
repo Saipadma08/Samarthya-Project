@@ -6,6 +6,10 @@ async function adminAnalyticsController(req, res) {
 
     const users = await userModel.find();
 
+    // CURRENT YEAR
+
+    const currentYear = new Date().getFullYear();
+
     const months = [
       "Jan",
       "Feb",
@@ -25,9 +29,18 @@ async function adminAnalyticsController(req, res) {
 
       const count = users.filter((user) => {
 
-        const userMonth = new Date(user.createdAt).getMonth();
+        const createdDate = new Date(user.createdAt);
 
-        return userMonth === index;
+        const userMonth = createdDate.getMonth();
+
+        const userYear = createdDate.getFullYear();
+
+        // MATCH CURRENT YEAR + MONTH
+
+        return (
+          userMonth === index &&
+          userYear === currentYear
+        );
 
       }).length;
 
@@ -40,6 +53,7 @@ async function adminAnalyticsController(req, res) {
 
     res.status(200).json({
       success: true,
+      currentYear,
       monthlyUsers
     });
 

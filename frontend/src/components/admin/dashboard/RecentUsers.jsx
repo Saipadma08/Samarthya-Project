@@ -68,45 +68,27 @@ const RecentUsers = () => {
 
             {/* Left */}
             <div className="flex items-center gap-4">
-
-              <img
-                src={
-                  user.profileImage ||
-                  "https://i.pravatar.cc/150?img=5"
-                }
-                alt="profile"
-                className="w-12 h-12 rounded-full object-cover"
-              />
-
-              <div>
-
-                <p className="font-semibold text-slate-800">
-
-                  {user.name}
-
-                </p>
-
-                <div className="flex gap-4 text-sm text-gray-500 mt-1">
-
-                  <span className="capitalize">
-
-                    {user.role}
-
-                  </span>
-
-                  <span>
-
-                    {
-                      new Date(user.createdAt)
-                      .toLocaleDateString()
-                    }
-
-                  </span>
-
+              {user.profileImage ? (
+                <img
+                  src={user.profileImage}
+                  alt={user.name || "user"}
+                  className="w-15 h-15 rounded-full border-4 border-white object-cover"
+                />
+              ) : (
+                <div
+                  className=" w-15 h-15 rounded-full border-4 border-white flex items-center justify-center
+              text-slate-800 text-3xl font-bold bg-blue-400"
+                >
+                  {user.name?.charAt(0).toUpperCase()}
                 </div>
-
+              )}
+              <div>
+                <p className="font-semibold text-slate-800">{user.name}</p>
+                <div className="flex gap-4 text-sm text-gray-500 mt-1">
+                  <span className="capitalize">{user.role}</span>
+                  <span>{new Date(user.createdAt).toLocaleDateString()}</span>
+                </div>
               </div>
-
             </div>
 
             {/* Right */}

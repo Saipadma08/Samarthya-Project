@@ -13,7 +13,8 @@ import {
 
 const UserGrowthChart = () => {
 
-  const [monthlyData, setMonthlyData] = useState([]);
+      const [monthlyData, setMonthlyData] = useState([]);
+      const [currentYear, setCurrentYear] = useState("");
 
   useEffect(() => {
 
@@ -33,6 +34,7 @@ const UserGrowthChart = () => {
       );
 
       setMonthlyData(res.data.monthlyUsers);
+      setCurrentYear(res.data.currentYear);
 
     } catch (error) {
 
@@ -52,9 +54,9 @@ const UserGrowthChart = () => {
           User Growth (Monthly)
         </p>
 
-        <p className="text-sm text-gray-500">
-          Last 12 months
-        </p>
+      <p className="text-sm text-gray-500">
+            {currentYear} User Registrations
+      </p>
 
       </div>
 
