@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import {ToastContainer} from 'react-toastify';
+import { Toaster } from "react-hot-toast";
 
 import LandingPage from './pages/public/LandingPage'
 import Login from './pages/auth/Login'
@@ -20,6 +21,8 @@ import PublicProfile from './pages/profile/PublicProfile';
 
 import Search from './pages/search/Search';
 
+import UserProfileView from './pages/profile/UserProfileView';
+
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
 // ✅ Employee pages
@@ -33,6 +36,8 @@ import EmployeeFindJobs from './pages/employee/FindJobs'
 import EmployeeMessages from './pages/employee/Messages'
 import EmployeeTrustScore from './pages/employee/TrustScore'
 import EmployeeWorkHistory from './pages/employee/WorkHistory'
+import JobDetails from "./pages/employee/JobDetails";
+import SavedJobs from "./pages/employee/SavedJobs";
 
 
 // ✅ Employer pages
@@ -45,6 +50,7 @@ import EmployerApplicants from './pages/employer/Applicants'
 import EmployerMessages from './pages/employer/Messages'
 import EmployerConnections from './pages/employer/Connections'
 import EmployerComplaint from './pages/employer/Complaint'
+import ApplicantsPage from "./pages/employer/ApplicantsPage";
 
 
 // ✅ Admin pages
@@ -61,7 +67,10 @@ const App = () => {
     <BrowserRouter>
 
       <ToastContainer />
-      
+       <Toaster
+    position="top-right"
+    reverseOrder={false}
+  />
       <Routes>
         {/* Public */}
         <Route path="/" element={<LandingPage />} />
@@ -74,6 +83,8 @@ const App = () => {
 
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
+
+        
 
 
 
@@ -93,7 +104,13 @@ const App = () => {
           <Route path="edit-profile" element={<EmployeeEditProfile />} />
           <Route path="search" element={<Search />} />
           <Route path="profile/:userId" element={<PublicProfile />} />
+          <Route path="profile-view/:userId" element={<UserProfileView/>} />
 
+          <Route path="/employee/job/:jobId" element={<JobDetails />} />
+          <Route path="/employee/saved-jobs" element={<SavedJobs />} />
+          
+        
+        
         </Route>
 
 
@@ -112,6 +129,8 @@ const App = () => {
           <Route path="edit-profile" element={<EmployerEditProfile />} />
           <Route path="search" element={<Search />} />
           <Route path="profile/:userId" element={<PublicProfile />} />
+          <Route path="profile-view/:userId" element={<UserProfileView/>} />
+          <Route path="view-applicants" element={<ApplicantsPage />} />
 
         </Route>
 
@@ -129,6 +148,7 @@ const App = () => {
           <Route path="edit-data" element={<AdminEditData />} />
           <Route path="search" element={<Search />} />
           <Route path="profile/:userId" element={<PublicProfile />} />
+          <Route path="profile-view/:userId" element={<UserProfileView/>} />
 
         </Route>
       </Routes>

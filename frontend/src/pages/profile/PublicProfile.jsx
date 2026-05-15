@@ -12,6 +12,8 @@ const PublicProfile = () => {
    const [user, setUser] = useState(null);
    const [profile, setProfile] = useState(null);
 
+   const loggedInUser = JSON.parse(localStorage.getItem("user"));
+
    useLayoutEffect(() => {
 
       const container = document.getElementById("main-content");
@@ -55,9 +57,10 @@ const PublicProfile = () => {
 
       </div>
       <ProfilePage
+         currentUser={loggedInUser}
          user={user}
          profile={profile}
-         isOwnProfile={false}
+         isPublicView={true}
       />
     </div>
   )

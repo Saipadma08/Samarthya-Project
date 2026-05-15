@@ -1,7 +1,6 @@
 import React from "react";
 
 import DashboardIntro from "../../components/admin/dashboard/DashboardIntro"
-import CompleteProfile from "../../components/admin/dashboard/CompleteProfile";
 import ProfileCard from "../../components/admin/dashboard/ProfileCard";
 import StatCard from "../../components/admin/dashboard/StatCard";
 import QuickActions from "../../components/admin/dashboard/QuickActions";
@@ -49,11 +48,6 @@ const Dashboard = () => {
           {/* Welcome */}
           <div>
             <DashboardIntro admin={admin} />
-          </div>
-
-          {/* Complete profile */}
-          <div>
-            <CompleteProfile />
           </div>
 
 

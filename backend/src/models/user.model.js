@@ -27,9 +27,9 @@ const usersSchema = new mongoose.Schema({
         default: false
     },
     isBlocked: {
-    type: Boolean,
-    default: false
-},
+        type: Boolean,
+        default: false
+    },
 
     verificationStatus: {
         type: String,
@@ -63,6 +63,13 @@ const usersSchema = new mongoose.Schema({
     emailChangeOtpExpires: {
         type: Date
     },
+
+    blockedUsers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "users"
+        }
+    ],
 },
     { timestamps: true }
 )

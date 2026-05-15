@@ -229,6 +229,11 @@ const getEmployerApplicants =
                   employee?.email ||
                   "",
 
+                // ✅ REAL PROFILE IMAGE
+                employeeProfileImage:
+                  employee?.profileImage ||
+                  "",
+
                 employeeProfile,
 
                 job,
@@ -274,7 +279,7 @@ const updateApplicationStatus =
           },
 
           {
-            new: true,
+            returnDocument: "after",
           }
         );
 
