@@ -327,9 +327,17 @@ const Applications = () => {
                       </div>
 
                       <button
-                      onClick={() =>
+                     onClick={() =>
+
                         navigate(
-                          `/employee/job/${item.job?._id}`
+
+                          `/employee/job/${item.job?._id}`,
+
+                          {
+                            state: {
+                              from: "applications",
+                            },
+                          }
                         )
                       }
                       className="

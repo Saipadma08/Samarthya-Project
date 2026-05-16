@@ -282,8 +282,10 @@ const Applicants = () => {
                       </span>
                       {" "}
                       {
-                        item.employeeSkills?.length > 0
-                          ? item.employeeSkills.join(", ")
+                        item.employeeProfile?.skills?.length > 0
+
+                          ? item.employeeProfile.skills.join(", ")
+
                           : "No skills added"
                       }
                     </p>
@@ -294,7 +296,7 @@ const Applicants = () => {
                       </span>
                       {" "}
                       {
-                        item.employeeGender ||
+                        item.employeeProfile?.gender ||
                         "Not specified"
                       }
                     </p>
@@ -316,7 +318,7 @@ const Applicants = () => {
                   {/* TRANS SUPPORT MESSAGE */}
 
                   {
-                    item.employeeGender
+                    item.employeeProfile?.gender
                       ?.toLowerCase() ===
                     "transgender"
 
@@ -607,7 +609,10 @@ const Applicants = () => {
                             </span>
                             {" "}
                             {
-                              selectedApplicant.employeeGender
+                              selectedApplicant
+                                .employeeProfile?.gender ||
+
+                              "Not specified"
                             }
                           </p>
 
@@ -616,9 +621,17 @@ const Applicants = () => {
                               Skills:
                             </span>
                             {" "}
-                            {
-                              selectedApplicant.employeeSkills?.join(", ")
-                            }
+                           {
+                            selectedApplicant
+                              .employeeProfile?.skills?.length > 0
+
+                              ? selectedApplicant
+                                  .employeeProfile
+                                  .skills
+                                  .join(", ")
+
+                              : "No skills added"
+                          }
                           </p>
 
                           <p>

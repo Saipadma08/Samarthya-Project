@@ -205,11 +205,11 @@ const getEmployerApplicants =
                 );
 
               const employeeProfile =
-                await EmployeeProfile.findOne({
+  await EmployeeProfile.findOne({
 
-                  userId:
-                    application.employeeId,
-                });
+    userId:
+      application.employeeId.toString(),
+  });
 
               const job =
                 await PostedJob.findById(
@@ -302,6 +302,110 @@ const updateApplicationStatus =
       });
     }
   };
+  // GET APPLICATION STATUS
+
+const getApplicationStatus =
+  async (req, res) => {
+
+    try {
+
+      const { jobId } =
+        req.params;
+
+      const application =
+        await Application.findOne({
+
+          employeeId:
+            req.user.id,
+
+          jobId,
+        });
+
+      res.status(200).json({
+
+        success: true,
+
+        application,
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        success: false,
+
+        message: error.message,
+      });
+    }
+  };
+
+
+
+// MARK WORK AS COMPLETED
+
+const markApplicationCompleted =
+  async (req, res) => {
+
+    try {
+
+      const { jobId } =
+        req.body;
+
+      const application =
+        await Application.findOneAndUpdate(
+
+          {
+            employeeId:
+              req.user.id,
+
+            jobId,
+          },
+
+          {
+            status:
+              "Completed",
+          },
+
+          {
+            new: true,
+          }
+        );
+
+      if (!application) {
+
+        return res.status(404).json({
+
+          success: false,
+
+          message:
+            "Application not found",
+        });
+      }
+
+      res.status(200).json({
+
+        success: true,
+
+        message:
+          "Work marked as completed",
+
+        application,
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        success: false,
+
+        message: error.message,
+      });
+    }
+  };
 
 module.exports = {
 
@@ -312,4 +416,8 @@ module.exports = {
   getEmployerApplicants,
 
   updateApplicationStatus,
+
+  getApplicationStatus,
+
+  markApplicationCompleted,
 };
