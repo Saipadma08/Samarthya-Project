@@ -106,9 +106,12 @@ const ChangePassword = () => {
             className="flex flex-col gap-4"
         >
 
-            <h2 className="text-2xl font-semibold text-center">
-                Change Password
-            </h2>
+         <h2
+          className="text-2xl font-semibold mb-6"
+          >
+
+          Change Password
+        </h2>
 
             <div className="text-sm text-gray-500">
 

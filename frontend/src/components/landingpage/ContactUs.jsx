@@ -1,78 +1,293 @@
-import React from "react"
+import React, { useState } from "react";
+
+import axios from "axios";
 
 const ContactUs = () => {
-  return (
-    <div className="w-full py-16 px-6">
 
-      {/* Title */}
-      <div className="text-center mb-8">
-        <h2 className="text-4xl font-bold text-gray-800">
+  const [formData, setFormData] = useState({
+
+    name: "",
+    email: "",
+    userType: "",
+    issueType: "",
+    message: "",
+
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+
+    setFormData({
+
+      ...formData,
+      [e.target.name]: e.target.value,
+
+    });
+
+  };
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      setLoading(true);
+
+      const response = await axios.post(
+
+        "http://localhost:3000/api/contact/send",
+
+        formData
+
+      );
+
+      alert(response.data.message);
+
+      setFormData({
+
+        name: "",
+        email: "",
+        userType: "",
+        issueType: "",
+        message: "",
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Failed to send message");
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  return (
+
+    <div className="w-full py-20 px-6 bg-[#f8fbff]">
+
+      {/* TITLE */}
+
+      <div className="text-center mb-12">
+
+        <h2
+          className="
+          text-4xl sm:text-5xl
+          font-extrabold
+          bg-gradient-to-r
+          from-cyan-600
+          via-blue-600
+          to-violet-600
+          bg-clip-text
+          text-transparent
+        "
+        >
           Contact Us
         </h2>
 
-        <p className="text-gray-600 mt-2">
-          Have questions? We are here to help you.
+        <p className="text-slate-500 mt-4 max-w-2xl mx-auto">
+
+          Need help with jobs, hiring, account issues
+          or platform support? Reach out to Samarthya.
+
         </p>
+
       </div>
 
 
-      {/* Container */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-7">
+      {/* MAIN CONTAINER */}
 
-        {/* LEFT → FORM */}
-        <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div
+        className="
+        max-w-7xl mx-auto
+        grid lg:grid-cols-2
+        gap-10
+      "
+      >
 
-          <form className="flex flex-col gap-4">
+        {/* LEFT SIDE FORM */}
 
-            {/* Name */}
+        <div
+          className="
+          bg-white
+          rounded-3xl
+          shadow-xl
+          border border-slate-200
+          p-8
+        "
+        >
+
+          <h3 className="text-2xl font-bold text-slate-800 mb-6">
+            Send us a message
+          </h3>
+
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-5"
+          >
+
+            {/* NAME */}
+
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Full Name"
-              className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-cyan-500"
+              required
+              className="
+              border border-slate-300
+              rounded-2xl
+              p-4
+              outline-none
+              focus:ring-2 focus:ring-cyan-500
+            "
             />
 
-            {/* Email */}
+            {/* EMAIL */}
+
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Email Address"
-              className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-cyan-500"
+              required
+              className="
+              border border-slate-300
+              rounded-2xl
+              p-4
+              outline-none
+              focus:ring-2 focus:ring-cyan-500
+            "
             />
 
-            {/* Role */}
+            {/* USER TYPE */}
+
             <select
-              className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-cyan-500"
+              name="userType"
+              value={formData.userType}
+              onChange={handleChange}
+              className="
+              border border-slate-300
+              rounded-2xl
+              p-4
+              outline-none
+              focus:ring-2 focus:ring-cyan-500
+            "
             >
-              <option>User Type</option>
-              <option>Employee</option>
-              <option>Employer</option>
-              <option>Visitor</option>
+
+              <option value="">
+                Select User Type
+              </option>
+
+              <option value="Employee">
+                Employee
+              </option>
+
+              <option value="Employer">
+                Employer
+              </option>
+
+              <option value="Visitor">
+                Visitor
+              </option>
+
             </select>
 
-            {/* Issue Type */}
+            {/* ISSUE TYPE */}
+
             <select
-              className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-cyan-500"
+              name="issueType"
+              value={formData.issueType}
+              onChange={handleChange}
+              required
+              className="
+              border border-slate-300
+              rounded-2xl
+              p-4
+              outline-none
+              focus:ring-2 focus:ring-cyan-500
+            "
             >
-              <option>Issue Type</option>
-              <option>Job related</option>
-              <option>Account problem</option>
-              <option>Report user</option>
-              <option>Technical issue</option>
-              <option>Other</option>
+
+              <option value="">
+                Select Issue Type
+              </option>
+
+              <option value="Job related">
+                Job related
+              </option>
+
+              <option value="Account problem">
+                Account problem
+              </option>
+
+              <option value="Report user">
+                Report user
+              </option>
+
+              <option value="Technical issue">
+                Technical issue
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
             </select>
 
-            {/* Message */}
+            {/* MESSAGE */}
+
             <textarea
-              rows="4"
+              rows="5"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
               placeholder="Write your message..."
-              className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-cyan-500"
+              className="
+              border border-slate-300
+              rounded-2xl
+              p-4
+              outline-none
+              focus:ring-2 focus:ring-cyan-500
+              resize-none
+            "
             />
 
-            {/* Button */}
+            {/* BUTTON */}
+
             <button
               type="submit"
-              className="bg-cyan-600 text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
+              disabled={loading}
+              className="
+              bg-gradient-to-r
+              from-cyan-600
+              to-blue-700
+              text-white
+              py-4
+              rounded-2xl
+              font-semibold
+              hover:scale-[1.02]
+              transition
+              shadow-lg
+            "
             >
-              Send Message
+
+              {
+                loading
+                  ? "Sending..."
+                  : "Send Message"
+              }
+
             </button>
 
           </form>
@@ -80,45 +295,61 @@ const ContactUs = () => {
         </div>
 
 
-        {/* RIGHT → INFO */}
+        {/* RIGHT SIDE */}
+
         <div className="flex flex-col justify-center gap-6">
 
           <div>
-            <h3 className="text-2xl font-semibold text-gray-800">
+
+            <h3 className="text-3xl font-bold text-slate-800">
               Get in touch
             </h3>
 
-            <p className="text-gray-600 mt-2">
-              Contact SAMARTHYA support team for help with jobs,
-              accounts, or any issue related to the platform.
+            <p className="text-slate-600 mt-4 leading-relaxed">
+
+              Samarthya connects employees and employers
+              through a trusted platform. Contact our support
+              team for assistance regarding jobs, hiring,
+              reports, verification or technical issues.
+
             </p>
+
           </div>
 
 
-          <div className="bg-white shadow rounded-xl p-5">
+          {/* CARDS */}
 
-            <p className="font-medium">📧 Email</p>
-            <p className="text-gray-600">
+          <div className="bg-white rounded-3xl shadow-lg p-6 border border-slate-200">
+
+            <p className="text-lg font-semibold">
+              📧 Email Support
+            </p>
+
+            <p className="text-slate-500 mt-2">
               support@samarthya.com
             </p>
 
           </div>
 
+          <div className="bg-white rounded-3xl shadow-lg p-6 border border-slate-200">
 
-          <div className="bg-white shadow rounded-xl p-5">
+            <p className="text-lg font-semibold">
+              📞 Phone Support
+            </p>
 
-            <p className="font-medium">📞 Phone</p>
-            <p className="text-gray-600">
+            <p className="text-slate-500 mt-2">
               +91 9876543210
             </p>
 
           </div>
 
+          <div className="bg-white rounded-3xl shadow-lg p-6 border border-slate-200">
 
-          <div className="bg-white shadow rounded-xl p-5">
+            <p className="text-lg font-semibold">
+              📍 Location
+            </p>
 
-            <p className="font-medium">📍 Location</p>
-            <p className="text-gray-600">
+            <p className="text-slate-500 mt-2">
               Bhubaneswar, India
             </p>
 
@@ -129,7 +360,9 @@ const ContactUs = () => {
       </div>
 
     </div>
-  )
-}
 
-export default ContactUs
+  );
+
+};
+
+export default ContactUs;

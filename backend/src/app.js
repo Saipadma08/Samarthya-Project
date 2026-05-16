@@ -8,6 +8,8 @@ const employeeRoutes = require("./routes/employee.routes");
 const employerRoutes = require("./routes/employer.routes");
 const adminRoutes = require("./routes/admin.routes");
 
+const contactRoutes = require("./routes/contact.routes");
+
 const complaintRoutes = require("./routes/complaint.routes");
 const connectionRoutes = require("./routes/connection.routes");
 const messageRoutes = require("./routes/message.routes");
@@ -36,6 +38,7 @@ app.use(cors({
 }));
 
 app.use('/api/auth', authRoutes)
+app.use("/api/contact", contactRoutes);
 app.use("/api/employee", employeeRoutes);
 app.use("/api/employer", employerRoutes);
 app.use("/api/admin", adminRoutes);

@@ -150,7 +150,7 @@ const App = () => {
           <Route path="search" element={<Search />} />
           <Route path="profile/:userId" element={<PublicProfile />} />
           <Route path="profile-view/:userId" element={<UserProfileView/>} />
-          <Route path="contacts" element={<Contacts  />} />
+           <Route path="/admin/contacts" element={<Contacts />}/>
 
         </Route>
       </Routes>

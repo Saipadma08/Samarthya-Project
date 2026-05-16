@@ -108,11 +108,7 @@ const BlockedAccounts = () => {
       <div>
 
           <h2
-          className="
-          text-2xl
-          font-semibold
-          mb-6
-          "
+          className="text-2xl font-semibold mb-6"
           >
 
               Blocked Accounts
