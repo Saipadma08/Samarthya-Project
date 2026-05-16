@@ -19,15 +19,17 @@ const Dashboard = () => {
 
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [dashboardData, setDashboardData] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/employee/profile-data", {
+    axios.get("http://localhost:3000/api/employee/dashboard", {
       withCredentials: true
     })
     .then((res) => {
       setUser(res.data.user);
       setProfile(res.data.profile);
+      setDashboardData(res.data);
       setLoading(false);
     })
     .catch((err) => {
@@ -130,11 +132,17 @@ const Dashboard = () => {
 
           <TrustScoreCard />
 
-          <SkillsCard />
+          <SkillsCard
+            skills={dashboardData.skills}
+          />
 
            <div className="lg:col-span-2">
-            <ActivityChart />
-          </div>
+           <ActivityChart
+              data={
+                dashboardData.weeklyData
+              }
+            />
+                      </div>
 
         </div>
 

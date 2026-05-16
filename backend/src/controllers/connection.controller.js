@@ -2,6 +2,10 @@ const Connection = require("../models/connection.model");
 const User = require("../models/user.model");
 const Block = require("../models/block.model");
 
+const Notification = require("../models/notification.model");
+
+const { io, getReceiverSocketId } = require("../socket/socket");
+
 function connectionController(req, res) {
   res.status(200).json({
     message: "Connection route protected successfully"
@@ -125,6 +129,45 @@ async function sendRequest(req, res) {
 
       });
 
+    const notification =
+
+      await Notification.create({
+
+        receiver: receiverId,
+
+        sender: senderId,
+
+        type: "connection_request",
+
+        text: "sent you a connection request"
+
+      });
+
+
+
+    const receiverSocket =
+
+      getReceiverSocketId(receiverId);
+
+
+    if (receiverSocket) {
+
+      io()
+
+        .to(receiverSocket)
+
+        .emit(
+
+          "newNotification",
+
+          notification
+
+        );
+
+    }
+
+
+
     res.status(201).json({
 
       message:
@@ -180,6 +223,46 @@ async function acceptRequest(req, res) {
     connection.status = "accepted";
 
     await connection.save();
+
+
+
+    const notification =
+
+      await Notification.create({
+
+        receiver: connection.senderId,
+
+        sender: userId,
+
+        type: "request_accepted",
+
+        text: "accepted your request"
+
+      });
+
+
+    const senderSocket =
+
+      getReceiverSocketId(connection.senderId);
+
+
+    if (senderSocket) {
+
+      io()
+
+        .to(senderSocket)
+
+        .emit(
+
+          "newNotification",
+
+          notification
+
+        );
+
+    }
+
+
 
     res.json({
 

@@ -665,33 +665,38 @@ hover:bg-gray-100
 
     return (
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-start">
+        <div className="flex flex-col lg:flex-row gap-2">
 
-        <button
+          <div>
+            <button
 
-          onClick={handleAccept}
+              onClick={handleAccept}
 
-          className="flex justify-center items-center bg-cyan-600 h-8 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-cyan-700"
+              className="flex justify-center items-center bg-cyan-600 h-8 w-20 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-cyan-700"
 
-        >
+            >
 
-          Accept
+              Accept
 
-        </button>
+            </button>
+          </div>
 
+          <div>
+            <button
 
+              onClick={handleReject}
 
-        <button
+              className="flex justify-center items-center bg-mist-700 h-8 w-20 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-mist-800"
 
-          onClick={handleReject}
+            >
 
-          className="flex justify-center items-center bg-mist-700 h-8 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-mist-800"
+              Reject
 
-        >
+            </button>
+          </div>
 
-          Reject
-
-        </button>
+        </div>
 
         {threeDotMenu}
 

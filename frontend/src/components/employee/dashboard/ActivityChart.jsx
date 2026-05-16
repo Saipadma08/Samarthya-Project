@@ -7,16 +7,9 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-const data = [
-  { day: "Mon", jobs: 1 },
-  { day: "Tue", jobs: 3 },
-  { day: "Wed", jobs: 2 },
-  { day: "Thu", jobs: 5 },
-  { day: "Fri", jobs: 4 },
-  { day: "Sat", jobs: 6 }
-];
-
-const ActivityChart = () => {
+const ActivityChart = ({
+  data = [],
+}) => {
 
   return (
 
@@ -34,7 +27,9 @@ const ActivityChart = () => {
         text-black
         mb-4
       ">
+
         Weekly Job Activity
+
       </h3>
 
       <div className="h-60">
@@ -66,9 +61,7 @@ const ActivityChart = () => {
       </div>
 
     </div>
-
   );
-
 };
 
 export default ActivityChart;

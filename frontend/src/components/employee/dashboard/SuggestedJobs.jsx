@@ -1,70 +1,151 @@
+import axios from "axios";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
 const SuggestedJobs = () => {
 
-  const jobs = [
-    { title: "Body painting", pay: "₹1500" },
-    { title: "Bridal Make-up", pay: "₹18000" },
-    { title: "Editorial/Print Make-up", pay: "₹6000" },
-  ];
+  const [
+    jobs,
+    setJobs,
+  ] = useState([]);
+
+  useEffect(() => {
+
+    fetchSuggestedJobs();
+
+  }, []);
+
+  const fetchSuggestedJobs =
+    async () => {
+
+      try {
+
+        const token =
+          localStorage.getItem("token");
+
+        const response =
+          await axios.get(
+
+            "http://localhost:3000/api/employee/dashboard",
+
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
+          );
+
+        setJobs(
+  response.data.suggestedJobs || []
+);
+
+      } catch (error) {
+
+        console.log(
+          error.response?.data ||
+          error.message
+        );
+      }
+    };
 
   return (
-    <div
-      className="
-        bg-white/85
-        backdrop-blur-md
-        rounded-2xl
-        shadow-lg
-        p-6
-        border border-blue-200
-      "
-    >
 
-      <h3 className="text-lg font-semibold text-black mb-4">
+    <div className="
+      bg-white
+      rounded-2xl
+      border
+      border-slate-200
+      p-6
+      shadow-sm
+    ">
+
+      <h2 className="
+        text-2xl
+        font-bold
+        mb-5
+      ">
+
         Suggested Jobs
-      </h3>
 
-      <div className="space-y-3">
+      </h2>
 
-        {jobs.map((job, index) => (
-          <div
-            key={index}
-            className="
-              flex justify-between items-center
-              bg-gradient-to-r
-              from-cyan-100
-              to-purple-200
-              p-3
-              rounded-xl
-            "
-          >
+      <div className="space-y-4">
 
-            <div>
+        {
+          jobs.length === 0
 
-              <p className="font-medium text-black">
-                {job.title}
-              </p>
+          ? (
 
-              <p className="text-sm text-blue-900">
-                {job.pay}
-              </p>
+            <p className="text-gray-500">
 
-            </div>
+              No suggested jobs found
 
-            <button
-              className="
-                bg-blue-700
-                text-white
-                px-4 py-1
-                rounded-lg
-                text-sm
-                hover:bg-blue-800
-                transition
-              "
-            >
-              Apply
-            </button>
+            </p>
+          )
 
-          </div>
-        ))}
+          : (
+
+            jobs.map((job) => (
+
+              <div
+                key={job._id}
+                className="
+                  bg-gradient-to-r
+                  from-cyan-50
+                  to-purple-100
+                  rounded-xl
+                  p-4
+                  flex
+                  justify-between
+                  items-center
+                "
+              >
+
+                <div>
+
+                  <h3 className="
+                    font-semibold
+                    text-lg
+                  ">
+
+                    {job.title}
+
+                  </h3>
+
+                  <p className="
+                    text-cyan-700
+                    text-sm
+                  ">
+
+                    ₹{job.payment}
+
+                  </p>
+
+                </div>
+
+                <button
+                  className="
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    px-4
+                    py-2
+                    rounded-lg
+                    text-sm
+                  "
+                >
+
+                  Apply
+
+                </button>
+
+              </div>
+            ))
+          )
+        }
 
       </div>
 

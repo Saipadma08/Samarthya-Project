@@ -5,7 +5,14 @@ import React, {
   useState,
 } from "react";
 
+import {
+  useNavigate
+} from "react-router-dom";
+
 const Applications = () => {
+
+ const navigate =
+    useNavigate();
 
   const [
     applications,
@@ -320,28 +327,28 @@ const Applications = () => {
                       </div>
 
                       <button
-                        onClick={() =>
-                          setSelectedApplication(
-                            item
-                          )
-                        }
-                        className="
-                          mt-5
-                          bg-cyan-600
-                          hover:bg-cyan-700
-                          text-white
-                          px-5
-                          py-2.5
-                          rounded-xl
-                          text-sm
-                          font-medium
-                          transition
-                        "
-                      >
+                      onClick={() =>
+                        navigate(
+                          `/employee/job/${item.job?._id}`
+                        )
+                      }
+                      className="
+                        mt-5
+                        bg-cyan-600
+                        hover:bg-cyan-700
+                        text-white
+                        px-5
+                        py-2.5
+                        rounded-xl
+                        text-sm
+                        font-medium
+                        transition
+                      "
+                    >
 
-                        View Details
+                      View Details
 
-                      </button>
+                    </button>
 
                     </div>
                   )
@@ -352,435 +359,10 @@ const Applications = () => {
           )
       }
 
-      {/* MODAL */}
-
-      {
-        selectedApplication && (
-
-          <div className="
-            fixed
-            inset-0
-            bg-black/40
-            z-50
-            flex
-            justify-center
-            items-center
-            p-3
-          ">
-
-            <div className="
-              bg-white
-              w-full
-              max-w-3xl
-              rounded-3xl
-              shadow-2xl
-              max-h-[92vh]
-              overflow-y-auto
-            ">
-
-              {/* TOP */}
-
-              <div className="
-                flex
-                justify-between
-                items-center
-                px-5
-                py-4
-                border-b
-                sticky
-                top-0
-                bg-white
-                z-20
-              ">
-
-                <h2 className="
-                  text-2xl
-                  font-bold
-                  text-slate-900
-                ">
-
-                  Application Details
-
-                </h2>
-
-                <button
-                  onClick={() =>
-                    setSelectedApplication(
-                      null
-                    )
-                  }
-                  className="
-                    text-3xl
-                    text-slate-500
-                    hover:text-red-500
-                  "
-                >
-
-                  ×
-
-                </button>
-
-              </div>
-
-              <div className="
-                p-5
-                space-y-4
-              ">
-
-                {/* JOB DETAILS */}
-
-                <div className="
-                  border
-                  rounded-2xl
-                  p-4
-                ">
-
-                  <h3 className="
-                    text-lg
-                    font-bold
-                    text-cyan-700
-                    mb-4
-                  ">
-
-                    Job Details
-
-                  </h3>
-
-                  <div className="
-                    grid
-                    grid-cols-2
-                    gap-4
-                    text-sm
-                  ">
-
-                    <p>
-
-                      <span className="font-semibold">
-
-                        Title:
-
-                      </span>
-
-                      {" "}
-
-                      {
-                        selectedApplication
-                        .job?.title
-                      }
-
-                    </p>
-
-                    <p>
-
-                      <span className="font-semibold">
-
-                        Payment:
-
-                      </span>
-
-                      {" "}
-
-                      ₹
-
-                      {
-                        selectedApplication
-                        .job?.payment
-                      }
-
-                    </p>
-
-                    <p>
-
-                      <span className="font-semibold">
-
-                        Location:
-
-                      </span>
-
-                      {" "}
-
-                      {
-                        selectedApplication
-                        .job?.location
-                      }
-
-                    </p>
-
-                    <p>
-
-                      <span className="font-semibold">
-
-                        Status:
-
-                      </span>
-
-                      {" "}
-
-                      {
-                        selectedApplication
-                        .status
-                      }
-
-                    </p>
-
-                  </div>
-
-                </div>
-
-                {/* EMPLOYER DETAILS */}
-
-                <div className="
-                  border
-                  rounded-2xl
-                  p-4
-                ">
-
-                  <div className="
-                    flex
-                    justify-between
-                    gap-4
-                    flex-wrap
-                  ">
-
-                    <div className="
-                      flex
-                      gap-4
-                    ">
-
-                      <img
-                        src={
-                          selectedApplication
-                            ?.employerProfileImage ||
-
-                          "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                        }
-
-                        alt="Employer"
-
-                        className="
-                          w-24
-                          h-24
-                          rounded-full
-                          object-cover
-                          border
-                        "
-                      />
-
-                      <div>
-
-                        <h3 className="
-                          text-2xl
-                          font-bold
-                          text-slate-900
-                        ">
-
-                          {
-                            selectedApplication
-                            .employerName
-                          }
-
-                        </h3>
-
-                        <p className="
-                          text-gray-500
-                          text-sm
-                          mt-1
-                        ">
-
-                          {
-                            selectedApplication
-                            .employerEmail
-                          }
-
-                        </p>
-
-                        <div className="
-                          mt-3
-                          text-sm
-                          space-y-1
-                        ">
-
-                          <p>
-
-                            <span className="font-semibold">
-
-                              Employer Type:
-
-                            </span>
-
-                            {" "}
-
-                            Independent
-
-                          </p>
-
-                          <p>
-
-                            <span className="font-semibold">
-
-                              Verified:
-
-                            </span>
-
-                            {" "}
-
-                            Yes
-
-                          </p>
-
-                          <p>
-
-                            <span className="font-semibold">
-
-                              Hiring Status:
-
-                            </span>
-
-                            {" "}
-
-                            Active
-
-                          </p>
-
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                    <button
-                      className="
-                        border
-                        border-cyan-500
-                        text-cyan-600
-                        hover:bg-cyan-50
-                        px-5
-                        py-2
-                        rounded-xl
-                        text-sm
-                        font-medium
-                        h-fit
-                      "
-                    >
-
-                      View Profile
-
-                    </button>
-
-                  </div>
-
-                </div>
-
-                {/* CONTACT */}
-
-                {
-                  selectedApplication
-                  .status ===
-                  "Accepted" && (
-
-                    <div className="
-                      bg-green-50
-                      border
-                      border-green-200
-                      rounded-2xl
-                      p-4
-                    ">
-
-                      <h3 className="
-                        text-lg
-                        font-bold
-                        text-green-700
-                        mb-3
-                      ">
-
-                        Contact Employer
-
-                      </h3>
-
-                      <div className="
-                        text-sm
-                        text-slate-700
-                        space-y-2
-                      ">
-
-                        <p>
-
-                          📧
-
-                          {" "}
-
-                          {
-                            selectedApplication
-                            .employerEmail
-                          }
-
-                        </p>
-
-                        <p>
-
-                          📞 Employer contact unlocked
-
-                        </p>
-
-                      </div>
-
-                      <div className="
-                        flex
-                        flex-wrap
-                        gap-3
-                        mt-4
-                      ">
-
-                        <button
-                          className="
-                            bg-cyan-600
-                            hover:bg-cyan-700
-                            text-white
-                            px-5
-                            py-2.5
-                            rounded-xl
-                            text-sm
-                            font-medium
-                          "
-                        >
-
-                          In-App Chat
-
-                        </button>
-
-                        <button
-                          className="
-                            bg-green-600
-                            hover:bg-green-700
-                            text-white
-                            px-5
-                            py-2.5
-                            rounded-xl
-                            text-sm
-                            font-medium
-                          "
-                        >
-
-                          Contact Employer
-
-                        </button>
-
-                      </div>
-
-                    </div>
-                  )
-                }
-
-              </div>
-
-            </div>
-
-          </div>
-        )
-      }
-
-    </div>
+       </div>
   );
 };
+
+              
 
 export default Applications;
