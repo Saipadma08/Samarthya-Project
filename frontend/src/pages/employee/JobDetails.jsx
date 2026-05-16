@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState
+} from "react";
 
 import axios from "axios";
+
 import {
   toast
 } from "react-toastify";
 
-
 import {
   useNavigate,
-  useParams
+  useParams,
+  useLocation
 } from "react-router-dom";
 
 import {
@@ -32,21 +36,44 @@ const OverviewItem = ({
   value
 }) => (
 
-  <div className="flex items-center justify-between border-b border-gray-100 py-2">
+  <div className="
+    flex
+    items-center
+    justify-between
+    border-b
+    border-gray-100
+    py-2
+  ">
 
-    <div className="flex items-center gap-2 text-gray-500">
+    <div className="
+      flex
+      items-center
+      gap-2
+      text-gray-500
+    ">
 
-      <div className="text-[#119dc7] scale-90">
+      <div className="
+        text-[#119dc7]
+        scale-90
+      ">
         {icon}
       </div>
 
-      <span className="text-[11px] sm:text-[12px]">
+      <span className="
+        text-[11px]
+        sm:text-[12px]
+      ">
         {label}
       </span>
 
     </div>
 
-    <span className="text-[12px] sm:text-[13px] font-semibold text-[#07143b]">
+    <span className="
+      text-[12px]
+      sm:text-[13px]
+      font-semibold
+      text-[#07143b]
+    ">
       {value}
     </span>
 
@@ -55,176 +82,273 @@ const OverviewItem = ({
 
 const JobDetails = () => {
 
-  const { jobId } = useParams();
+  const navigate =
+    useNavigate();
 
-  const navigate = useNavigate();
+  const location =
+    useLocation();
 
-  const [job, setJob] = useState(null);
+  const { jobId } =
+    useParams();
 
-  const [loading, setLoading] = useState(true);
+  const [job, setJob] =
+    useState(null);
 
-  const [saved, setSaved] = useState(false);
+  const [loading, setLoading] =
+    useState(true);
+
+  const [saved, setSaved] =
+    useState(false);
+
+  const [
+    applicationStatus,
+    setApplicationStatus
+  ] = useState(null);
+
+  const [
+    applicationId,
+    setApplicationId
+  ] = useState(null);
 
   useEffect(() => {
 
     fetchJob();
 
+    fetchApplicationStatus();
+
   }, [jobId]);
 
-  const fetchJob = async () => {
+  const fetchJob =
+    async () => {
 
-    try {
+      try {
 
-      const response = await axios.get(
-        `http://localhost:3000/api/postedjobs/${jobId}`,
-        {
-          withCredentials: true
-        }
-      );
+        const response =
+          await axios.get(
 
-      setJob(response.data.job);
+            `http://localhost:3000/api/postedjobs/${jobId}`,
 
-    } catch (error) {
+            {
+              withCredentials: true
+            }
+          );
 
-      console.log(error);
+        setJob(
+          response.data.job
+        );
 
-    } finally {
+      } catch (error) {
 
-      setLoading(false);
+        console.log(error);
 
-    }
-  };
+      } finally {
 
-  const handleApply = async () => {
-
-  try {
-
-    const token =
-      localStorage.getItem("token");
-
-    if (!token) {
-
-      toast.error(
-        "Please login first"
-      );
-
-      return;
-    }
-
-    await axios.post(
-
-      "http://localhost:3000/api/applications/apply",
-
-      {
-        jobId: job._id
-      },
-
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        setLoading(false);
       }
-    );
+    };
 
-    toast.success(
-      "Applied successfully!"
-    );
+  const fetchApplicationStatus =
+    async () => {
 
-  } catch (error) {
+      try {
 
-    console.log(error);
+        const token =
+          localStorage.getItem("token");
 
-    toast.error(
+        const response =
+          await axios.get(
 
-      error?.response?.data
-        ?.message ||
+            `http://localhost:3000/api/applications/status/${jobId}`,
 
-      "Failed to apply"
-    );
-  }
-}; 
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`
+              }
+            }
+          );
 
-  const handleSaveJob = async () => {
+        if (
+          response.data.application
+        ) {
 
-  try {
+          setApplicationStatus(
+            response.data.application.status
+          );
 
-    const token =
-      localStorage.getItem("token");
-
-    if (!token) {
-
-      toast.error(
-        "Please login first"
-      );
-
-      return;
-    }
-
-    await axios.post(
-
-      "http://localhost:3000/api/savedjobs/save",
-
-      {
-        jobId: job._id
-      },
-
-      {
-        headers: {
-          Authorization:
-            `Bearer ${token}`
+          setApplicationId(
+            response.data.application._id
+          );
         }
+
+      } catch (error) {
+
+        console.log(error);
       }
-    );
+    };
 
-    setSaved(true);
+  const handleApply =
+    async () => {
 
-    toast.success(
-      "Job saved successfully"
-    );
+      try {
 
-  } catch (error) {
+        const token =
+          localStorage.getItem("token");
 
-    console.log(error);
+        await axios.post(
 
-    toast.error(
+          "http://localhost:3000/api/applications/apply",
 
-      error?.response?.data
-        ?.message ||
+          {
+            jobId: job._id
+          },
 
-      "Failed to save job"
-    );
-  }
-};
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+        );
 
-  const handleShare = async () => {
+        toast.success(
+          "Applied successfully"
+        );
 
-    try {
+        fetchApplicationStatus();
 
-      await navigator.share({
+      } catch (error) {
 
-        title: job.title,
+        console.log(error);
 
-        text: job.description,
+        toast.error(
 
-        url: window.location.href
+          error?.response?.data
+            ?.message ||
 
-      });
+          "Failed to apply"
+        );
+      }
+    };
 
-    } catch (error) {
+  const handleSaveJob =
+    async () => {
 
-      console.log(error);
+      try {
 
-    }
-  };
+        const token =
+          localStorage.getItem("token");
+
+        await axios.post(
+
+          "http://localhost:3000/api/savedjobs/save",
+
+          {
+            jobId: job._id
+          },
+
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+        );
+
+        setSaved(true);
+
+        toast.success(
+          "Job saved successfully"
+        );
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Failed to save job"
+        );
+      }
+    };
+
+  const handleShare =
+    async () => {
+
+      try {
+
+        await navigator.share({
+
+          title: job.title,
+
+          text: job.description,
+
+          url: window.location.href
+        });
+
+      } catch (error) {
+
+        console.log(error);
+      }
+    };
+
+  const handleMarkCompleted =
+    async () => {
+
+      try {
+
+        const token =
+          localStorage.getItem("token");
+
+        await axios.patch(
+
+          "http://localhost:3000/api/applications/complete",
+
+          {
+            applicationId
+          },
+
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+        );
+
+        setApplicationStatus(
+          "Completed"
+        );
+
+        toast.success(
+          "Work marked as completed"
+        );
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Failed to update status"
+        );
+      }
+    };
 
   if (loading) {
 
     return (
 
-      <div className="min-h-screen flex items-center justify-center text-lg font-semibold">
-        Loading...
-      </div>
+      <div className="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        text-lg
+        font-semibold
+      ">
 
+        Loading...
+
+      </div>
     );
   }
 
@@ -232,88 +356,208 @@ const JobDetails = () => {
 
     return (
 
-      <div className="min-h-screen flex items-center justify-center text-red-500 text-xl font-semibold">
-        Job not found
-      </div>
+      <div className="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        text-red-500
+        text-xl
+        font-semibold
+      ">
 
+        Job not found
+
+      </div>
     );
   }
 
   return (
 
-    <div className="bg-[#f5f7fb] min-h-screen px-2 sm:px-4 py-3">
+    <div className="
+      bg-[#f5f7fb]
+      min-h-screen
+      px-2
+      sm:px-4
+      py-3
+    ">
 
       {/* BACK */}
 
       <button
-        onClick={() => navigate("/employee/find-jobs")}
-        className="flex items-center gap-2 text-[#1798c1] text-[12px] sm:text-[13px] font-medium mb-3"
+
+        onClick={() => {
+
+          if (
+            location.state?.from ===
+            "applications"
+          ) {
+
+            navigate(
+              "/employee/applications"
+            );
+
+          } else {
+
+            navigate(
+              "/employee/find-jobs"
+            );
+          }
+        }}
+
+        className="
+          flex
+          items-center
+          gap-2
+          text-[#1798c1]
+          text-[12px]
+          sm:text-[13px]
+          font-medium
+          mb-3
+        "
       >
+
         ← Back to Jobs
+
       </button>
 
       {/* GRID */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+      <div className="
+        grid
+        grid-cols-1
+        lg:grid-cols-12
+        gap-3
+      ">
 
         {/* LEFT */}
 
-        <div className="lg:col-span-8 flex flex-col gap-3">
+        <div className="
+          lg:col-span-8
+          flex
+          flex-col
+          gap-3
+        ">
 
-          {/* MAIN CARD */}
+          {/* MAIN */}
 
-          <div className="bg-white rounded-[20px] border border-gray-100 p-4 sm:p-5 shadow-sm">
+          <div className="
+            bg-white
+            rounded-[20px]
+            border
+            border-gray-100
+            p-4
+            sm:p-5
+            shadow-sm
+          ">
 
-            <div className="flex flex-col lg:flex-row justify-between gap-5">
+            <div className="
+              flex
+              flex-col
+              lg:flex-row
+              justify-between
+              gap-5
+            ">
 
-              {/* LEFT INFO */}
+              {/* INFO */}
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="
+                flex
+                flex-col
+                sm:flex-row
+                gap-4
+              ">
 
-                {/* ICON */}
+                <div className="
+                  w-24
+                  h-24
+                  rounded-[20px]
+                  bg-cyan-100
+                  flex
+                  items-center
+                  justify-center
+                ">
 
-                <div className="w-24 h-24 rounded-[20px] bg-cyan-100 flex items-center justify-center shrink-0">
-
-                  <BriefcaseBusiness className="w-10 h-10 text-cyan-700" />
+                  <BriefcaseBusiness
+                    className="
+                      w-10
+                      h-10
+                      text-cyan-700
+                    "
+                  />
 
                 </div>
 
-                {/* TEXT */}
-
                 <div>
 
-                  <h1 className="text-[22px] sm:text-[28px] lg:text-[34px] leading-tight font-bold text-[#07143b]">
+                  <h1 className="
+                    text-[22px]
+                    sm:text-[30px]
+                    font-bold
+                    text-[#07143b]
+                  ">
+
                     {job.title}
+
                   </h1>
 
-                  <p className="text-[13px] sm:text-[15px] text-gray-600 mt-2">
-                    {job.companyName || "Independent Employer"}
+                  <p className="
+                    text-gray-600
+                    mt-2
+                  ">
+
+                    {
+                      job.companyName ||
+
+                      "Independent Employer"
+                    }
+
                   </p>
 
-                  <p className="text-[12px] sm:text-[13px] text-gray-500 mt-1">
+                  <div className="
+                    flex
+                    flex-wrap
+                    gap-2
+                    mt-4
+                  ">
 
-                    Posted by{" "}
+                    <span className="
+                      px-3
+                      py-1
+                      rounded-full
+                      text-[11px]
+                      bg-green-100
+                      text-green-700
+                    ">
 
-                    <span className="font-semibold text-gray-700">
-                      {job.employerName || "Employer"}
-                    </span>
-
-                  </p>
-
-                  {/* TAGS */}
-
-                  <div className="flex flex-wrap gap-2 mt-4">
-
-                    <span className="px-3 py-1.25 rounded-full text-[11px] font-medium bg-green-100 text-green-700">
                       {job.status}
+
                     </span>
 
-                    <span className="px-3 py-1.25 rounded-full text-[11px] font-medium bg-yellow-100 text-yellow-700">
+                    <span className="
+                      px-3
+                      py-1
+                      rounded-full
+                      text-[11px]
+                      bg-yellow-100
+                      text-yellow-700
+                    ">
+
                       {job.jobType}
+
                     </span>
 
-                    <span className="px-3 py-1.25 rounded-full text-[11px] font-medium bg-purple-100 text-purple-700">
+                    <span className="
+                      px-3
+                      py-1
+                      rounded-full
+                      text-[11px]
+                      bg-purple-100
+                      text-purple-700
+                    ">
+
                       {job.urgency}
+
                     </span>
 
                   </div>
@@ -324,40 +568,99 @@ const JobDetails = () => {
 
               {/* BUTTONS */}
 
-              <div className="flex flex-col gap-2 w-full lg:w-50">
-
-                <button
-                    onClick={handleApply}
-                    className="h-11.5 lg:h-13 rounded-2xl bg-[#119dc7] text-white text-[15px] lg:text-[18px] font-semibold hover:bg-[#0e8cb2] transition"
-                    >
-                    Apply Now
-                    </button>
-
-               <button
-                onClick={handleSaveJob}
-                className={`w-full h-10.5 rounded-[14px] border text-[14px] font-semibold transition flex items-center justify-center gap-2 ${
-                    saved
-                    ? "bg-[#e6f7fd] border-[#119dc7] text-[#119dc7]"
-                    : "border-[#119dc7] text-[#119dc7] hover:bg-[#f2fbfe]"
-                }`}
-                >
-
-                <Bookmark size={18} />
+              <div className="
+                flex
+                flex-col
+                gap-2
+                w-full
+                lg:w-52
+              ">
 
                 {
+                  applicationStatus ? (
+
+                    <button
+                      disabled
+                      className="
+                        h-12
+                        rounded-2xl
+                        bg-green-600
+                        text-white
+                        font-semibold
+                      "
+                    >
+
+                      {applicationStatus}
+
+                    </button>
+
+                  ) : (
+
+                    <button
+
+                      onClick={handleApply}
+
+                      className="
+                        h-12
+                        rounded-2xl
+                        bg-[#119dc7]
+                        text-white
+                        font-semibold
+                      "
+                    >
+
+                      Apply Now
+
+                    </button>
+                  )
+                }
+
+                <button
+
+                  onClick={handleSaveJob}
+
+                  className="
+                    h-11
+                    rounded-xl
+                    border
+                    border-[#119dc7]
+                    text-[#119dc7]
+                    font-semibold
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                  "
+                >
+
+                  <Bookmark size={18} />
+
+                  {
                     saved
                     ? "Saved"
                     : "Save"
-                }
+                  }
 
                 </button>
 
                 <button
+
                   onClick={handleShare}
-                  className="h-11.5 lg:h-13 rounded-2xl border border-gray-300 text-[#111827] text-[15px] lg:text-[18px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-50 transition"
+
+                  className="
+                    h-11
+                    rounded-xl
+                    border
+                    border-gray-300
+                    font-semibold
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                  "
                 >
 
-                  <Share2 className="w-5 h-5" />
+                  <Share2 size={18} />
 
                   Share
 
@@ -371,53 +674,93 @@ const JobDetails = () => {
 
             <div className="mt-6">
 
-              <h2 className="text-[15px] sm:text-[16px] font-bold text-[#07143b] mb-2">
+              <h2 className="
+                text-[16px]
+                font-bold
+                mb-2
+              ">
+
                 About This Job
+
               </h2>
 
-              <p className="text-[13px] sm:text-[14px] text-gray-600 leading-6">
+              <p className="
+                text-gray-600
+              ">
+
                 {job.description}
+
               </p>
 
             </div>
 
-            {/* REQUIRED SKILLS */}
+            {/* SKILLS */}
 
-            <div className="border-t border-gray-100 pt-4 mt-4">
+            <div className="
+              border-t
+              border-gray-100
+              pt-4
+              mt-4
+            ">
 
-              <h2 className="text-[15px] sm:text-[16px] font-semibold text-[#07143b] mb-3">
+              <h2 className="
+                text-[16px]
+                font-semibold
+                mb-3
+              ">
+
                 Required Skills
+
               </h2>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="
+                flex
+                flex-wrap
+                gap-2
+              ">
 
-                {Array.isArray(job.skills) &&
-                job.skills.length > 0 ? (
+                {
+                  Array.isArray(job.skills)
 
-                  job.skills.map((skill, index) => (
+                  ? (
 
-                    <span
-                      key={index}
-                      className="px-3 py-1 rounded-full bg-cyan-50 text-[#119dc7] text-[11px] font-medium"
-                    >
-                      {skill}
+                    job.skills.map(
+                      (skill, index) => (
+
+                        <span
+                          key={index}
+                          className="
+                            px-3
+                            py-1
+                            rounded-full
+                            bg-cyan-50
+                            text-[#119dc7]
+                            text-[11px]
+                          "
+                        >
+
+                          {skill}
+
+                        </span>
+                      )
+                    )
+
+                  ) : (
+
+                    <span className="
+                      px-3
+                      py-1
+                      rounded-full
+                      bg-cyan-50
+                      text-[#119dc7]
+                      text-[11px]
+                    ">
+
+                      {job.skills}
+
                     </span>
-
-                  ))
-
-                ) : typeof job.skills === "string" ? (
-
-                  <span className="px-3 py-1 rounded-full bg-cyan-50 text-[#119dc7] text-[11px] font-medium">
-                    {job.skills}
-                  </span>
-
-                ) : (
-
-                  <span className="text-[12px] text-gray-400">
-                    No skills specified
-                  </span>
-
-                )}
+                  )
+                }
 
               </div>
 
@@ -427,150 +770,300 @@ const JobDetails = () => {
 
           {/* EMPLOYER DETAILS */}
 
-          <div className="bg-white rounded-[20px] border border-gray-100 p-4 sm:p-5 shadow-sm">
+          <div className="
+            bg-white
+            rounded-[20px]
+            border
+            border-gray-100
+            p-5
+            shadow-sm
+          ">
 
-            <div className="flex items-start gap-4">
+            <h2 className="
+              text-[18px]
+              font-bold
+              mb-4
+            ">
 
-              <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center shrink-0">
+              Employer Details
 
-                <Building2 className="w-7 h-7 text-purple-700" />
+            </h2>
+
+            <div className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              gap-4
+            ">
+
+              <div>
+
+                <p className="
+                  text-gray-500
+                  text-sm
+                ">
+
+                  Employer Name
+
+                </p>
+
+                <p className="
+                  font-semibold
+                ">
+
+                  {
+                    job.employerName ||
+
+                    "Employer"
+                  }
+
+                </p>
 
               </div>
 
-              <div className="w-full">
+              <div>
 
-                <h2 className="text-[16px] sm:text-[18px] font-bold text-[#07143b] mb-4">
-                  Employer Details
-                </h2>
+                <p className="
+                  text-gray-500
+                  text-sm
+                ">
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  Company Name
 
-                  <div>
+                </p>
 
-                    <p className="text-[11px] sm:text-[12px] text-gray-500 mb-1">
-                      Employer Name
-                    </p>
+                <p className="
+                  font-semibold
+                ">
 
-                    <p className="text-[14px] sm:text-[15px] font-semibold text-[#07143b]">
-                      {job.employerName || "Employer"}
-                    </p>
+                  {
+                    job.companyName ||
 
-                  </div>
+                    "Independent Employer"
+                  }
 
-                  <div>
-
-                    <p className="text-[11px] sm:text-[12px] text-gray-500 mb-1">
-                      Company Name
-                    </p>
-
-                    <p className="text-[14px] sm:text-[15px] font-semibold text-[#07143b]">
-                      {job.companyName || "Independent Employer"}
-                    </p>
-
-                  </div>
-
-                </div>
+                </p>
 
               </div>
 
             </div>
 
           </div>
+
+          <button
+
+  onClick={() =>
+
+    toast.info(
+      "Employer profile feature coming soon"
+    )
+  }
+
+  className="
+    mt-5
+    w-full
+    border
+    border-cyan-500
+    text-cyan-700
+    hover:bg-cyan-50
+    py-3
+    rounded-xl
+    font-semibold
+    transition
+  "
+>
+
+  View Employer Profile
+
+</button>
+
+          {/* CONTACT SECTION */}
+
+          {
+            applicationStatus ===
+            "Accepted" && (
+
+              <div className="
+                bg-green-50
+                rounded-[20px]
+                border
+                border-green-200
+                p-5
+                shadow-sm
+              ">
+
+                <h2 className="
+                  text-[18px]
+                  font-bold
+                  text-green-700
+                  mb-3
+                ">
+
+                  Employer Contact Unlocked
+
+                </h2>
+
+                <p className="
+                  text-gray-600
+                  mb-4
+                ">
+
+                  Your application
+                  was accepted.
+
+                </p>
+
+                <div className="
+                  flex
+                  flex-col
+                  sm:flex-row
+                  gap-3
+                ">
+
+                  <button
+                    className="
+                      bg-cyan-600
+                      hover:bg-cyan-700
+                      text-white
+                      px-4
+                      py-3
+                      rounded-xl
+                      font-semibold
+                    "
+                  >
+
+                    In-App Chat
+
+                  </button>
+
+                  <button
+                    className="
+                      bg-green-600
+                      hover:bg-green-700
+                      text-white
+                      px-4
+                      py-3
+                      rounded-xl
+                      font-semibold
+                    "
+                  >
+
+                    Contact Employer
+
+                  </button>
+
+                </div>
+
+                {
+                  applicationStatus !==
+                  "Completed" && (
+
+                    <button
+
+                      onClick={
+                        handleMarkCompleted
+                      }
+
+                      className="
+                        mt-4
+                        w-full
+                        bg-blue-600
+                        hover:bg-blue-700
+                        text-white
+                        py-3
+                        rounded-xl
+                        font-semibold
+                      "
+                    >
+
+                      Mark Work Completed
+
+                    </button>
+                  )
+                }
+
+              </div>
+            )
+          }
 
         </div>
 
         {/* RIGHT */}
 
-        <div className="lg:col-span-4 flex flex-col gap-3">
+        <div className="
+          lg:col-span-4
+        ">
 
-          {/* OVERVIEW */}
+          <div className="
+            bg-white
+            rounded-[20px]
+            border
+            border-gray-100
+            p-4
+            shadow-sm
+          ">
 
-          <div className="bg-white rounded-[20px] border border-gray-100 p-4 shadow-sm">
+            <h2 className="
+              text-[18px]
+              font-bold
+              mb-3
+            ">
 
-            <h2 className="text-[16px] lg:text-[18px] font-bold text-[#07143b] mb-3">
               Job Overview
+
             </h2>
 
-            <div className="space-y-2">
+            <OverviewItem
+              icon={<IndianRupee size={18} />}
+              label="Payment"
+              value={`₹${job.payment}`}
+            />
 
-              <OverviewItem
-                icon={<IndianRupee size={18} />}
-                label="Payment"
-                value={`₹${job.salary || job.payment || 3000}`}
-              />
+            <OverviewItem
+              icon={<MapPin size={18} />}
+              label="Location"
+              value={job.location}
+            />
 
-              <OverviewItem
-                icon={<MapPin size={18} />}
-                label="Location"
-                value={job.location}
-              />
+            <OverviewItem
+              icon={<Users size={18} />}
+              label="Workers Needed"
+              value={job.workersNeeded}
+            />
 
-              <OverviewItem
-                icon={<Users size={18} />}
-                label="Workers Needed"
-                value={job.workersNeeded}
-              />
+            <OverviewItem
+              icon={<Clock3 size={18} />}
+              label="Category"
+              value={job.category}
+            />
 
-              <OverviewItem
-                icon={<Clock3 size={18} />}
-                label="Category"
-                value={job.category}
-              />
+            <OverviewItem
+              icon={<Briefcase size={18} />}
+              label="Job Type"
+              value={job.jobType}
+            />
 
-              <OverviewItem
-                icon={<Briefcase size={18} />}
-                label="Job Type"
-                value={job.jobType}
-              />
+            <OverviewItem
+              icon={<Clock size={18} />}
+              label="Urgency"
+              value={job.urgency}
+            />
 
-              <OverviewItem
-                icon={<Clock size={18} />}
-                label="Urgency"
-                value={job.urgency}
-              />
+            <OverviewItem
+              icon={<BadgeCheck size={18} />}
+              label="Status"
+              value={job.status}
+            />
 
-              <OverviewItem
-                icon={<BadgeCheck size={18} />}
-                label="Status"
-                value={job.status}
-              />
-
-              <OverviewItem
-                icon={<Calendar size={18} />}
-                label="Posted On"
-                value={new Date(job.createdAt).toLocaleDateString()}
-              />
-
-            </div>
-
-          </div>
-
-          {/* ABOUT EMPLOYER */}
-
-          <div className="bg-white rounded-[20px] border border-gray-100 p-4 shadow-sm">
-
-            <h2 className="text-[16px] sm:text-[17px] font-bold text-[#07143b] mb-2">
-              About the Employer
-            </h2>
-
-            <p className="text-[12px] text-gray-500 leading-5">
-
-              This job is posted by an individual /
-              organization looking to hire skilled
-              professionals.
-
-            </p>
-
-            <button
-  onClick={() =>
-    toast.info(
-      "Employer profile feature coming soon"
-    )
-  }
-  className="mt-4 h-10.5 w-full rounded-xl border border-[#119dc7] text-[#119dc7] text-[13px] sm:text-[14px] font-semibold hover:bg-cyan-50 transition"
->
-  View Employer Profile
-</button>
+            <OverviewItem
+              icon={<Calendar size={18} />}
+              label="Posted On"
+              value={
+                new Date(
+                  job.createdAt
+                ).toLocaleDateString()
+              }
+            />
 
           </div>
 
