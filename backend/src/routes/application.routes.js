@@ -18,9 +18,17 @@ const {
 
   updateApplicationStatus,
 
+  getApplicationStatus,
+
+  markApplicationCompleted,
+
 } = require(
   "../controllers/application.controller"
 );
+
+
+
+// APPLY JOB
 
 router.post(
 
@@ -31,6 +39,10 @@ router.post(
   applyForJob
 );
 
+
+
+// EMPLOYEE APPLICATIONS
+
 router.get(
 
   "/employee",
@@ -39,6 +51,10 @@ router.get(
 
   getEmployeeApplications
 );
+
+
+
+// EMPLOYER APPLICATIONS
 
 router.get(
 
@@ -49,6 +65,10 @@ router.get(
   getEmployerApplicants
 );
 
+
+
+// UPDATE STATUS
+
 router.patch(
 
   "/status/:applicationId",
@@ -56,6 +76,32 @@ router.patch(
   authMiddleware,
 
   updateApplicationStatus
+);
+
+
+
+// GET APPLICATION STATUS
+
+router.get(
+
+  "/status/:jobId",
+
+  authMiddleware,
+
+  getApplicationStatus
+);
+
+
+
+// MARK COMPLETED
+
+router.patch(
+
+  "/complete",
+
+  authMiddleware,
+
+  markApplicationCompleted
 );
 
 module.exports = router;
