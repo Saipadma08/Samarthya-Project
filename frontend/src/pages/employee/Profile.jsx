@@ -30,7 +30,7 @@ const Profile = () => {
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <ProfilePage
         currentUser={user}
         user={user}
