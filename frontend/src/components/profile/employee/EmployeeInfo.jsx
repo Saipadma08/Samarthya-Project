@@ -17,7 +17,7 @@ const EmployeeInfo = ({user, profile}) => {
 
         {/* Category */}
         <p className="text-gray-600 text-sm lg:text-md">
-          Category: {profile?.category || "Not specified"}
+          Gender: {profile?.gender || "Not specified"}
         </p>
 
         {/* Location */}
