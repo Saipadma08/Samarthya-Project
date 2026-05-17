@@ -22,10 +22,6 @@ const EmployerInfo = ({user, profile}) => {
             </p>
 
             <p className="text-gray-600 text-sm lg:text-md">
-                Gender: {profile?.gender || "Not specified"}
-            </p>
-
-            <p className="text-gray-600 text-sm lg:text-md">
                 Location: {profile?.location || "Not specified"}
             </p>
 

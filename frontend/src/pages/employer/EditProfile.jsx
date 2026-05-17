@@ -38,7 +38,6 @@ const EditProfile = () => {
     name: "",
     employerType: "",
     companyName: "",
-    gender: "",
     location: "",
     phone: "",
     about: "",
@@ -70,7 +69,6 @@ const EditProfile = () => {
         name: user?.name || "",
         employerType: profile?.employerType || "",
         companyName: profile?.companyName || "",
-        gender: profile?.gender || "",
         location: profile?.location || "",
         phone: profile?.phone || "",
         about: profile?.about || "",
@@ -292,26 +290,6 @@ const EditProfile = () => {
               onChange={handleChange}
               className="input"
             />
-          </div>
-
-          <div>
-            <label>Gender</label>
-
-            <select
-              name="gender"
-              value={form.gender}
-              onChange={handleChange}
-              className="input"
-            >
-
-              <option value="">Select Gender</option>
-
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="transgender">Transgender</option>
-              <option value="other">Other</option>
-
-            </select>
           </div>
 
         </div>

@@ -137,7 +137,6 @@ async function updateProfile(req, res) {
       employerType,
       companyName,
       location,
-      gender,
       phone,
       about,
       jobCategories
@@ -174,7 +173,6 @@ async function updateProfile(req, res) {
           employerType,
           companyName: finalCompanyName,
           location,
-          gender,
           phone,
           about,
           jobCategories: parsedCategories,
