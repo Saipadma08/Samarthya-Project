@@ -27,6 +27,12 @@ import ScrollToTop from './components/scrollTop/ScrollToTop';
 
 import NotificationsPage from './pages/notifications/NotificationsPage';
 
+import MessagesLayout from './pages/messages/MessagesLayout';
+
+import MyConnectionsPage from './pages/messages/MyConnectionsPage';
+
+import AdminList from './pages/messages/AdminList'
+
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
 // ✅ Employee pages
@@ -37,7 +43,6 @@ import EmployeeApplications from './pages/employee/Applications'
 import EmployeeComplaint from './pages/employee/Complaint'
 import EmployeeConnections from './pages/employee/Connections'
 import EmployeeFindJobs from './pages/employee/FindJobs'
-import EmployeeMessages from './pages/employee/Messages'
 import EmployeeTrustScore from './pages/employee/TrustScore'
 import EmployeeWorkHistory from './pages/employee/WorkHistory'
 import JobDetails from "./pages/employee/JobDetails";
@@ -51,7 +56,6 @@ import EmployerEditProfile from './pages/employer/EditProfile'
 import EmployerPostJob from './pages/employer/PostJob'
 import EmployerMyJobs from './pages/employer/MyJobs'
 import EmployerApplicants from './pages/employer/Applicants'
-import EmployerMessages from './pages/employer/Messages'
 import EmployerConnections from './pages/employer/Connections'
 import EmployerComplaint from './pages/employer/Complaint'
 import ApplicantsPage from "./pages/employer/ApplicantsPage";
@@ -62,7 +66,6 @@ import AdminDashboard from './pages/admin/Dashboard'
 import AddAdmin from './pages/admin/AddAdmin'
 import AdminUsers from './pages/admin/Users'
 import AdminJobs from './pages/admin/Jobs'
-import AdminMessages from './pages/admin/Messages'
 import AdminReports from './pages/admin/Reports'
 import AdminEditData from './pages/admin/EditData';
 import Contacts from './pages/admin/Contacts';
@@ -100,7 +103,6 @@ const App = () => {
             <Route path="complaint" element={<EmployeeComplaint />} />
             <Route path="connections" element={<EmployeeConnections />} />
             <Route path="find-jobs" element={<EmployeeFindJobs />} />
-            <Route path="messages" element={<EmployeeMessages  />} />
             <Route path="settings" element={<Settings />} />
             <Route path="trust-score" element={<EmployeeTrustScore />} />
             <Route path="work-history" element={<EmployeeWorkHistory />} />
@@ -109,6 +111,9 @@ const App = () => {
             <Route path="profile/:userId" element={<PublicProfile />} />
             <Route path="profile-view/:userId" element={<UserProfileView/>} />
             <Route path="notifications" element={<NotificationsPage/>} />
+            <Route path="messages" element={<MessagesLayout/>} />
+            <Route path="my-connections" element={<MyConnectionsPage/>} />
+
 
 
             <Route path="/employee/job/:jobId" element={<JobDetails />} />
@@ -127,7 +132,6 @@ const App = () => {
             <Route path="post-job" element={<EmployerPostJob />} />
             <Route path="posted-jobs" element={<EmployerMyJobs />} />
             <Route path="applicants" element={<EmployerApplicants />} />
-            <Route path="messages" element={<EmployerMessages />} />
             <Route path="connections" element={<EmployerConnections />} />
             <Route path="settings" element={<Settings />} />
             <Route path="complaint" element={<EmployerComplaint />} />
@@ -137,6 +141,9 @@ const App = () => {
             <Route path="profile-view/:userId" element={<UserProfileView/>} />
             <Route path="view-applicants" element={<ApplicantsPage />} />
             <Route path="notifications" element={<NotificationsPage/>} />
+            <Route path="messages" element={<MessagesLayout/>} />
+            <Route path="my-connections" element={<MyConnectionsPage/>} />
+
 
           </Route>
 
@@ -148,7 +155,6 @@ const App = () => {
             <Route path='add-admin' element={<AddAdmin />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="jobs" element={<AdminJobs />} />
-            <Route path="messages" element={<AdminMessages  />} />
             <Route path="reports" element={<AdminReports />} />
             <Route path="settings" element={<Settings />} />
             <Route path="edit-data" element={<AdminEditData />} />
@@ -156,6 +162,8 @@ const App = () => {
             <Route path="profile/:userId" element={<PublicProfile />} />
             <Route path="profile-view/:userId" element={<UserProfileView/>} />
             <Route path="contacts" element={<Contacts  />} />
+            <Route path="messages" element={<MessagesLayout/>} />
+            <Route path="all-admins" element={<AdminList/>}/>
 
           </Route>
         </Routes>

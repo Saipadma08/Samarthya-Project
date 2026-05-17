@@ -36,7 +36,6 @@ const EditProfile = () => {
 
   const [form, setForm] = useState({
     name: "",
-    email: "",
     employerType: "",
     companyName: "",
     location: "",
@@ -68,7 +67,6 @@ const EditProfile = () => {
 
       setForm({
         name: user?.name || "",
-        email: user?.email || "",
         employerType: profile?.employerType || "",
         companyName: profile?.companyName || "",
         location: profile?.location || "",
@@ -271,16 +269,6 @@ const EditProfile = () => {
             />
           </div>
 
-          <div>
-            <label>Email</label>
-
-            <input
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="input"
-            />
-          </div>
 
           <div>
             <label>Phone</label>
@@ -337,6 +325,29 @@ const EditProfile = () => {
 
         </div>
 
+        {/* COMPANY NAME */}
+        {form.employerType === "Company" && (
+
+          <div>
+
+            <label>
+              Company Name
+            </label>
+
+            <input
+              name="companyName"
+              value={form.companyName}
+              onChange={handleChange}
+              placeholder="Enter company name"
+              className="input"
+              required
+            />
+
+          </div>
+
+        )}
+
+
         {/* JOB CATEGORIES */}
         <div>
 
@@ -364,26 +375,6 @@ const EditProfile = () => {
 
         </div>
 
-        {/* COMPANY NAME */}
-        {form.employerType === "Company" && (
-
-          <div>
-
-            <label>
-              Company Name
-            </label>
-
-            <input
-              name="companyName"
-              value={form.companyName}
-              onChange={handleChange}
-              placeholder="Enter company name"
-              className="input"
-            />
-
-          </div>
-
-        )}
 
         {/* ABOUT */}
         <textarea

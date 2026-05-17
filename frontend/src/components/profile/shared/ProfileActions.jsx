@@ -747,16 +747,25 @@ hover:bg-gray-100
     return (
       <div className="flex gap-2">
 
-        <button
+        <Link
+          to={`/${currentUser.role}/messages`}
+
+          state={{
+              user:{
+                  _id:viewedUser._id,
+                  name:viewedUser.name,
+                  profileImage:viewedUser.profileImage
+              }
+          }}
 
           className="
-        flex items-center gap-2
-        bg-sky-500
-        text-white
-        rounded-md px-4 py-2
-        hover:cursor-pointer
-        hover:bg-sky-600
-        "
+          flex items-center gap-2
+          bg-sky-500
+          text-white
+          rounded-md px-4 py-2
+          hover:cursor-pointer
+          hover:bg-sky-600
+          "
 
         >
 
@@ -764,7 +773,7 @@ hover:bg-gray-100
 
           <FiMessageCircle />
 
-        </button>
+        </Link>
 
         {threeDotMenu}
       </div>

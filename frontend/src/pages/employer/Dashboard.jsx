@@ -1,11 +1,13 @@
 import React from "react";
 import DashboardIntro from "../../components/employer/dashboard/DashboardIntro";
-import CompleteProfile from "../../components/employer/dashboard/CompleteProfile";
+import CompleteProfile from "../../components/shared/CompleteProfile";
 import Stats from "../../components/employer/dashboard/Stats";
 import ProfileCard from "../../components/employer/dashboard/ProfileCard";
 import QuickActions from "../../components/employer/dashboard/QuickActions";
 import RecentJobs from "../../components/employer/dashboard/RecentJobs";
 import RecentApplicants from "../../components/employer/dashboard/RecentApplicants";
+
+import {calculateEmployerProfileCompletion} from "../../utils/employerProfileCompletion";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -33,6 +35,8 @@ const Dashboard = () => {
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
+  const completion = calculateEmployerProfileCompletion(user, profile);
+
   return (
     <div className="w-full">
 
@@ -50,7 +54,11 @@ const Dashboard = () => {
 
           {/* Complete profile */}
           <div>
-            <CompleteProfile/>
+            <CompleteProfile
+              completion={completion}
+              editLink="/employer/edit-profile"
+              message="Add company details, categories and hiring information."
+            />
           </div>
           
 

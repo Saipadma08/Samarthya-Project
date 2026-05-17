@@ -9,12 +9,12 @@ export const SocketContext = createContext();
 const SocketProvider =
     ({ children }) => {
 
-        const user =JSON.parse( localStorage.getItem("user"));
+        const user = JSON.parse(localStorage.getItem("user"));
 
 
         useEffect(() => {
 
-            if (user) {
+            if (user?.id) {
 
                 socket.emit(
                     "join",
@@ -23,7 +23,7 @@ const SocketProvider =
 
             }
 
-        }, []);
+        }, [user?.id]);
 
 
         return (

@@ -1,51 +1,94 @@
 const User = require("../models/user.model");
-const EmployeeProfile = require("../models/employeeProfile.model");
-const EmployerProfile = require("../models/employerProfile.model");
+const EmployeeProfile =
+require("../models/employeeProfile.model");
 
-async function getPublicProfile(req, res) {
+const EmployerProfile =
+require("../models/employerProfile.model");
 
-  try {
+const PostedJob =
+require("../models/postedJob.model");
 
-    const { userId } = req.params;
+const Application =
+require("../models/application.model");
 
-    const user = await User.findById(userId)
-      .select("name email role profileImage isVerified");
 
-    if (!user) {
+async function getPublicProfile(req,res){
+
+ try{
+
+   const { userId } =
+   req.params;
+
+   const user =
+   await User.findById(userId)
+   .select(
+     "name email role profileImage isVerified"
+   );
+
+   if(!user){
+
       return res.status(404).json({
-        message: "User not found"
+         message:"User not found"
       });
-    }
+   }
 
-    let profile = null;
+   let profile = null;
 
-    if (user.role === "employee") {
+   if(user.role==="employee"){
 
-      profile = await EmployeeProfile.findOne({ userId });
+      profile =
+      await EmployeeProfile.findOne({
+         userId
+      });
 
-    } else if (user.role === "employer") {
+   }
 
-      profile = await EmployerProfile.findOne({ userId });
+   else if(user.role==="employer"){
 
-    }
+      profile =
+      await EmployerProfile.findOne({
+         userId
+      });
 
-    res.json({
+      // NEW
+      const jobsPosted =
+      await PostedJob.countDocuments({
+
+         employerId:userId
+      });
+
+      const workersHired =
+      await Application.countDocuments({
+
+         employerId:userId,
+
+         status:"Accepted"
+      });
+
+      profile = {
+
+         ...profile?._doc,
+
+         jobsPosted,
+         workersHired
+      };
+   }
+
+   res.json({
       user,
       profile
-    });
+   });
 
-  } catch (err) {
+ }catch(err){
 
-    console.log(err);
+   console.log(err);
 
-    res.status(500).json({
-      message: "Server error"
-    });
-
-  }
-
+   res.status(500).json({
+      message:"Server error"
+   });
+ }
 }
 
-module.exports = {
-  getPublicProfile
+module.exports={
+   getPublicProfile
 };

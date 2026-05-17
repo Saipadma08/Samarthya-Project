@@ -1,13 +1,13 @@
 import React from "react";
 import { useState } from "react";
 
-import MyConnections
-    from "../../components/connections/MyConnections";
+import MyConnections from "../../components/connections/MyConnections";
 
-import Requests
-    from "../../components/connections/Requests";
+import Requests from "../../components/connections/Requests";
 
 const ConnectionsPage = () => {
+
+    
 
     const [activeTab, setActiveTab]
         =

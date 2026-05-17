@@ -16,6 +16,8 @@ router.post('/logout', authController.logoutUser)
 
 router.get('/me', authMiddleware, authController.getCurrentUser)  //for profile menu
 
+router.get("/admins", authMiddleware, authController.getAllAdmins);
+
 router.post("/forgot-password", authController.forgotPassword);
 
 router.post("/reset-password", authController.resetPassword);

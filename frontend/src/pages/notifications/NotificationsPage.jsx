@@ -257,27 +257,16 @@ const NotificationsPage = () => {
                                 className={`
 
                                 border-b
-                                border-b-cyan-500
+                                border-b-cyan-600
                                 rounded-md
-                                shadow-neutral-300
+                                shadow-neutral-200
                                 shadow-sm
                                 p-4
-                                mb-3
+                                mb-5
                                 cursor-pointer
+                                text-sm lg:text-md
 
-                                ${
-
-                                    !n.read
-
-                                        ?
-
-                                        "bg-blue-50"
-
-                                        :
-
-                                        "bg-white"
-
-                                }
+                                ${!n.read ? "bg-blue-50" : "bg-white"}
 
                                 `}
 
@@ -317,17 +306,13 @@ const NotificationsPage = () => {
 
                                             <b>
 
-                                                {
-                                                    n.sender?.name
-                                                }
+                                                {n.sender?.name}
 
                                             </b>
 
                                             {" "}
 
-                                            {
-                                                n.text
-                                            }
+                                            {n.text}
 
                                         </p>
 

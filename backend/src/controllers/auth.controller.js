@@ -651,6 +651,40 @@ async function verifyEmailChangeOtp(req, res) {
 
 }
 
+
+async function getAllAdmins(req,res){
+
+    try{
+
+        const admins=
+        await userModel.find({
+
+            role:"admin"
+
+        })
+        .select(
+        "_id name profileImage role"
+        );
+
+        res.status(200).json(
+            admins
+        );
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        res.status(500).json({
+            message:
+            "Server error"
+        });
+
+    }
+
+}
+
 module.exports = { 
     registerUser, 
     verifyOtp, 
@@ -662,5 +696,6 @@ module.exports = {
     resetPassword, 
     changePassword,
     requestEmailChange,
-    verifyEmailChangeOtp
+    verifyEmailChangeOtp,
+    getAllAdmins
  }

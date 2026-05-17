@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FiMessageCircle, FiUser, FiMoreVertical } from "react-icons/fi";
 
+
 const MyConnections = () => {
 
   const [connections, setConnections] = useState([]);
@@ -273,7 +274,16 @@ const MyConnections = () => {
                   </Link>
 
 
-                  <button
+                  <Link
+
+                    to={`/${currentUser.role}/messages`}
+                    state={{
+                        user:{
+                            _id:otherUser._id,
+                            name:otherUser.name,
+                            profileImage:otherUser.profileImage
+                        }
+                    }}
 
                     className=" flex justify-center gap-1 items-center bg-sky-500 h-8 text-white text-sm px-4 py-2 rounded hover:cursor-pointer hover:bg-sky-600 "
 
@@ -281,7 +291,7 @@ const MyConnections = () => {
 
                     <div className="hidden sm:block">Message</div> <FiMessageCircle />
 
-                  </button>
+                  </Link>
 
                   <div className="relative">
 

@@ -11,11 +11,15 @@ const About = () => {
 
         <div className="mb-10">
 
-           <h1 className="text-4xl font-extrabold text-slate-800 mb-3">
-
-         About Samarthya
-
-        </h1>
+          <h1
+            className="
+            text-4xl sm:text-5xl
+            font-extrabold leading-normal
+            bg-linear-to-r from-cyan-600 via-blue-600 to-violet-600 bg-clip-text text-transparent mb-5
+          "
+          >
+            About Samarthya
+          </h1>
 
           <p className="text-slate-600 text-lg leading-relaxed max-w-5xl">
 
@@ -63,7 +67,7 @@ const About = () => {
 
         <div
           className="
-          bg-gradient-to-r
+          bg-linear-to-r
           from-cyan-600
           to-blue-700
           rounded-3xl
@@ -314,7 +318,7 @@ const About = () => {
         <div
           className="
           text-center
-          bg-gradient-to-r
+          bg-linear-to-r
           from-violet-600
           to-blue-700
           rounded-3xl
