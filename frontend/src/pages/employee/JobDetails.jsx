@@ -637,8 +637,8 @@ const JobDetails = () => {
 
                   {
                     saved
-                    ? "Saved"
-                    : "Save"
+                      ? "Saved"
+                      : "Save"
                   }
 
                 </button>
@@ -722,14 +722,14 @@ const JobDetails = () => {
                 {
                   Array.isArray(job.skills)
 
-                  ? (
+                    ? (
 
-                    job.skills.map(
-                      (skill, index) => (
+                      job.skills.map(
+                        (skill, index) => (
 
-                        <span
-                          key={index}
-                          className="
+                          <span
+                            key={index}
+                            className="
                             px-3
                             py-1
                             rounded-full
@@ -737,17 +737,17 @@ const JobDetails = () => {
                             text-[#119dc7]
                             text-[11px]
                           "
-                        >
+                          >
 
-                          {skill}
+                            {skill}
 
-                        </span>
+                          </span>
+                        )
                       )
-                    )
 
-                  ) : (
+                    ) : (
 
-                    <span className="
+                      <span className="
                       px-3
                       py-1
                       rounded-full
@@ -756,10 +756,10 @@ const JobDetails = () => {
                       text-[11px]
                     ">
 
-                      {job.skills}
+                        {job.skills}
 
-                    </span>
-                  )
+                      </span>
+                    )
                 }
 
               </div>
@@ -771,111 +771,115 @@ const JobDetails = () => {
           {/* EMPLOYER DETAILS */}
 
           <div className="
-            bg-white
-            rounded-[20px]
-            border
-            border-gray-100
-            p-5
-            shadow-sm
-          ">
+  flex flex-col
+  items-center
+  gap-4
+  bg-white
+  p-5 
+  shadow-md shadow-gray-200
+  rounded-md
+">
 
-            <h2 className="
-              text-[18px]
-              font-bold
-              mb-4
-            ">
-
-              Employer Details
-
-            </h2>
+  <p className="text-cyan-600 font-medium text-2xl mb-5">Employer Details</p>
 
             <div className="
-              grid
-              grid-cols-1
-              sm:grid-cols-2
-              gap-4
-            ">
+    w-28
+    h-36
+    rounded-xl
+    overflow-hidden
+    
+    shrink-0
+  ">
 
-              <div>
+              <img
+                src={
+                  job?.employerImage ||
+                  "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_22_22%20AM.png?updatedAt=177809745761"
+                }
 
-                <p className="
-                  text-gray-500
-                  text-sm
-                ">
+                alt="Employer"
 
-                  Employer Name
-
-                </p>
-
-                <p className="
-                  font-semibold
-                ">
-
-                  {
-                    job.employerName ||
-
-                    "Employer"
-                  }
-
-                </p>
-
-              </div>
-
-              <div>
-
-                <p className="
-                  text-gray-500
-                  text-sm
-                ">
-
-                  Company Name
-
-                </p>
-
-                <p className="
-                  font-semibold
-                ">
-
-                  {
-                    job.companyName ||
-
-                    "Independent Employer"
-                  }
-
-                </p>
-
-              </div>
+                className="
+        w-full
+        h-full
+        object-cover
+      "
+              />
 
             </div>
 
+            <div className="flex-1">
+
+              <p className="
+      text-gray-500
+      text-sm
+    ">
+                Employer Name
+              </p>
+
+              <p className="font-semibold mb-3">
+                {job.employerName}
+              </p>
+
+              <p className="
+      text-gray-500
+      text-sm
+      mt-2
+    ">
+                Company Name
+              </p>
+
+              <p className="font-semibold mb-1">
+                {
+                  job.companyName ||
+                  "Independent Employer"
+                }
+              </p>
+
+
+              <p className="
+      text-gray-500
+      text-sm
+      mt-2
+    ">
+                Email
+              </p>
+
+              <p className="font-semibold mb-5">
+                {
+                  job.employerEmail
+                }
+              </p>
+
+
+
+            </div>
+
+            <button
+              onClick={() =>
+                navigate(
+                  `/employee/profile-view/${job.employerId}`
+                )
+              }
+
+              className="
+      px-4
+      py-2
+      border
+      border-cyan-500
+      text-cyan-700
+      hover:bg-cyan-50
+      rounded-xl
+      font-semibold
+      transition
+    "
+            >
+              View Profile
+            </button>
+
           </div>
 
-          <button
 
-  onClick={() =>
-
-    toast.info(
-      "Employer profile feature coming soon"
-    )
-  }
-
-  className="
-    mt-5
-    w-full
-    border
-    border-cyan-500
-    text-cyan-700
-    hover:bg-cyan-50
-    py-3
-    rounded-xl
-    font-semibold
-    transition
-  "
->
-
-  View Employer Profile
-
-</button>
 
           {/* CONTACT SECTION */}
 

@@ -7,8 +7,22 @@ const EmployerInfo = ({user, profile}) => {
                 {user?.name || "Your Name"}
             </p>
 
+            {/* show only if company selected */}
+            {
+                profile?.employerType === "Company" &&
+                profile?.companyName && (
+                <p className="text-cyan-700 text-sm lg:text-md font-medium">
+                    {profile.companyName}
+                </p>
+                )
+            }
+
             <p className="text-sm lg:text-md font-semibold text-gray-700">
                 Employer • {profile?.employerType || "Type unspecified"}
+            </p>
+
+            <p className="text-gray-600 text-sm lg:text-md">
+                Gender: {profile?.gender || "Not specified"}
             </p>
 
             <p className="text-gray-600 text-sm lg:text-md">

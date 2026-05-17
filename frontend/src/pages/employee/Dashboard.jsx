@@ -1,5 +1,5 @@
 import DashboardIntro from "../../components/employee/dashboard/DashboardIntro";
-import CompleteProfile from "../../components/employee/dashboard/CompleteProfile";
+import CompleteProfile from "../../components/shared/CompleteProfile"
 import ProfileCard from "../../components/employee/dashboard/ProfileCard";
 import StatsCard from "../../components/employee/dashboard/StatsCard";
 
@@ -64,7 +64,11 @@ const Dashboard = () => {
 
             {/* Complete profile desktop view */}
             <div className="hidden sm:block">
-              <CompleteProfile completion={completion}/>
+              <CompleteProfile 
+                completion={completion}
+                editLink="/employee/edit-profile"
+                message="Add skills, certifications, links and work details."
+              />
             </div>
 
           </div>

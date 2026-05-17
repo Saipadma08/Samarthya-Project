@@ -20,6 +20,8 @@ const employerProfileSchema = new mongoose.Schema({
 
   location: String,
 
+  gender: String,
+
   phone: String,
 
   about: String,

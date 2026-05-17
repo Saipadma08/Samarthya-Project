@@ -36,9 +36,9 @@ const EditProfile = () => {
 
   const [form, setForm] = useState({
     name: "",
-    email: "",
     employerType: "",
     companyName: "",
+    gender: "",
     location: "",
     phone: "",
     about: "",
@@ -68,9 +68,9 @@ const EditProfile = () => {
 
       setForm({
         name: user?.name || "",
-        email: user?.email || "",
         employerType: profile?.employerType || "",
         companyName: profile?.companyName || "",
+        gender: profile?.gender || "",
         location: profile?.location || "",
         phone: profile?.phone || "",
         about: profile?.about || "",
@@ -271,16 +271,6 @@ const EditProfile = () => {
             />
           </div>
 
-          <div>
-            <label>Email</label>
-
-            <input
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="input"
-            />
-          </div>
 
           <div>
             <label>Phone</label>
@@ -302,6 +292,26 @@ const EditProfile = () => {
               onChange={handleChange}
               className="input"
             />
+          </div>
+
+          <div>
+            <label>Gender</label>
+
+            <select
+              name="gender"
+              value={form.gender}
+              onChange={handleChange}
+              className="input"
+            >
+
+              <option value="">Select Gender</option>
+
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="transgender">Transgender</option>
+              <option value="other">Other</option>
+
+            </select>
           </div>
 
         </div>
@@ -337,6 +347,29 @@ const EditProfile = () => {
 
         </div>
 
+        {/* COMPANY NAME */}
+        {form.employerType === "Company" && (
+
+          <div>
+
+            <label>
+              Company Name
+            </label>
+
+            <input
+              name="companyName"
+              value={form.companyName}
+              onChange={handleChange}
+              placeholder="Enter company name"
+              className="input"
+              required
+            />
+
+          </div>
+
+        )}
+
+
         {/* JOB CATEGORIES */}
         <div>
 
@@ -364,26 +397,6 @@ const EditProfile = () => {
 
         </div>
 
-        {/* COMPANY NAME */}
-        {form.employerType === "Company" && (
-
-          <div>
-
-            <label>
-              Company Name
-            </label>
-
-            <input
-              name="companyName"
-              value={form.companyName}
-              onChange={handleChange}
-              placeholder="Enter company name"
-              className="input"
-            />
-
-          </div>
-
-        )}
 
         {/* ABOUT */}
         <textarea

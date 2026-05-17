@@ -2,6 +2,9 @@ const User = require("../models/user.model");
 const EmployerProfile = require("../models/employerProfile.model");
 const uploadFile = require("../services/storage.service");
 
+const PostedJob = require("../models/postedJob.model");
+const Application = require("../models/application.model");
+
 async function employerProfileController(req, res) {
   try {
     res.status(200).json({
@@ -17,17 +20,41 @@ async function employerProfileController(req, res) {
 
 // GET profile
 async function getProfile(req, res) {
+
   try {
+
     const userId = req.user.id;
 
     const user = await User.findById(userId)
       .select("name email profileImage isVerified role");
 
-    const profile = await EmployerProfile.findOne({ userId });
+    const profile =
+      await EmployerProfile.findOne({ userId });
+
+    // count jobs posted
+    const jobsPosted =
+      await PostedJob.countDocuments({
+        employerId: userId
+      });
+
+    // count workers hired
+    const workersHired =
+      await Application.countDocuments({
+        employerId: userId,
+        status: "Accepted"
+      });
+
+    // attach calculated values
+    const profileData = {
+      ...profile?._doc,
+
+      jobsPosted,
+      workersHired
+    };
 
     res.json({
       user,
-      profile
+      profile: profileData
     });
 
   } catch (err) {
@@ -37,6 +64,7 @@ async function getProfile(req, res) {
     res.status(500).json({
       message: "Server error"
     });
+
   }
 }
 
@@ -106,10 +134,10 @@ async function updateProfile(req, res) {
 
     const {
       name,
-      email,
       employerType,
       companyName,
       location,
+      gender,
       phone,
       about,
       jobCategories
@@ -118,7 +146,6 @@ async function updateProfile(req, res) {
     // 🔹 Update USERS collection
     await User.findByIdAndUpdate(userId, {
       name,
-      email,
       ...(profileImageUrl && {
         profileImage: profileImageUrl
       })
@@ -147,6 +174,7 @@ async function updateProfile(req, res) {
           employerType,
           companyName: finalCompanyName,
           location,
+          gender,
           phone,
           about,
           jobCategories: parsedCategories,

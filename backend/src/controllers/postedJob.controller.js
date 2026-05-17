@@ -349,7 +349,7 @@ const getAllJobsForEmployees =
     }
   };
 
-  const getSingleJob = async (
+const getSingleJob = async (
   req,
   res
 ) => {
@@ -374,6 +374,8 @@ const getAllJobsForEmployees =
     const employer =
       await User.findById(
         job.employerId
+      ).select(
+        "name email profileImage"
       );
 
     const employerProfile =
@@ -390,6 +392,12 @@ const getAllJobsForEmployees =
       employerName:
         employer?.name ||
         "Employer",
+
+      employerImage:
+        employer?.profileImage,
+
+      employerEmail:
+        employer?.email,
 
       companyName:
         employerProfile
