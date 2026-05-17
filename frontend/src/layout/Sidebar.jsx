@@ -12,13 +12,14 @@ import {
   FiUsers,
   FiSettings,
   FiClock,
-  FiStar,
+  FiBookmark,
   FiAlertCircle,
   FiPlusSquare,
   FiBarChart2,
   FiMenu,
   FiX,
-  FiMail
+  FiMail,
+  FiGrid 
 } from "react-icons/fi";
 
 import Logo from "../assets/logo-4.png";
@@ -32,13 +33,13 @@ const Sidebar = ({ collapsed, setCollapsed, role }) => {
     employee: [
       { name: "Home", path: "/employee/dashboard", icon: <FiHome /> },
       { name: "Profile", path: "/employee/profile", icon: <FiUser /> },
+      { name: "Feeds", path: "/employee/feeds", icon: <FiGrid /> },
       { name: "Find Jobs", path: "/employee/find-jobs", icon: <FiBriefcase /> },
-      { name: "Saved Jobs", path: "/employee/saved-jobs", icon: <FiStar /> },
+      { name: "Saved Jobs", path: "/employee/saved-jobs", icon: <FiBookmark /> },
       { name: "Applications", path: "/employee/applications", icon: <FiBriefcase /> },
       { name: "Messages", path: "/employee/messages", icon: <FiMessageSquare /> },
       { name: "Connections", path: "/employee/connections", icon: <FiUsers /> },
       { name: "Work History", path: "/employee/work-history", icon: <FiClock /> },
-      { name: "Trust Score", path: "/employee/trust-score", icon: <FiStar /> },
       { name: "Complaint", path: "/employee/complaint", icon: <FiAlertCircle /> },
       { name: "Settings", path: "/employee/settings", icon: <FiSettings /> },
     ],
@@ -46,6 +47,7 @@ const Sidebar = ({ collapsed, setCollapsed, role }) => {
     employer: [
       { name: "Home", path: "/employer/dashboard", icon: <FiHome /> },
       { name: "Profile", path: "/employer/profile", icon: <FiUser /> },
+      { name: "Feeds", path: "/employer/feeds", icon: <FiGrid /> },
       { name: "Post Job", path: "/employer/post-job", icon: <FiPlusSquare /> },
       { name: "My Jobs", path: "/employer/posted-jobs", icon: <FiBriefcase /> },
       { name: "Applicants", path: "/employer/applicants", icon: <FiUsers /> },
