@@ -172,6 +172,10 @@ const JobDetails = () => {
           response.data.application
         ) {
 
+          console.log(
+response.data.application.status
+);
+
           setApplicationStatus(
             response.data.application.status
           );
@@ -297,40 +301,61 @@ const JobDetails = () => {
       try {
 
         const token =
-          localStorage.getItem("token");
+          localStorage.getItem(
+            "token"
+          );
 
         await axios.patch(
 
           "http://localhost:3000/api/applications/complete",
 
           {
-            applicationId
+
+            jobId
+
           },
 
           {
+
             headers: {
+
               Authorization:
                 `Bearer ${token}`
+
             }
+
           }
+
         );
+
 
         setApplicationStatus(
-          "Completed"
+
+          "Completion Requested"
+
         );
+
 
         toast.success(
-          "Work marked as completed"
+
+          "Verification request sent"
+
         );
 
-      } catch (error) {
+      }
+
+      catch (error) {
 
         console.log(error);
 
         toast.error(
-          "Failed to update status"
+
+          "Failed to send request"
+
         );
+
       }
+
     };
 
   if (loading) {
@@ -780,7 +805,7 @@ const JobDetails = () => {
   rounded-md
 ">
 
-  <p className="text-cyan-600 font-medium text-2xl mb-5">Employer Details</p>
+            <p className="text-cyan-600 font-medium text-2xl mb-5">Employer Details</p>
 
             <div className="
     w-28
@@ -881,114 +906,113 @@ const JobDetails = () => {
 
 
 
-          {/* CONTACT SECTION */}
 
           {
-            applicationStatus ===
-            "Accepted" && (
 
-              <div className="
-                bg-green-50
-                rounded-[20px]
-                border
-                border-green-200
-                p-5
-                shadow-sm
-              ">
+            applicationStatus === "In Progress"
 
-                <h2 className="
-                  text-[18px]
-                  font-bold
-                  text-green-700
-                  mb-3
-                ">
+            &&
 
-                  Employer Contact Unlocked
+            <div
+              className="
+bg-green-50
+rounded-[20px]
+border
+border-green-200
+p-5
+shadow-sm
+"
+            >
 
-                </h2>
+              <p
+                className="
+text-gray-600
+mb-4
+"
+              >
 
-                <p className="
-                  text-gray-600
-                  mb-4
-                ">
+                Work is in progress
 
-                  Your application
-                  was accepted.
+              </p>
 
-                </p>
 
-                <div className="
-                  flex
-                  flex-col
-                  sm:flex-row
-                  gap-3
-                ">
+              <button
 
-                  <button
-                    className="
-                      bg-cyan-600
-                      hover:bg-cyan-700
-                      text-white
-                      px-4
-                      py-3
-                      rounded-xl
-                      font-semibold
-                    "
-                  >
-
-                    In-App Chat
-
-                  </button>
-
-                  <button
-                    className="
-                      bg-green-600
-                      hover:bg-green-700
-                      text-white
-                      px-4
-                      py-3
-                      rounded-xl
-                      font-semibold
-                    "
-                  >
-
-                    Contact Employer
-
-                  </button>
-
-                </div>
-
-                {
-                  applicationStatus !==
-                  "Completed" && (
-
-                    <button
-
-                      onClick={
-                        handleMarkCompleted
-                      }
-
-                      className="
-                        mt-4
-                        w-full
-                        bg-blue-600
-                        hover:bg-blue-700
-                        text-white
-                        py-3
-                        rounded-xl
-                        font-semibold
-                      "
-                    >
-
-                      Mark Work Completed
-
-                    </button>
-                  )
+                onClick={
+                  handleMarkCompleted
                 }
 
-              </div>
-            )
+                className="
+mt-4
+w-full
+bg-blue-600
+hover:bg-blue-700
+text-white
+py-3
+rounded-xl
+font-semibold
+"
+
+              >
+
+                Mark Work Completed
+
+              </button>
+
+            </div>
+
           }
+
+
+          {
+
+            applicationStatus ===
+            "Completion Requested"
+
+            &&
+
+            <div
+              className="
+bg-yellow-50
+border
+border-yellow-200
+rounded-xl
+p-5
+"
+            >
+
+              ⏳ Waiting for employer verification
+
+            </div>
+
+          }
+
+
+
+          {
+
+            applicationStatus ===
+            "Completed"
+
+            &&
+
+            <div
+              className="
+bg-emerald-50
+border
+border-emerald-200
+rounded-xl
+p-5
+"
+            >
+
+              ✅ Work completed and verified
+
+            </div>
+
+          }
+
+
 
         </div>
 

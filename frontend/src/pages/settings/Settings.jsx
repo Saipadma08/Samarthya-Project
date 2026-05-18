@@ -10,6 +10,13 @@ const Settings = () => {
 
     const [activeTab, setActiveTab] = useState("password");
 
+    const user =
+        JSON.parse(
+            localStorage.getItem(
+                "user"
+            )
+        );
+
     return (
         <div className="flex flex-col lg:flex-row gap-5 h-full">
             {/* desktop view-left & mobile view-top */}
@@ -36,16 +43,47 @@ const Settings = () => {
                     Change Email
                 </button>
 
-                <button
-                    onClick={() => setActiveTab("blocked-accounts")}
-                    className={`p-2 rounded-lg transition h-10 shadow-sm shadow-gray-300
-                    ${activeTab === "blocked-accounts"
-                            ? "bg-cyan-600 text-white"
-                            : "bg-white text-black hover:bg-gray-100"}
+                {
+
+                    user?.role !==
+                    "admin"
+
+                    &&
+
+                    <button
+
+                    onClick={()=>
+                    setActiveTab(
+                    "blocked-accounts"
+                    )
+                    }
+
+                    className={`
+                    p-2
+                    rounded-lg
+
+                    ${
+                    activeTab===
+                    "blocked-accounts"
+
+                    ?
+
+                    "bg-cyan-600 text-white"
+
+                    :
+
+                    "bg-white"
+                    }
+
                     `}
-                >
+
+                    >
+
                     Blocked Accounts
-                </button>
+
+                    </button>
+
+                }
 
                 <button
                     onClick={() => setActiveTab("delete-account")}
@@ -76,7 +114,7 @@ const Settings = () => {
                 }
                 {
                     activeTab === "blocked-accounts" &&
-                    <BlockedAccounts/>
+                    <BlockedAccounts />
                 }
             </div>
         </div>

@@ -104,7 +104,7 @@ const UserPostsPage=()=>{
             "
             >
 
-                My Posts
+                Posts
 
             </h1>
 

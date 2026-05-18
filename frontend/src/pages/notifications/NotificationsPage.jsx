@@ -4,7 +4,7 @@ import React,
     useState,
     useRef
 }
-from "react";
+    from "react";
 
 import { Link } from "react-router-dom";
 
@@ -46,7 +46,7 @@ const NotificationsPage = () => {
 
 
     async function
-    fetchNotifications() {
+        fetchNotifications() {
 
         try {
 
@@ -78,7 +78,7 @@ const NotificationsPage = () => {
 
 
     async function
-    markRead(id) {
+        markRead(id) {
 
         try {
 
@@ -197,6 +197,44 @@ const NotificationsPage = () => {
 
 
 
+    const getNotificationLink =
+        (notification) => {
+
+            switch (
+            notification.type
+            ) {
+
+                case
+                    "job_completion_request":
+
+                    return
+                    "/employer/applicants";
+
+
+                case
+                    "job_completion_verified":
+
+                    return
+                    "/employee/applications";
+
+
+                case
+                    "job_completion_denied":
+
+                    return
+                    "/employee/applications";
+
+
+                default:
+
+                    return `/${role}/profile-view/${notification.sender?._id}`;
+
+            }
+
+        };
+
+
+
     return (
 
         <div
@@ -224,37 +262,37 @@ const NotificationsPage = () => {
             {notifications.length === 0
                 ?
 
-                    <p>
-                        No notifications
-                    </p>
+                <p>
+                    No notifications
+                </p>
 
                 :
 
-                    notifications.map(n => (
+                notifications.map(n => (
 
-                        <Link
+                    <Link
 
-                            key={n._id}
+                        key={n._id}
 
-                            to={`/${role}/profile-view/${n.sender?._id}`}
+                        to={getNotificationLink(n)}
 
-                        >
+                    >
 
-                            <div
+                        <div
 
-                                ref={
-                                    notificationRef
-                                }
+                            ref={
+                                notificationRef
+                            }
 
-                                data-id={
-                                    n._id
-                                }
+                            data-id={
+                                n._id
+                            }
 
-                                data-read={
-                                    n.read
-                                }
+                            data-read={
+                                n.read
+                            }
 
-                                className={`
+                            className={`
 
                                 border-b
                                 border-b-cyan-600
@@ -270,83 +308,83 @@ const NotificationsPage = () => {
 
                                 `}
 
-                            >
+                        >
 
-                                <div
-                                    className="
+                            <div
+                                className="
                                     flex
                                     items-center
                                     gap-3
                                     "
-                                >
+                            >
 
-                                    <img
+                                <img
 
-                                        src={
+                                    src={
 
-                                            n.sender?.profileImage ||
+                                        n.sender?.profileImage ||
 
-                                            "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_17_32%20AM-resized.PNG"
+                                        "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_17_32%20AM-resized.PNG"
 
-                                        }
+                                    }
 
-                                        className="
+                                    className="
                                         w-11
                                         h-11
                                         rounded-full
                                         "
 
-                                    />
+                                />
 
 
 
-                                    <div>
+                                <div>
 
-                                        <p>
+                                    <p>
 
-                                            <b>
+                                        <b>
 
-                                                {n.sender?.name}
+                                            {n.sender?.name}
 
-                                            </b>
+                                        </b>
 
-                                            {" "}
+                                        {" "}
 
-                                            {n.text}
+                                        {n.text}
 
-                                        </p>
+                                    </p>
 
 
-                                        <p
-                                            className="
+                                    <p
+                                        className="
                                             text-xs
                                             text-gray-500
                                             "
-                                        >
+                                    >
 
-                                            {
+                                        {
 
-                                                new Date(
+                                            new Date(
 
-                                                    n.createdAt
+                                                n.createdAt
 
-                                                )
+                                            )
 
-                                                    .toLocaleString()
+                                                .toLocaleString()
 
-                                            }
+                                        }
 
-                                        </p>
-
-                                    </div>
+                                    </p>
 
                                 </div>
 
                             </div>
 
-                        </Link>
+                        </div>
 
-                    ))
+                    </Link>
+
+                ))
 
             }
 

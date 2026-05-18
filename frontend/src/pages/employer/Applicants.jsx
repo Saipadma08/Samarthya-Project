@@ -117,6 +117,97 @@ const Applicants = () => {
     );
   }
 
+
+  const verifyCompletion =
+    async (id) => {
+
+      try {
+
+        await axios.patch(
+
+          `http://localhost:3000/api/applications/verify-completion/${id}`,
+
+          {},
+
+          {
+            withCredentials: true
+          }
+
+        );
+
+        toast.success(
+          "Work verified"
+        );
+
+        fetchApplicants();
+
+        setSelectedApplicant(
+          null
+        );
+
+      }
+
+      catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Verification failed"
+        );
+
+      }
+
+    };
+
+
+
+  const denyCompletion =
+    async (id) => {
+
+      try {
+
+        await axios.patch(
+
+          `http://localhost:3000/api/applications/deny-completion/${id}`,
+
+          {},
+
+          {
+            withCredentials: true
+          }
+
+        );
+
+        toast.success(
+          "Completion denied"
+        );
+
+        fetchApplicants();
+
+        setSelectedApplicant(
+          null
+        );
+
+      }
+
+      catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Failed"
+        );
+
+      }
+
+    };
+
+
+
+
+
+
+
   return (
 
     <div className="p-6 bg-slate-100 min-h-screen">
@@ -370,14 +461,40 @@ const Applicants = () => {
                     text-sm
                     font-semibold
 
-                    ${
-                      item.status === "Accepted"
-                        ? "bg-green-100 text-green-700"
+                    ${item.status === "Completed"
 
-                        : item.status === "Rejected"
-                        ? "bg-red-100 text-red-700"
+                      ?
 
-                        : "bg-yellow-100 text-yellow-700"
+                      "bg-emerald-100 text-emerald-700"
+
+                      :
+
+                      item.status === "Completion Requested"
+
+                        ?
+
+                        "bg-blue-100 text-blue-700"
+
+                        :
+
+                        item.status === "In Progress"
+
+                          ?
+
+                          "bg-cyan-100 text-cyan-700"
+
+                          :
+
+                          item.status === "Rejected"
+
+                            ?
+
+                            "bg-red-100 text-red-700"
+
+                            :
+
+                            "bg-yellow-100 text-yellow-700"
+
                     }
                   `}
                 >
@@ -621,17 +738,17 @@ const Applicants = () => {
                               Skills:
                             </span>
                             {" "}
-                           {
-                            selectedApplicant
-                              .employeeProfile?.skills?.length > 0
+                            {
+                              selectedApplicant
+                                .employeeProfile?.skills?.length > 0
 
-                              ? selectedApplicant
+                                ? selectedApplicant
                                   .employeeProfile
                                   .skills
                                   .join(", ")
 
-                              : "No skills added"
-                          }
+                                : "No skills added"
+                            }
                           </p>
 
                           <p>
@@ -667,149 +784,143 @@ const Applicants = () => {
 
                   </div>
 
-                  {/* CONTACT SECTION */}
-
-                  {
-                    selectedApplicant.status ===
-                    "Accepted"
-
-                    && (
-
-                      <div className="
-                        mt-6
-                        bg-green-50
-                        border
-                        border-green-200
-                        rounded-2xl
-                        p-5
-                      ">
-
-                        <h4 className="
-                          text-xl
-                          font-bold
-                          text-green-700
-                          mb-3
-                        ">
-                          Contact Applicant
-                        </h4>
-
-                        <p className="mb-2">
-                          📧
-                          {" "}
-                          {
-                            selectedApplicant.employeeEmail
-                          }
-                        </p>
-
-                        <div className="
-                          flex
-                          gap-3
-                          mt-4
-                          flex-wrap
-                        ">
-
-                          <button
-                            className="
-                              flex
-                              items-center
-                              gap-2
-                              bg-cyan-600
-                              text-white
-                              px-5
-                              py-3
-                              rounded-xl
-                            "
-                          >
-                            <MessageCircle size={18} />
-                            In-App Chat
-                          </button>
-
-                          <button
-                            className="
-                              flex
-                              items-center
-                              gap-2
-                              bg-green-600
-                              text-white
-                              px-5
-                              py-3
-                              rounded-xl
-                            "
-                          >
-                            <Phone size={18} />
-                            Contact
-                          </button>
-
-                        </div>
-
-                        <p className="
-                          text-sm
-                          text-slate-500
-                          mt-4
-                        ">
-                          You can now contact
-                          this applicant since
-                          the application has
-                          been accepted.
-                        </p>
-
-                      </div>
-                    )
-                  }
 
                   {/* ACTION BUTTONS */}
 
-                  <div className="
-                    flex
-                    gap-5
-                    mt-8
-                  ">
+                  {
+                    selectedApplicant.status === "Pending"
 
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          selectedApplicant._id,
-                          "Accepted"
-                        )
-                      }
+                    &&
 
+                    <div className="
+flex
+gap-5
+mt-8
+">
+
+                      <button
+                        onClick={() =>
+                          updateStatus(
+                            selectedApplicant._id,
+                            "In Progress"
+                          )
+                        }
+
+                        className="
+flex-1
+bg-green-500
+hover:bg-green-600
+text-white
+py-4
+rounded-2xl
+text-xl
+font-semibold
+"
+                      >
+
+                        Accept
+
+                      </button>
+
+
+                      <button
+                        onClick={() =>
+                          updateStatus(
+                            selectedApplicant._id,
+                            "Rejected"
+                          )
+                        }
+
+                        className="
+flex-1
+bg-red-500
+hover:bg-red-600
+text-white
+py-4
+rounded-2xl
+text-xl
+font-semibold
+"
+                      >
+
+                        Reject
+
+                      </button>
+
+                    </div>
+
+                  }
+
+                  {
+                    selectedApplicant.status ===
+
+                    "Completion Requested"
+
+                    &&
+
+                    <div
                       className="
-                        flex-1
-                        bg-green-500
-                        hover:bg-green-600
-                        text-white
-                        py-4
-                        rounded-2xl
-                        text-xl
-                        font-semibold
-                      "
+flex
+gap-5
+mt-8
+"
                     >
-                      Accept
-                    </button>
 
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          selectedApplicant._id,
-                          "Rejected"
-                        )
-                      }
+                      <button
 
-                      className="
-                        flex-1
-                        bg-red-500
-                        hover:bg-red-600
-                        text-white
-                        py-4
-                        rounded-2xl
-                        text-xl
-                        font-semibold
-                      "
-                    >
-                      Reject
-                    </button>
+                        onClick={() =>
+                          verifyCompletion(
+                            selectedApplicant._id
+                          )
+                        }
 
-                  </div>
+                        className="
+flex-1
+bg-green-600
+hover:bg-green-700
+text-white
+py-4
+rounded-2xl
+text-xl
+font-semibold
+"
+
+                      >
+
+                        Verify Completion
+
+                      </button>
+
+
+
+                      <button
+
+                        onClick={() =>
+                          denyCompletion(
+                            selectedApplicant._id
+                          )
+                        }
+
+                        className="
+flex-1
+bg-red-600
+hover:bg-red-700
+text-white
+py-4
+rounded-2xl
+text-xl
+font-semibold
+"
+
+                      >
+
+                        Deny Completion
+
+                      </button>
+
+                    </div>
+
+                  }
                 </div>
               </div>
             </div>

@@ -13,7 +13,6 @@ const EditData = () => {
 
   const [form, setForm] = useState({
     name: "",
-    email: "",
   });
 
   const [profilePreview, setProfilePreview] = useState("");
@@ -35,7 +34,6 @@ const EditData = () => {
 
         setForm({
           name: user.name || "",
-          email: user.email || "",
         });
 
         setProfilePreview(user.profileImage || "");
@@ -230,23 +228,6 @@ const EditData = () => {
 
           </div>
 
-          {/* email */}
-          <div>
-
-            <label className="font-medium">
-              Email
-            </label>
-
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="input"
-            />
-
-          </div>
 
         </div>
 
