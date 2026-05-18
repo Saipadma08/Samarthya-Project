@@ -760,152 +760,62 @@ const ApplicantsPage = () => {
                     )
                   }
 
-                  {
-                    selectedApplicant.status ===
-                    "Accepted" && (
 
-                      <div className="
-                        mt-6
-                        bg-green-50
-                        border
-                        border-green-200
-                        rounded-2xl
-                        p-5
-                      ">
 
-                        <h4 className="
-                          text-xl
-                          font-bold
-                          text-green-700
-                          mb-3
-                        ">
-                          Contact Applicant
-                        </h4>
+                 {
+                        selectedApplicant.status ===
+                        "Pending" && (
 
-                        <div className="
-                          space-y-2
-                          text-sm
-                        ">
+                          <div className="
+                            grid
+                            grid-cols-2
+                            gap-4
+                            mt-6
+                          ">
 
-                          <p>
-                            📧
-                            {" "}
-                            {
-                              selectedApplicant.employeeEmail
-                            }
-                          </p>
+                            <button
+                              onClick={() =>
+                                updateStatus(
+                                  selectedApplicant._id,
+                                  "Accepted"
+                                )
+                              }
 
-                          <p>
-                            📞
-                            {" "}
-                            {
-                              selectedApplicant
-                              .employeeProfile
-                              ?.phone ||
-                              "Phone not available"
-                            }
-                          </p>
+                              className="
+                                bg-green-500
+                                hover:bg-green-600
+                                text-white
+                                py-3
+                                rounded-2xl
+                                font-semibold
+                              "
+                            >
+                              Accept
+                            </button>
 
-                        </div>
+                            <button
+                              onClick={() =>
+                                updateStatus(
+                                  selectedApplicant._id,
+                                  "Rejected"
+                                )
+                              }
 
-                        <div className="
-                          flex
-                          gap-3
-                          mt-5
-                          flex-wrap
-                        ">
+                              className="
+                                bg-red-500
+                                hover:bg-red-600
+                                text-white
+                                py-3
+                                rounded-2xl
+                                font-semibold
+                              "
+                            >
+                              Reject
+                            </button>
 
-                          <button
-                            className="
-                              bg-cyan-600
-                              hover:bg-cyan-700
-                              text-white
-                              px-5
-                              py-3
-                              rounded-xl
-                              font-medium
-                            "
-                          >
-                            In-App Chat
-                          </button>
-
-                          <button
-                            className="
-                              bg-green-600
-                              hover:bg-green-700
-                              text-white
-                              px-5
-                              py-3
-                              rounded-xl
-                              font-medium
-                            "
-                          >
-                            Contact
-                          </button>
-
-                        </div>
-
-                        <p className="
-                          text-sm
-                          text-slate-500
-                          mt-4
-                        ">
-                          You can now contact
-                          this applicant because
-                          the application has
-                          been accepted.
-                        </p>
-
-                      </div>
-                    )
-                  }
-
-                  <div className="
-                    grid
-                    grid-cols-2
-                    gap-4
-                    mt-6
-                  ">
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          selectedApplicant._id,
-                          "Accepted"
+                          </div>
                         )
                       }
-                      className="
-                        bg-green-500
-                        hover:bg-green-600
-                        text-white
-                        py-3
-                        rounded-2xl
-                        font-semibold
-                      "
-                    >
-                      Accept
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          selectedApplicant._id,
-                          "Rejected"
-                        )
-                      }
-                      className="
-                        bg-red-500
-                        hover:bg-red-600
-                        text-white
-                        py-3
-                        rounded-2xl
-                        font-semibold
-                      "
-                    >
-                      Reject
-                    </button>
-
-                  </div>
 
                 </div>
 

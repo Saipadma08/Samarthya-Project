@@ -881,114 +881,91 @@ const JobDetails = () => {
 
 
 
-          {/* CONTACT SECTION */}
+          {/* WORK COMPLETION SECTION */}
 
-          {
-            applicationStatus ===
-            "Accepted" && (
+{
+  applicationStatus ===
+  "Accepted" && (
 
-              <div className="
-                bg-green-50
-                rounded-[20px]
-                border
-                border-green-200
-                p-5
-                shadow-sm
-              ">
+    <div className="
+      bg-green-50
+      rounded-[20px]
+      border
+      border-green-200
+      p-5
+      shadow-sm
+    ">
 
-                <h2 className="
-                  text-[18px]
-                  font-bold
-                  text-green-700
-                  mb-3
-                ">
+      <h2 className="
+        text-[18px]
+        font-bold
+        text-green-700
+        mb-3
+      ">
 
-                  Employer Contact Unlocked
+        Job Accepted
 
-                </h2>
+      </h2>
 
-                <p className="
-                  text-gray-600
-                  mb-4
-                ">
+      <p className="
+        text-gray-600
+        mb-4
+      ">
 
-                  Your application
-                  was accepted.
+        Your application was accepted by the employer.
 
-                </p>
+      </p>
 
-                <div className="
-                  flex
-                  flex-col
-                  sm:flex-row
-                  gap-3
-                ">
+      {
+        applicationStatus !==
+        "Completed" && (
 
-                  <button
-                    className="
-                      bg-cyan-600
-                      hover:bg-cyan-700
-                      text-white
-                      px-4
-                      py-3
-                      rounded-xl
-                      font-semibold
-                    "
-                  >
+          <button
 
-                    In-App Chat
+            onClick={
+              handleMarkCompleted
+            }
 
-                  </button>
+            className="
+              w-full
+              bg-blue-600
+              hover:bg-blue-700
+              text-white
+              py-3
+              rounded-xl
+              font-semibold
+            "
+          >
 
-                  <button
-                    className="
-                      bg-green-600
-                      hover:bg-green-700
-                      text-white
-                      px-4
-                      py-3
-                      rounded-xl
-                      font-semibold
-                    "
-                  >
+            Mark Work Completed
 
-                    Contact Employer
+          </button>
+        )
+      }
 
-                  </button>
+      {
+        applicationStatus ===
+        "Completed" && (
 
-                </div>
+          <div className="
+            w-full
+            bg-green-600
+            text-white
+            text-center
+            py-3
+            rounded-xl
+            font-semibold
+          ">
 
-                {
-                  applicationStatus !==
-                  "Completed" && (
+            Work Completed
 
-                    <button
+          </div>
+        )
+      }
 
-                      onClick={
-                        handleMarkCompleted
-                      }
-
-                      className="
-                        mt-4
-                        w-full
-                        bg-blue-600
-                        hover:bg-blue-700
-                        text-white
-                        py-3
-                        rounded-xl
-                        font-semibold
-                      "
-                    >
-
-                      Mark Work Completed
-
-                    </button>
-                  )
-                }
-
-              </div>
-            )
-          }
+    </div>
+  )
+}
 
         </div>
 
