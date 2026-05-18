@@ -53,7 +53,43 @@ async function deleteJob(req, res) {
 
 }
 
+// ================= GET SINGLE JOB =================
+
+async function getSingleJob(req, res) {
+
+  try {
+
+    const { id } = req.params;
+
+    const job = await postedJobModel.findById(id);
+
+    if (!job) {
+
+      return res.status(404).json({
+        message: "Job not found"
+      });
+
+    }
+
+    res.status(200).json({
+      success: true,
+      job
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: "Server error"
+    });
+
+  }
+
+}
+
 module.exports = {
   adminJobsController,
   deleteJob,
+  getSingleJob
 };

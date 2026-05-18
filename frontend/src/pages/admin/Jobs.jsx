@@ -5,7 +5,10 @@ import { toast } from "react-toastify";
 const Jobs = () => {
 
   const [jobsData, setJobsData] = useState([]);
+
   const [search, setSearch] = useState("");
+
+  const [selectedJob, setSelectedJob] = useState(null);
 
   // ================= FETCH JOBS =================
 
@@ -37,6 +40,31 @@ const Jobs = () => {
     fetchJobs();
 
   }, []);
+
+  // ================= VIEW JOB =================
+
+  async function handleView(id) {
+
+    try {
+
+      const response = await axios.get(
+        `http://localhost:3000/api/admin/jobs/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      setSelectedJob(response.data.job);
+
+    } catch (error) {
+
+      console.log(error);
+
+      toast.error("Failed to fetch job details");
+
+    }
+
+  }
 
   // ================= DELETE JOB =================
 
@@ -99,35 +127,35 @@ const Jobs = () => {
 
   return (
 
-         <div className="p-4 lg:p-6 bg-[#f5f7fb] min-h-screen w-full overflow-x-hidden">
+    <div className="p-4 lg:p-6 bg-[#f5f7fb] min-h-screen w-full overflow-x-hidden">
 
       {/* ================= HEADER ================= */}
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-8">
 
-         <div>
+        <div>
 
-  <h1
-    className="
-    text-3xl lg:text-4xl
-    font-extrabold leading-normal
-    bg-gradient-to-r
-    from-cyan-600
-    via-blue-600
-    to-violet-600
-    bg-clip-text
-    text-transparent
-    tracking-tight
-  "
-  >
-    Jobs Management
-  </h1>
+          <h1
+            className="
+            text-3xl lg:text-4xl
+            font-extrabold leading-normal
+            bg-gradient-to-r
+            from-cyan-600
+            via-blue-600
+            to-violet-600
+            bg-clip-text
+            text-transparent
+            tracking-tight
+          "
+          >
+            Jobs Management
+          </h1>
 
-  <p className="text-slate-500 mt-3 text-base lg:text-lg">
-    Monitor and manage all platform jobs !
-  </p>
+          <p className="text-slate-500 mt-3 text-base lg:text-lg">
+            Monitor and manage all platform jobs !
+          </p>
 
-</div>
+        </div>
 
         {/* SEARCH */}
 
@@ -148,58 +176,74 @@ const Jobs = () => {
       {/* ================= STATS ================= */}
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      
-      <div className="bg-white rounded-2xl p-4 shadow-sm">
-  <p className="text-slate-500 text-sm">
-    Total Jobs
-  </p>
 
-  <h2 className="text-2xl font-bold mt-2">
-    {jobsData.length}
-  </h2>
-</div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
 
-<div className="bg-green-50 rounded-2xl p-4 shadow-sm">
-  <p className="text-green-700 text-sm">
-    Active
-  </p>
+          <p className="text-slate-500 text-sm">
+            Total Jobs
+          </p>
 
-  <h2 className="text-2xl font-bold text-green-700 mt-2">
-    {
-      jobsData.filter(
-        (job) => job.status === "Active"
-      ).length
-    }
-  </h2>
-</div>
+          <h2 className="text-2xl font-bold mt-2">
+            {jobsData.length}
+          </h2>
 
-<div className="bg-red-50 rounded-2xl p-4 shadow-sm">
-  <p className="text-red-700 text-sm">
-    Urgent
-  </p>
+        </div>
 
-  <h2 className="text-2xl font-bold text-red-700 mt-2">
-    {
-      jobsData.filter(
-        (job) => job.urgency === "Urgent"
-      ).length
-    }
-  </h2>
-</div>
+        <div className="bg-green-50 rounded-2xl p-4 shadow-sm">
 
-<div className="bg-cyan-50 rounded-2xl p-4 shadow-sm">
-  <p className="text-cyan-700 text-sm">
-     Action
-  </p>
+          <p className="text-green-700 text-sm">
+            Active
+          </p>
 
-  <h2 className="text-2xl font-bold text-cyan-700 mt-2">
-    {
-      jobsData.filter(
-        (job) => job.jobType === "Pending"
-      ).length
-    }
-  </h2>
-</div>
+          <h2 className="text-2xl font-bold text-green-700 mt-2">
+
+            {
+              jobsData.filter(
+                (job) => job.status === "Active"
+              ).length
+            }
+
+          </h2>
+
+        </div>
+
+        <div className="bg-red-50 rounded-2xl p-4 shadow-sm">
+
+          <p className="text-red-700 text-sm">
+            Urgent
+          </p>
+
+          <h2 className="text-2xl font-bold text-red-700 mt-2">
+
+            {
+              jobsData.filter(
+                (job) =>
+                  job.urgency === "Urgent" ||
+                  job.urgency === "Immediate"
+              ).length
+            }
+
+          </h2>
+
+        </div>
+
+        <div className="bg-cyan-50 rounded-2xl p-4 shadow-sm">
+
+          <p className="text-cyan-700 text-sm">
+            Pending
+          </p>
+
+          <h2 className="text-2xl font-bold text-cyan-700 mt-2">
+
+            {
+              jobsData.filter(
+                (job) => job.action === "Pending"
+              ).length
+            }
+
+          </h2>
+
+        </div>
 
       </div>
 
@@ -227,7 +271,7 @@ const Jobs = () => {
 
         {/* TABLE */}
 
-       <div className="w-full overflow-x-auto">
+        <div className="w-full overflow-x-auto">
 
           <table className="min-w-[1100px] w-full text-left">
 
@@ -294,7 +338,7 @@ const Jobs = () => {
                         {job.title}
                       </h3>
 
-                      <p className="text-sm text-slate-500 mt-1">
+                      <p className="text-sm text-slate-500 mt-1 line-clamp-2">
                         {job.description}
                       </p>
 
@@ -350,7 +394,8 @@ const Jobs = () => {
                       className={`px-3 py-1 rounded-full text-sm
 
                       ${
-                        job.urgency === "Urgent"
+                        job.urgency === "Urgent" ||
+                        job.urgency === "Immediate"
                           ? "bg-red-100 text-red-700"
                           : "bg-yellow-100 text-yellow-700"
                       }
@@ -388,14 +433,13 @@ const Jobs = () => {
 
                   <td className="px-6 py-5">
 
-                    <div className="flex flex-wrap justify-center gap-2">
+                    <div className="flex justify-center gap-2">
 
-                      <button className="text-cyan-600 hover:underline">
+                      <button
+                        onClick={() => handleView(job._id)}
+                        className="text-cyan-600 hover:underline"
+                      >
                         View
-                      </button>
-
-                      <button className="text-slate-700 hover:underline">
-                        Edit
                       </button>
 
                       <button
@@ -421,6 +465,169 @@ const Jobs = () => {
 
       </div>
 
+      {/* ================= VIEW JOB MODAL ================= */}
+
+      {
+        selectedJob && (
+
+          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+
+            <div className="bg-white w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
+
+              {/* TOP */}
+
+              <div className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white p-6 relative">
+
+                <button
+                  onClick={() => setSelectedJob(null)}
+                  className="absolute right-5 top-4 text-2xl"
+                >
+                  ×
+                </button>
+
+                <h2 className="text-3xl font-bold">
+                  {selectedJob.title}
+                </h2>
+
+                <p className="text-cyan-100 mt-2">
+                  {selectedJob.location}
+                </p>
+
+              </div>
+
+              {/* DETAILS */}
+
+              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div className="bg-slate-50 rounded-2xl p-5">
+
+                  <p className="text-sm text-slate-500">
+                    Category
+                  </p>
+
+                  <h3 className="text-lg font-semibold mt-1">
+                    {selectedJob.category}
+                  </h3>
+
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5">
+
+                  <p className="text-sm text-slate-500">
+                    Job Type
+                  </p>
+
+                  <h3 className="text-lg font-semibold mt-1">
+                    {selectedJob.jobType}
+                  </h3>
+
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5">
+
+                  <p className="text-sm text-slate-500">
+                    Payment
+                  </p>
+
+                  <h3 className="text-lg font-semibold mt-1">
+                    ₹ {selectedJob.payment}
+                  </h3>
+
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5">
+
+                  <p className="text-sm text-slate-500">
+                    Workers Needed
+                  </p>
+
+                  <h3 className="text-lg font-semibold mt-1">
+                    {selectedJob.workersNeeded}
+                  </h3>
+
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5">
+
+                  <p className="text-sm text-slate-500">
+                    Urgency
+                  </p>
+
+                  <h3 className="text-lg font-semibold mt-1">
+                    {selectedJob.urgency}
+                  </h3>
+
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5">
+
+                  <p className="text-sm text-slate-500">
+                    Status
+                  </p>
+
+                  <h3 className="text-lg font-semibold mt-1">
+                    {selectedJob.status}
+                  </h3>
+
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5 md:col-span-2">
+
+                  <p className="text-sm text-slate-500">
+                    Skills Required
+                  </p>
+
+                  <h3 className="text-lg font-semibold mt-1">
+                    {selectedJob.skills || "Not specified"}
+                  </h3>
+
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5 md:col-span-2">
+
+                  <p className="text-sm text-slate-500">
+                    Description
+                  </p>
+
+                  <p className="text-slate-700 leading-relaxed mt-2">
+                    {selectedJob.description}
+                  </p>
+
+                </div>
+
+              </div>
+
+              {/* FOOTER */}
+
+              <div className="px-6 pb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+
+                <p className="text-sm text-slate-500">
+
+                  Posted on :
+
+                  {
+                    new Date(selectedJob.createdAt)
+                      .toLocaleDateString()
+                  }
+
+                </p>
+
+                <button
+                  onClick={() => setSelectedJob(null)}
+                  className="bg-cyan-600 text-white px-5 py-2 rounded-xl hover:bg-cyan-700 transition"
+                >
+                  Close
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        )
+      }
+
     </div>
 
   );
@@ -428,3 +635,4 @@ const Jobs = () => {
 };
 
 export default Jobs;
+
