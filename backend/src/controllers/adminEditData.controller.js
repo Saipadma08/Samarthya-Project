@@ -11,12 +11,12 @@ async function editAdminData(req, res) {
             });
         }
 
-        const { name, email } = req.body;
+        const { name } = req.body;
 
         // validation
-        if (!name || !email) {
+        if (!name ) {
             return res.status(400).json({
-                message: "Name and email are required"
+                message: "Name is required"
             });
         }
 
@@ -57,7 +57,6 @@ async function editAdminData(req, res) {
 
             {
                 name,
-                email,
 
                 ...(profileImageUrl && {
                     profileImage: profileImageUrl

@@ -10,13 +10,13 @@ const applicationSchema = new mongoose.Schema(
 
     employeeId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "users",
       required: true,
     },
 
     employerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "users",
       required: true,
     },
 
@@ -26,6 +26,9 @@ const applicationSchema = new mongoose.Schema(
         "Pending",
         "Accepted",
         "Rejected",
+        "In Progress",
+        "Completion Requested",
+        "Completed"
       ],
       default: "Pending",
     },

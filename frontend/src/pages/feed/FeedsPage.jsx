@@ -87,8 +87,8 @@ const FeedsPage = () => {
             className="
         w-[90%]
         mx-auto
-        border 
-        
+        shadow-sm
+        shadow-gray-300
         pb-5
         "
         >
@@ -98,7 +98,11 @@ const FeedsPage = () => {
             sticky
 top-0
 z-20
-bg-[#f5f5f5]
+bg-gray-50
+shadow-sm
+shadow-gray-300
+border-b
+border-b-gray-400
 flex
 gap-4
 mb-6

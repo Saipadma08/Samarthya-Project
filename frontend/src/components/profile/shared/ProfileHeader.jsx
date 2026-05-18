@@ -56,7 +56,7 @@ const ProfileHeader = ({ currentUser, user, profile, isPublicView, children }) =
 
         <div className='ms-auto mt-auto'>
           <Link
-            to={`/${loggedInUser.role}/posts/${user._id}`}
+            to={`/${loggedInUser.role}/posts/${user?._id}`}
             className="bg-cyan-600 text-white px-5 py-2 rounded-lg"
           >
             Posts

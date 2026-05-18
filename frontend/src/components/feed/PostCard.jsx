@@ -36,6 +36,9 @@ import {
 
 const PostCard = ({ post, fetchFeed }) => {
 
+    const [reason, setReason] =
+        useState("");
+
     const menuRef = useRef();
 
     const navigate = useNavigate();
@@ -44,6 +47,9 @@ const PostCard = ({ post, fetchFeed }) => {
         showMenu,
         setShowMenu
     ] = useState(false);
+
+    const [showReport, setShowReport] =
+        useState(false);
 
     const [showDeletePopup, setShowDeletePopup] = useState(false);
 
@@ -68,6 +74,8 @@ const PostCard = ({ post, fetchFeed }) => {
         comment,
         setComment
     ] = useState("");
+
+    const [category, setCategory] = useState("");
 
 
     const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -342,6 +350,72 @@ const PostCard = ({ post, fetchFeed }) => {
     }
 
 
+    async function submitReport() {
+
+        try {
+
+            if (!category) return;
+
+            await axios.post(
+
+                "http://localhost:3000/api/report",
+
+                {
+
+                    reportedUserId:
+                        post.author._id,
+
+                    targetType:
+                        "post",
+
+                    targetId:
+                        post._id,
+
+                    targetModel:
+                        "FeedPost",
+
+                    category,
+
+                    description:
+                        reason
+
+                },
+
+                {
+                    withCredentials: true
+                }
+
+            );
+
+            toast.success(
+                "Report submitted"
+            );
+
+            setShowReport(false);
+
+            setReason("");
+
+            setCategory("");
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+            toast.error(
+
+                err.response?.data?.message ||
+
+                "Failed"
+
+            );
+
+        }
+
+    }
+
+
     return (
 
         <div className="bg-white rounded-xl shadow-md shadow-gray-300">
@@ -597,16 +671,25 @@ hover:bg-gray-100
 
 
                                                 <button
+
+                                                    onClick={() => {
+
+                                                        setShowReport(true);
+
+                                                        setShowMenu(false);
+
+                                                    }}
+
                                                     className="
-                flex
-                items-center
-                gap-2
-                px-4
-                py-3
-                w-full
-                hover:bg-gray-100
-                hover:cursor-pointer
-                "
+flex
+items-center
+gap-2
+px-4
+py-3
+w-full
+hover:bg-gray-100
+"
+
                                                 >
 
                                                     <FiFlag />
@@ -1009,8 +1092,6 @@ text-sm
 
 
 
-
-
             {
 
                 showDeletePopup && (
@@ -1122,10 +1203,174 @@ text-white
 
             }
 
+
+            {
+                showReport &&
+
+                <div
+                    className="
+fixed
+inset-0
+bg-black/40
+flex
+justify-center
+items-center
+z-50
+"
+                >
+
+                    <div
+                        className="
+bg-white
+p-5
+rounded-xl
+w-[90%]
+md:w-[40%]
+lg:w-[40%]
+"
+                    >
+
+                        <h2
+                            className="
+text-lg
+font-semibold
+mb-5
+text-center
+"
+                        >
+
+                            Report User
+
+                        </h2>
+
+                        <select
+
+                            value={category}
+
+                            onChange={(e) =>
+                                setCategory(
+                                    e.target.value
+                                )
+                            }
+
+                            className="
+border
+w-full
+rounded-lg
+p-3
+mb-3
+"
+
+                        >
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="spam">
+                                Spam
+                            </option>
+
+                            <option value="harassment">
+                                Harassment
+                            </option>
+
+                            <option value="fake_account">
+                                Fake Account
+                            </option>
+
+                            <option value="inappropriate">
+                                Inappropriate
+                            </option>
+
+                            <option value="other">
+                                Other
+                            </option>
+
+                        </select>
+
+                        <textarea
+
+                            value={reason}
+
+                            onChange={(e) =>
+                                setReason(
+                                    e.target.value
+                                )
+                            }
+                            className="w-full h-30 p-2 shadow-sm shadow-gray-300 rounded-md"
+                            placeholder="
+Additional details
+"
+                        />
+
+
+                        <div
+                            className="
+flex
+justify-end
+gap-2
+mt-4
+"
+                        >
+
+                            <button
+
+                                onClick={() => {
+
+                                    setShowReport(false);
+
+                                }}
+
+                                className="
+border
+px-4
+py-2
+rounded-lg
+hover:cursor-pointer
+hover:shadow-sm shadow-gray-400
+"
+
+                            >
+
+                                Cancel
+
+                            </button>
+
+
+                            <button
+
+                                onClick={submitReport}
+
+                                className="
+bg-red-500
+text-white
+px-4
+py-2
+rounded-lg
+hover:cursor-pointer
+hover:shadow-sm shadow-gray-400
+"
+
+                            >
+
+                                Submit
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+
+
         </div>
 
     );
-
 };
 
 export default PostCard;

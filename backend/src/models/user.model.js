@@ -70,6 +70,20 @@ const usersSchema = new mongoose.Schema({
             ref: "users"
         }
     ],
+
+    isBlocked: {
+        type: Boolean,
+        default: false
+    },
+
+    isSuspended: {
+        type: Boolean,
+        default: false
+    },
+
+    suspensionEndsAt: {
+        type: Date
+    }
 },
     { timestamps: true }
 )

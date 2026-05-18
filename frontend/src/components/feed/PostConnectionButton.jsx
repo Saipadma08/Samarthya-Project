@@ -3,6 +3,8 @@ import axios from "axios";
 
 const PostConnectionButton = ({ authorId }) => {
 
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+
     const [status,setStatus] =
         useState("none");
 
@@ -125,6 +127,10 @@ const PostConnectionButton = ({ authorId }) => {
 
         );
 
+    }
+
+    if(loggedInUser?.role === "admin"){
+        return null;
     }
 
 

@@ -18,6 +18,11 @@ const EmployerProfile = require(
   "../models/employerProfile.model"
 );
 
+const Notification =
+  require(
+    "../models/notification.model"
+  );
+
 const applyForJob = async (
   req,
   res
@@ -205,11 +210,11 @@ const getEmployerApplicants =
                 );
 
               const employeeProfile =
-  await EmployeeProfile.findOne({
+                await EmployeeProfile.findOne({
 
-    userId:
-      application.employeeId.toString(),
-  });
+                  userId:
+                    application.employeeId.toString(),
+                });
 
               const job =
                 await PostedJob.findById(
@@ -302,44 +307,57 @@ const updateApplicationStatus =
       });
     }
   };
-  // GET APPLICATION STATUS
+// GET APPLICATION STATUS
 
-const getApplicationStatus =
-  async (req, res) => {
+async function getApplicationStatus(
+  req,
+  res
+) {
 
-    try {
+  try {
 
-      const { jobId } =
-        req.params;
+    const { jobId } =
+      req.params;
 
-      const application =
-        await Application.findOne({
+    const application =
 
-          employeeId:
-            req.user.id,
+      await Application.findOne({
 
-          jobId,
+        employeeId:
+          req.user.id,
+
+        jobId
+
+      })
+
+        .sort({
+
+          updatedAt: -1
+
         });
 
-      res.status(200).json({
+    res.json({
 
-        success: true,
+      application
 
-        application,
-      });
+    });
 
-    } catch (error) {
+  }
 
-      console.log(error);
+  catch (error) {
 
-      res.status(500).json({
+    console.log(error);
 
-        success: false,
+    res.status(500).json({
 
-        message: error.message,
-      });
-    }
-  };
+      message:
+        "Server error"
+
+    });
+
+  }
+
+}
 
 
 
@@ -350,62 +368,209 @@ const markApplicationCompleted =
 
     try {
 
-      const { jobId } =
-        req.body;
+      const { jobId } = req.body;
 
       const application =
-        await Application.findOneAndUpdate(
 
-          {
-            employeeId:
-              req.user.id,
+        await Application.findOne({
 
-            jobId,
-          },
+          employeeId:
+            req.user.id,
 
-          {
-            status:
-              "Completed",
-          },
+          jobId
 
-          {
-            new: true,
-          }
-        );
+        })
+
+          .populate(
+            "employeeId",
+            "name"
+          )
+
+          .populate(
+            "jobId",
+            "title"
+          );
+
 
       if (!application) {
 
-        return res.status(404).json({
+        return res
+          .status(404)
+          .json({
+
+            success: false,
+
+            message:
+              "Application not found"
+
+          });
+
+      }
+
+
+      application.status =
+        "Completion Requested";
+
+      await application.save();
+
+
+
+      await Notification.create({
+
+        receiver:
+          application.employerId,
+
+        sender:
+          req.user.id,
+
+        type:
+          "job_completion_request",
+
+        text:
+          `${application.employeeId.name}
+requested completion verification for
+${application.jobId.title}`
+
+      });
+
+
+      res.status(200)
+        .json({
+
+          success: true,
+
+          message:
+            "Verification request sent"
+
+        });
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+      res.status(500)
+        .json({
 
           success: false,
 
           message:
-            "Application not found",
+            error.message
+
         });
-      }
 
-      res.status(200).json({
+    }
 
-        success: true,
+  };
 
-        message:
-          "Work marked as completed",
 
-        application,
+
+const verifyCompletedJob =
+  async (req, res) => {
+
+    try {
+
+      const application =
+
+        await Application.findById(
+          req.params.id
+        );
+
+      application.status =
+        "Completed";
+
+      await application.save();
+
+
+      await Notification.create({
+
+        receiver:
+          application.employeeId,
+
+        sender:
+          req.user.id,
+
+        type:
+          "job_completion_verified",
+
+        text:
+          "Employer verified your completed work"
+
       });
 
-    } catch (error) {
+
+      res.json({
+
+        success: true
+
+      });
+
+    }
+
+    catch (error) {
 
       console.log(error);
 
-      res.status(500).json({
-
-        success: false,
-
-        message: error.message,
-      });
     }
+
   };
+
+
+
+
+const denyCompletedJob =
+  async (req, res) => {
+
+    try {
+
+      const application =
+
+        await Application.findById(
+          req.params.id
+        );
+
+      application.status =
+        "In Progress";
+
+      await application.save();
+
+
+      await Notification.create({
+
+        receiver:
+          application.employeeId,
+
+        sender:
+          req.user.id,
+
+        type:
+          "job_completion_denied",
+
+        text:
+          "Employer denied your completion request"
+
+      });
+
+
+      res.json({
+
+        success: true
+
+      });
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+
+
 
 module.exports = {
 
@@ -420,4 +585,8 @@ module.exports = {
   getApplicationStatus,
 
   markApplicationCompleted,
+
+  verifyCompletedJob,
+
+  denyCompletedJob
 };
