@@ -68,11 +68,11 @@ const Settings = () => {
 
                     ?
 
-                    "bg-cyan-600 text-white"
+                    "bg-cyan-600 text-white h-10 shadow-sm shadow-gray-300"
 
                     :
 
-                    "bg-white"
+                    "bg-white text-black h-10 shadow-sm shadow-gray-300"
                     }
 
                     `}
