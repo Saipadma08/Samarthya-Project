@@ -493,20 +493,9 @@ const Users = () => {
 
                           <button
                             onClick={() => setSelectedUser(user)}
-                            className="text-cyan-600 hover:underline"
+                            className="text-cyan-600 hover:underline mr-4"
                           >
                             View
-                          </button>
-
-                          <button
-                            onClick={() => setEditUser(user)}
-                            className="text-blue-600 hover:underline"
-                          >
-                            Edit
-                          </button>
-
-                          <button className="text-orange-500 hover:underline">
-                            Block
                           </button>
 
                           <button
@@ -521,7 +510,7 @@ const Users = () => {
                               }
 
                             }}
-                            className="text-red-500 hover:underline"
+                            className="text-red-500 hover:underline ml-4"
                           >
                             Remove
                           </button>
@@ -577,7 +566,7 @@ const Users = () => {
 
                       <div
                         className="
-      w-24 h-24 rounded-full
+               w-24 h-24 rounded-full
       border-4 border-white
       bg-white/20
       flex items-center justify-center
@@ -689,203 +678,6 @@ const Users = () => {
                   View Profile
                 </Link>
 
-
-              </div>
-
-            </div>
-
-          </div>
-
-        )
-      }
-
-
-      {
-        editUser && (
-
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-
-            <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
-
-              <div className="bg-linear-to-r from-blue-600 to-violet-700 p-6 text-white relative">
-
-                <button
-                  onClick={() => setEditUser(null)}
-                  className="absolute top-4 right-4 text-2xl"
-                >
-                  ✕
-                </button>
-
-                <div className="flex items-center gap-4">
-
-                  {
-                    editUser.profileImage ? (
-
-                      <img
-                        src={editUser.profileImage}
-                        alt="user"
-                        className="w-20 h-20 rounded-full border-4 border-white object-cover"
-                      />
-
-                    ) : (
-
-                      <div
-                        className="
-      w-20 h-20 rounded-full
-      border-4 border-white
-      bg-white/20
-      flex items-center justify-center
-      text-white text-3xl font-bold
-    "
-                      >
-                        {editUser.name?.charAt(0).toUpperCase()}
-                      </div>
-
-                    )
-                  }
-                  <div>
-
-                    <h2 className="text-2xl font-bold">
-                      {editUser.name}
-                    </h2>
-
-                    <p className="text-blue-100">
-                      {editUser.email}
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div className="p-6 space-y-5">
-
-                <div>
-
-                  <label className="text-sm font-medium text-slate-600">
-                    User Role
-                  </label>
-
-                  <select
-                    defaultValue={editUser.role}
-                    className="w-full mt-2 border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-
-                    <option value="employee">
-                      Employee
-                    </option>
-
-                    <option value="employer">
-                      Employer
-                    </option>
-
-                    <option value="admin">
-                      Admin
-                    </option>
-
-                  </select>
-
-                </div>
-
-                <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
-
-                  <div>
-
-                    <h3 className="font-semibold text-slate-800">
-                      Account Verification
-                    </h3>
-
-                    <p className="text-sm text-slate-500">
-                      Approve this account officially
-                    </p>
-
-                  </div>
-
-                  <button
-                    className={`px-5 py-2 rounded-xl text-white font-medium
-
-              ${editUser.isVerified
-                        ? "bg-green-600"
-                        : "bg-orange-500"
-                      }
-            `}
-                  >
-
-                    {
-                      editUser.isVerified
-                        ? "Verified"
-                        : "Verify"
-                    }
-
-                  </button>
-
-                </div>
-
-                <div className="flex items-center justify-between bg-slate-100 rounded-2xl px-5 py-4">
-
-                  <div>
-
-                    <h3 className="font-semibold text-slate-800">
-                      Account Status
-                    </h3>
-
-                    <p className="text-sm text-slate-500">
-                      Block suspicious accounts
-                    </p>
-
-                  </div>
-
-                  <button
-                    className={`px-5 py-2 rounded-xl text-white font-medium
-
-              ${editUser.isBlocked
-                        ? "bg-red-600"
-                        : "bg-emerald-600"
-                      }
-            `}
-                  >
-
-                    {
-                      editUser.isBlocked
-                        ? "Blocked"
-                        : "Active"
-                    }
-
-                  </button>
-
-                </div>
-
-                <div>
-
-                  <label className="text-sm font-medium text-slate-600">
-                    Admin Remarks
-                  </label>
-
-                  <textarea
-                    rows="4"
-                    placeholder="Write remarks or verification notes..."
-                    className="w-full mt-2 border border-slate-300 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                  />
-
-                </div>
-
-              </div>
-
-              <div className="bg-slate-50 px-6 py-5 flex justify-end gap-3">
-
-                <button
-                  onClick={() => setEditUser(null)}
-                  className="px-5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  className="px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium"
-                >
-                  Save Changes
-                </button>
 
               </div>
 
