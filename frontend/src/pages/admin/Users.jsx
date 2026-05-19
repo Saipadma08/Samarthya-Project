@@ -489,11 +489,11 @@ const Users = () => {
 
                       <td className="px-6 py-5">
 
-                        <div className="flex flex-wrap justify-center gap-3 min-w-55">
+                        <div className="flex flex-wrap justify-center gap-5 min-w-55">
 
                           <button
                             onClick={() => setSelectedUser(user)}
-                            className="text-cyan-600 hover:underline mr-4"
+                            className="text-cyan-600 hover:underline"
                           >
                             View
                           </button>
@@ -510,9 +510,15 @@ const Users = () => {
                               }
 
                             }}
-                            className="text-red-500 hover:underline ml-4"
+                            className="text-red-500 hover:underline"
                           >
-                            Remove
+                            Block
+                          </button>
+
+                          <button
+                            className="text-orange-600 hover:underline"
+                          >
+                            Suspend
                           </button>
 
                         </div>
