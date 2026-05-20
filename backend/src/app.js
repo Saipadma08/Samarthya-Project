@@ -63,4 +63,9 @@ app.use("/api/savedjobs", savedJobRoutes);
 
 app.use("/api/feed-posts", feedPostRoutes);
 
+app.use(
+"/api/report",
+require("./routes/report.routes")
+);
+
 module.exports = app;

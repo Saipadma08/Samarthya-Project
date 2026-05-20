@@ -9,6 +9,7 @@ const {addAdmin} = require("../controllers/adminAddAdmin.controller");
 const {
   adminJobsController,
   deleteJob,
+  getSingleJob,
 } = require("../controllers/adminJobs.controller");
 
 const {
@@ -47,6 +48,13 @@ router.get(
   authMiddleware,
   roleMiddleware("admin"),
   adminJobsController
+);
+
+router.get(
+  "/jobs/:id",
+  authMiddleware,
+  roleMiddleware("admin"),
+  getSingleJob
 );
 
 router.delete(

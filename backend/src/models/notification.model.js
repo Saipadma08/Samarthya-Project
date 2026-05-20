@@ -30,7 +30,10 @@ const notificationSchema =
                 enum: [
                     "connection_request",
                     "request_accepted",
-                    "message"
+                    "message",
+                    "job_completion_request",
+                    "job_completion_verified",
+                    "job_completion_denied"
                 ],
 
                 required: true

@@ -7,6 +7,7 @@ import { FiMessageCircle } from "react-icons/fi";
 import { FiMoreVertical } from "react-icons/fi";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
+import {toast} from "react-toastify";
 
 const ProfileActions = ({
   currentUser,
@@ -27,7 +28,14 @@ const ProfileActions = ({
 
     });
 
+  const [showReport, setShowReport] = useState(false);
+
+  const [reason, setReason] = useState("");
+
   const [showMenu, setShowMenu] = useState(false);
+
+  const [category, setCategory] = useState("");
+
 
   const menuRef = useRef(null);
 
@@ -277,6 +285,13 @@ hover:bg-gray-100
           </button>
 
           <button
+            onClick={() => {
+
+              setShowReport(true);
+
+              setShowMenu(false);
+
+            }}
             className="
 w-full
 text-left
@@ -326,6 +341,13 @@ hover:bg-gray-100
 
 
           <button
+            onClick={() => {
+
+              setShowReport(true);
+
+              setShowMenu(false);
+
+            }}
             className="
 w-full
 text-left
@@ -381,6 +403,13 @@ hover:bg-gray-100
 
 
           <button
+            onClick={() => {
+
+              setShowReport(true);
+
+              setShowMenu(false);
+
+            }}
             className="
 w-full
 text-left
@@ -415,6 +444,13 @@ hover:bg-gray-100
 
 
         <button
+          onClick={() => {
+
+            setShowReport(true);
+
+            setShowMenu(false);
+
+          }}
           className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 "
         >
           Report
@@ -423,6 +459,73 @@ hover:bg-gray-100
       </>
 
     );
+
+  }
+
+
+  async function submitReport() {
+
+    try {
+
+      if (!category) return;
+
+      await axios.post(
+
+        "http://localhost:3000/api/report",
+
+        {
+
+          reportedUserId:
+            viewedUser._id,
+
+          targetType:
+            "profile",
+
+          targetId:
+            viewedUser._id,
+
+          targetModel:
+            "users",
+
+          category,
+
+          description:
+            reason
+
+        },
+
+        {
+          withCredentials: true
+        }
+
+      );
+
+      toast.success(
+        "Report submitted"
+      );
+
+
+      setShowReport(false);
+
+      setReason("");
+
+      setCategory("");
+
+    }
+
+    catch (err) {
+
+      console.log(err);
+
+      toast.error(
+
+        err.response?.data?.message ||
+
+        "Failed"
+
+      );
+
+    }
 
   }
 
@@ -552,6 +655,160 @@ hover:bg-gray-100
   );
 
 
+  const reportModal = (
+
+    showReport &&
+
+    <div
+      className="
+fixed
+inset-0
+bg-black/40
+flex
+justify-center
+items-center
+z-50
+"
+    >
+
+      <div
+        className="
+bg-white
+p-5
+rounded-xl
+w-[90%]
+md:w-[40%]
+lg:w-[40%]
+"
+      >
+
+        <h2
+          className="
+text-lg
+font-semibold
+mb-3
+"
+        >
+
+          Report User
+
+        </h2>
+
+        <select
+
+          value={category}
+
+          onChange={(e) =>
+            setCategory(
+              e.target.value
+            )
+          }
+
+          className="
+border
+w-full
+rounded-lg
+p-3
+mb-3
+"
+
+        >
+
+          <option value="">
+            Select category
+          </option>
+
+          <option value="spam">
+            Spam
+          </option>
+
+          <option value="harassment">
+            Harassment
+          </option>
+
+          <option value="fake_account">
+            Fake Account
+          </option>
+
+          <option value="inappropriate">
+            Inappropriate
+          </option>
+
+          <option value="other">
+            Other
+          </option>
+
+        </select>
+
+        <textarea
+          value={reason}
+
+          onChange={(e) =>
+            setReason(
+              e.target.value
+            )
+          }
+          className="w-full h-30 p-2 shadow-sm shadow-gray-300 rounded-md"
+          placeholder="
+Additional details
+"
+        />
+
+
+        <div
+          className="
+flex
+justify-end
+gap-2
+mt-4
+"
+        >
+
+          <button
+            onClick={() =>
+              setShowReport(false)
+            }
+            className="
+border
+px-4
+py-2
+rounded-lg
+hover:cursor-pointer
+hover:shadow-sm shadow-gray-400
+"
+          >
+
+            Cancel
+
+          </button>
+
+
+          <button
+            onClick={submitReport}
+            className="
+bg-red-500
+text-white
+px-4
+py-2
+rounded-lg
+hover:cursor-pointer
+hover:shadow-sm shadow-gray-400
+"
+          >
+
+            Submit
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  );
+
+
   // own profile
   if (isOwnProfile) {
 
@@ -627,24 +884,28 @@ hover:bg-gray-100
   if (connectionData.status === "none") {
 
     return (
-      <div className="flex gap-2">
-        <button
+      <>
+        <div className="flex gap-2">
+          <button
 
-          onClick={handleConnect}
+            onClick={handleConnect}
 
-          className=" flex items-center gap-2 bg-cyan-600 text-white rounded-md px-4 py-2 "
+            className=" flex items-center gap-2 bg-cyan-600 text-white rounded-md px-4 py-2 "
 
-        >
+          >
 
-          Connect
+            Connect
 
-          <FiUserPlus />
+            <FiUserPlus />
 
-        </button>
+          </button>
 
-        {threeDotMenu}
-      </div>
+          {threeDotMenu}
+        </div>
 
+        {reportModal}
+
+      </>
     )
 
   }
@@ -665,42 +926,48 @@ hover:bg-gray-100
 
     return (
 
-      <div className="flex gap-2 items-start">
-        <div className="flex flex-col lg:flex-row gap-2">
+      <>
 
-          <div>
-            <button
+        <div className="flex gap-2 items-start">
+          <div className="flex flex-col lg:flex-row gap-2">
 
-              onClick={handleAccept}
+            <div>
+              <button
 
-              className="flex justify-center items-center bg-cyan-600 h-8 w-20 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-cyan-700"
+                onClick={handleAccept}
 
-            >
+                className="flex justify-center items-center bg-cyan-600 h-8 w-20 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-cyan-700"
 
-              Accept
+              >
 
-            </button>
+                Accept
+
+              </button>
+            </div>
+
+            <div>
+              <button
+
+                onClick={handleReject}
+
+                className="flex justify-center items-center bg-mist-700 h-8 w-20 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-mist-800"
+
+              >
+
+                Reject
+
+              </button>
+            </div>
+
           </div>
 
-          <div>
-            <button
-
-              onClick={handleReject}
-
-              className="flex justify-center items-center bg-mist-700 h-8 w-20 text-white px-4 py-2 rounded hover:cursor-pointer hover:bg-mist-800"
-
-            >
-
-              Reject
-
-            </button>
-          </div>
+          {threeDotMenu}
 
         </div>
 
-        {threeDotMenu}
+        {reportModal}
 
-      </div>
+      </>
 
     )
 
@@ -713,26 +980,31 @@ hover:bg-gray-100
   if (connectionData.status === "pending") {
 
     return (
+      <>
 
-      <div className="flex gap-2">
+        <div className="flex gap-2">
 
-        <button
+          <button
 
-          className="
+            className="
         bg-gray-400
         text-white
         rounded-md px-4 py-2
         "
 
-        >
+          >
 
-          Pending
+            Pending
 
-        </button>
+          </button>
 
-        {threeDotMenu}
+          {threeDotMenu}
 
-      </div>
+        </div>
+
+        {reportModal}
+
+      </>
 
     )
 
@@ -745,20 +1017,21 @@ hover:bg-gray-100
   if (connectionData.status === "connected") {
 
     return (
-      <div className="flex gap-2">
+      <>
+        <div className="flex gap-2">
 
-        <Link
-          to={`/${currentUser.role}/messages`}
+          <Link
+            to={`/${currentUser.role}/messages`}
 
-          state={{
-              user:{
-                  _id:viewedUser._id,
-                  name:viewedUser.name,
-                  profileImage:viewedUser.profileImage
+            state={{
+              user: {
+                _id: viewedUser._id,
+                name: viewedUser.name,
+                profileImage: viewedUser.profileImage
               }
-          }}
+            }}
 
-          className="
+            className="
           flex items-center gap-2
           bg-sky-500
           text-white
@@ -767,40 +1040,56 @@ hover:bg-gray-100
           hover:bg-sky-600
           "
 
-        >
+          >
 
-          Message
+            Message
 
-          <FiMessageCircle />
+            <FiMessageCircle />
 
-        </Link>
+          </Link>
 
-        {threeDotMenu}
-      </div>
+          {threeDotMenu}
+        </div>
+
+        {reportModal}
+
+      </>
 
     )
 
   }
 
-  //Blocked
   if (connectionData.status === "blocked") {
 
+
     return (
+      <>
 
-      <div className="flex gap-2">
+        <div className="flex gap-2">
 
-        <button
-          className=" bg-gray-400 text-white px-6 rounded cursor-not-allowed"
-        >
+          <button
+            className="
+bg-gray-400
+text-white
+px-6
+rounded
+cursor-not-allowed
+"
+          >
 
-          Blocked
+            Blocked
 
-        </button>
-        <div>
-          {threeDotMenu}
+          </button>
+
+          <div>
+            {threeDotMenu}
+          </div>
+
         </div>
 
-      </div>
+        {reportModal}
+
+      </>
 
     )
 

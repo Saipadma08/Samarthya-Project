@@ -22,6 +22,10 @@ const {
 
   markApplicationCompleted,
 
+  verifyCompletedJob,
+
+  denyCompletedJob
+
 } = require(
   "../controllers/application.controller"
 );
@@ -102,6 +106,29 @@ router.patch(
   authMiddleware,
 
   markApplicationCompleted
+);
+
+
+router.patch(
+
+"/verify-completion/:id",
+
+authMiddleware,
+
+verifyCompletedJob
+
+);
+
+
+
+router.patch(
+
+"/deny-completion/:id",
+
+authMiddleware,
+
+denyCompletedJob
+
 );
 
 module.exports = router;

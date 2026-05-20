@@ -37,6 +37,8 @@ import FeedsPage from './pages/feed/FeedsPage'
 import UserPostsPage from './pages/feed/UserPostsPage';
 import SinglePostPage from './components/feed/SinglePostPage';
 
+import Complaint from './pages/complaint/Complaint';
+
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
 // ✅ Employee pages
@@ -44,7 +46,6 @@ import EmployeeDashboard from './pages/employee/Dashboard'
 import EmployeeProfile from './pages/employee/Profile'
 import EmployeeEditProfile from './pages/employee/EditProfile'
 import EmployeeApplications from './pages/employee/Applications'
-import EmployeeComplaint from './pages/employee/Complaint'
 import EmployeeConnections from './pages/employee/Connections'
 import EmployeeFindJobs from './pages/employee/FindJobs'
 import EmployeeTrustScore from './pages/employee/TrustScore'
@@ -61,7 +62,6 @@ import EmployerPostJob from './pages/employer/PostJob'
 import EmployerMyJobs from './pages/employer/MyJobs'
 import EmployerApplicants from './pages/employer/Applicants'
 import EmployerConnections from './pages/employer/Connections'
-import EmployerComplaint from './pages/employer/Complaint'
 import ApplicantsPage from "./pages/employer/ApplicantsPage";
 
 
@@ -104,7 +104,6 @@ const App = () => {
             <Route path="dashboard" element={<EmployeeDashboard />} />
             <Route path="profile" element={<EmployeeProfile />} />
             <Route path="applications" element={<EmployeeApplications />} />
-            <Route path="complaint" element={<EmployeeComplaint />} />
             <Route path="connections" element={<EmployeeConnections />} />
             <Route path="find-jobs" element={<EmployeeFindJobs />} />
             <Route path="settings" element={<Settings />} />
@@ -120,6 +119,7 @@ const App = () => {
             <Route path="feeds" element={<FeedsPage/>} />
             <Route path="posts/:userId" element={<UserPostsPage />}/>
             <Route path="post/:postId" element={<SinglePostPage/>}/>
+            <Route path="complaint" element={<Complaint/>}/>
 
 
 
@@ -141,7 +141,6 @@ const App = () => {
             <Route path="applicants" element={<EmployerApplicants />} />
             <Route path="connections" element={<EmployerConnections />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="complaint" element={<EmployerComplaint />} />
             <Route path="edit-profile" element={<EmployerEditProfile />} />
             <Route path="search" element={<Search />} />
             <Route path="profile/:userId" element={<PublicProfile />} />
@@ -153,6 +152,8 @@ const App = () => {
             <Route path="feeds" element={<FeedsPage/>} />
             <Route path="posts/:userId" element={<UserPostsPage />}/>
             <Route path="post/:postId" element={<SinglePostPage/>}/>
+            <Route path="complaint" element={<Complaint/>}/>
+
 
 
           </Route>
@@ -174,6 +175,10 @@ const App = () => {
             <Route path="contacts" element={<Contacts  />} />
             <Route path="messages" element={<MessagesLayout/>} />
             <Route path="all-admins" element={<AdminList/>}/>
+            <Route path="post/:postId" element={<SinglePostPage/>}/>
+            <Route path="posts/:userId" element={<UserPostsPage />}/>
+
+
 
           </Route>
         </Routes>

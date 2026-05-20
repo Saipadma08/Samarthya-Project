@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 
+const User =
+  require("../models/user.model");
+
 async function authMiddleware(
   req,
   res,
@@ -49,6 +52,77 @@ async function authMiddleware(
         token,
         process.env.JWT_SECRET
       );
+
+    const user =
+      await User.findById(
+        decoded.id
+      );
+
+    if (!user) {
+
+      return res.status(404).json({
+
+        message: "User not found"
+
+      });
+
+    }
+
+
+    // blocked account
+    if (user.isBlocked) {
+
+      return res.status(403).json({
+
+        message: "Your account is blocked"
+
+      });
+
+    }
+
+
+    // suspended account
+    if (
+
+      user.isSuspended &&
+
+      user.suspensionEndsAt >
+
+      new Date()
+
+    ) {
+
+      return res.status(403).json({
+
+        message:
+          "Account temporarily suspended"
+
+      });
+
+    }
+
+
+    // auto-reactivate
+    if (
+
+      user.isSuspended &&
+
+      user.suspensionEndsAt &&
+
+      user.suspensionEndsAt <
+
+      new Date()
+
+    ) {
+
+      user.isSuspended = false;
+
+      user.suspensionEndsAt = null;
+
+      await user.save();
+
+    }
+
 
     req.user = decoded;
 
