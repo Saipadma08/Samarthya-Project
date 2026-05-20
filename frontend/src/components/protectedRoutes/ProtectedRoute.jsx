@@ -1,8 +1,12 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = ({ children, allowedRole }) => {
-  const user = JSON.parse(localStorage.getItem("user"));
+const ProtectedRoute = ({ allowedRole, children }) => {
+
+  const user =
+    JSON.parse(
+      localStorage.getItem("user")
+    );
 
   if (!user) {
     return <Navigate to="/login" />;
@@ -12,7 +16,7 @@ const ProtectedRoute = ({ children, allowedRole }) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return children || <Outlet />;
 };
 
 export default ProtectedRoute;

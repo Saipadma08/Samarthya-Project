@@ -33,7 +33,11 @@ const notificationSchema =
                     "message",
                     "job_completion_request",
                     "job_completion_verified",
-                    "job_completion_denied"
+                    "job_completion_denied",
+                    "report_received",
+                    "account_unblocked",
+                    "suspension_removed",
+                    "review_request"
                 ],
 
                 required: true

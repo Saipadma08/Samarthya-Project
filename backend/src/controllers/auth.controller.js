@@ -3,7 +3,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const generateOtp = require("../utils/generateOtp");
-const sendOtpEmail = require("../services/mail.service");
+const {
+sendOtpEmail
+}
+=
+require(
+"../services/mail.service"
+);
 
 
 async function registerUser(req, res) {
@@ -155,7 +161,8 @@ async function verifyOtp(req, res) {
         const token = jwt.sign({
 
             id: user._id,
-            role: user.role
+            role: user.role,
+            version: user.tokenVersion
 
         },
             process.env.JWT_SECRET,
@@ -282,10 +289,118 @@ async function loginUser(req, res) {
 
     }
 
+    // blocked login
+
+    if (user.isBlocked) {
+
+        return res.status(403).json({
+
+            type: "blocked",
+
+            reason:
+                user.blockReason,
+
+            userId:
+                user.id,
+
+            appealStatus:
+                user.deactivationAppealStatus,
+
+            appealRejectCount:
+                user.appealRejectCount || 0,
+
+            rejectedAt:
+
+                user.appealHistory?.length
+
+                    ?
+
+                    user.appealHistory[
+                        user.appealHistory.length - 1
+                    ]?.date
+
+                    :
+
+                    null,
+
+            message:
+                "Account blocked"
+
+        });
+
+    }
+
+
+    // suspended login
+
+    if (
+
+        user.isSuspended &&
+
+        user.suspensionEndsAt &&
+
+        user.suspensionEndsAt >
+
+        new Date()
+
+    ) {
+
+        return res.status(403).json({
+
+            type: "suspended",
+
+            reason:
+                user.suspensionReason,
+
+            until:
+                user.suspensionEndsAt,
+
+            userId:
+                user.id,
+
+            appealStatus:
+                user.deactivationAppealStatus,
+
+            appealRejectCount:
+                user.appealRejectCount || 0,
+
+            rejectedAt:
+
+                user.appealHistory?.length
+
+                    ?
+
+                    user.appealHistory[
+                        user.appealHistory.length - 1
+                    ]?.date
+
+                    :
+
+                    null,
+
+            message:
+                "Account suspended"
+
+        });
+
+    }
+
     const token = jwt.sign({
+
         id: user._id,
-        role: user.role
-    }, process.env.JWT_SECRET, { expiresIn: "7d" })
+
+        role: user.role,
+
+        version: user.tokenVersion
+
+    },
+
+        process.env.JWT_SECRET,
+
+        {
+            expiresIn: "7d"
+        }
+    );
 
     res.cookie("token", token);
 
@@ -652,19 +767,19 @@ async function verifyEmailChangeOtp(req, res) {
 }
 
 
-async function getAllAdmins(req,res){
+async function getAllAdmins(req, res) {
 
-    try{
+    try {
 
-        const admins=
-        await userModel.find({
+        const admins =
+            await userModel.find({
 
-            role:"admin"
+                role: "admin"
 
-        })
-        .select(
-        "_id name profileImage role"
-        );
+            })
+                .select(
+                    "_id name profileImage role"
+                );
 
         res.status(200).json(
             admins
@@ -672,30 +787,30 @@ async function getAllAdmins(req,res){
 
     }
 
-    catch(err){
+    catch (err) {
 
         console.log(err);
 
         res.status(500).json({
             message:
-            "Server error"
+                "Server error"
         });
 
     }
 
 }
 
-module.exports = { 
-    registerUser, 
-    verifyOtp, 
-    resendOtp, 
-    loginUser, 
-    logoutUser, 
-    getCurrentUser, 
-    forgotPassword, 
-    resetPassword, 
+module.exports = {
+    registerUser,
+    verifyOtp,
+    resendOtp,
+    loginUser,
+    logoutUser,
+    getCurrentUser,
+    forgotPassword,
+    resetPassword,
     changePassword,
     requestEmailChange,
     verifyEmailChangeOtp,
     getAllAdmins
- }
+}

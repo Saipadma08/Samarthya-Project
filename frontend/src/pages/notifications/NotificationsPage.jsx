@@ -197,41 +197,34 @@ const NotificationsPage = () => {
 
 
 
-    const getNotificationLink =
-        (notification) => {
+    const getNotificationLink = (notification) => {
 
-            switch (
-            notification.type
-            ) {
+        switch (notification.type) {
 
-                case
-                    "job_completion_request":
+            case "job_completion_request":
+                return "/employer/applicants";
 
-                    return
-                    "/employer/applicants";
+            case "job_completion_verified":
+                return "/employee/applications";
 
+            case "job_completion_denied":
+                return "/employee/applications";
 
-                case
-                    "job_completion_verified":
+            // ADMIN REVIEW REQUEST
+            case "review_request":
+                return `/admin/account-review?userId=${notification.sender?._id}`;
 
-                    return
-                    "/employee/applications";
+            // these should NOT be clickable
+            case "account_unblocked":
+            case "suspension_removed":
+            case "review_approved":
+            case "review_rejected":
+                return null;
 
-
-                case
-                    "job_completion_denied":
-
-                    return
-                    "/employee/applications";
-
-
-                default:
-
-                    return `/${role}/profile-view/${notification.sender?._id}`;
-
-            }
-
-        };
+            default:
+                return `/${role}/profile-view/${notification.sender?._id}`;
+        }
+    };
 
 
 
@@ -268,123 +261,247 @@ const NotificationsPage = () => {
 
                 :
 
-                notifications.map(n => (
+                notifications.map((n) => {
 
-                    <Link
+                    const link =
+                        getNotificationLink(n);
 
-                        key={n._id}
+                    return (
 
-                        to={getNotificationLink(n)}
+                        link ?
 
-                    >
+                            (
 
-                        <div
+                                <Link
+                                    key={n._id}
+                                    to={link}
+                                >
 
-                            ref={
-                                notificationRef
-                            }
+                                    <div
 
-                            data-id={
-                                n._id
-                            }
-
-                            data-read={
-                                n.read
-                            }
-
-                            className={`
-
-                                border-b
-                                border-b-cyan-600
-                                rounded-md
-                                shadow-neutral-200
-                                shadow-sm
-                                p-4
-                                mb-5
-                                cursor-pointer
-                                text-sm lg:text-md
-
-                                ${!n.read ? "bg-blue-50" : "bg-white"}
-
-                                `}
-
-                        >
-
-                            <div
-                                className="
-                                    flex
-                                    items-center
-                                    gap-3
-                                    "
-                            >
-
-                                <img
-
-                                    src={
-
-                                        n.sender?.profileImage ||
-
-                                        "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_17_32%20AM-resized.PNG"
-
-                                    }
-
-                                    className="
-                                        w-11
-                                        h-11
-                                        rounded-full
-                                        "
-
-                                />
-
-
-
-                                <div>
-
-                                    <p>
-
-                                        <b>
-
-                                            {n.sender?.name}
-
-                                        </b>
-
-                                        {" "}
-
-                                        {n.text}
-
-                                    </p>
-
-
-                                    <p
-                                        className="
-                                            text-xs
-                                            text-gray-500
-                                            "
-                                    >
-
-                                        {
-
-                                            new Date(
-
-                                                n.createdAt
-
-                                            )
-
-                                                .toLocaleString()
-
+                                        ref={
+                                            notificationRef
                                         }
 
-                                    </p>
+                                        data-id={
+                                            n._id
+                                        }
+
+                                        data-read={
+                                            n.read
+                                        }
+
+                                        className={`
+
+                    border-b
+                    border-b-cyan-600
+                    rounded-md
+                    shadow-neutral-200
+                    shadow-sm
+                    p-4
+                    mb-5
+                    text-sm
+                    lg:text-md
+
+                    ${!n.read
+                                                ?
+                                                "bg-blue-50"
+                                                :
+                                                "bg-white"}
+
+                    cursor-pointer
+
+                    `}
+
+                                    >
+
+                                        <div className="
+                    flex
+                    items-center
+                    gap-3
+                    ">
+
+                                            <img
+
+                                                src={
+
+                                                    n.sender
+                                                        ?.profileImage ||
+
+                                                    "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_17_32%20AM-resized.PNG"
+
+                                                }
+
+                                                className="
+                            w-11
+                            h-11
+                            rounded-full
+                            "
+
+                                            />
+
+                                            <div>
+
+                                                <p>
+
+                                                    <b>
+
+                                                        {
+
+                                                            n.type === "account_unblocked"
+
+                                                                ||
+
+                                                                n.type === "suspension_removed"
+
+                                                                ?
+
+                                                                "Samarthya Team"
+
+                                                                :
+
+                                                                n.sender?.name
+
+                                                        }
+
+                                                    </b>
+
+                                                    {" "}
+
+                                                    {n.text}
+
+                                                </p>
+
+                                                <p className="
+                            text-xs
+                            text-gray-500
+                            ">
+
+                                                    {
+
+                                                        new Date(
+                                                            n.createdAt
+                                                        )
+
+                                                            .toLocaleString()
+
+                                                    }
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </Link>
+
+                            )
+
+                            :
+
+                            (
+
+                                <div
+                                    key={n._id}
+                                >
+
+                                    <div
+
+                                        ref={
+                                            notificationRef
+                                        }
+
+                                        data-id={
+                                            n._id
+                                        }
+
+                                        data-read={
+                                            n.read
+                                        }
+
+                                        className="
+
+                    border-b
+                    border-b-cyan-600
+                    rounded-md
+                    shadow-neutral-200
+                    shadow-sm
+                    p-4
+                    mb-5
+                    text-sm
+                    lg:text-md
+                    bg-white
+
+                    "
+
+                                    >
+
+                                        <div className="
+                    flex
+                    items-center
+                    gap-3
+                    ">
+
+                                            <img
+
+                                                src="https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_17_32%20AM-resized.PNG"
+
+                                                className="
+                            w-11
+                            h-11
+                            rounded-full
+                            "
+
+                                            />
+
+                                            <div>
+
+                                                <p>
+
+                                                    <b>
+
+                                                        Samarthya Team
+
+                                                    </b>
+
+                                                    {" "}
+
+                                                    {n.text}
+
+                                                </p>
+
+                                                <p className="
+                            text-xs
+                            text-gray-500
+                            ">
+
+                                                    {
+
+                                                        new Date(
+                                                            n.createdAt
+                                                        )
+
+                                                            .toLocaleString()
+
+                                                    }
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
-                            </div>
+                            )
 
-                        </div>
+                    );
 
-                    </Link>
-
-                ))
+                })
 
             }
 

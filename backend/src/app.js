@@ -27,6 +27,10 @@ const savedJobRoutes = require("./routes/savedJob.routes");
 
 const feedPostRoutes = require("./routes/feedPost.routes");
 
+const reportRoutes = require("./routes/report.routes");
+
+const userManagementRoutes = require("./routes/userManagement.routes");
+
 const app = express();
 
 
@@ -63,9 +67,8 @@ app.use("/api/savedjobs", savedJobRoutes);
 
 app.use("/api/feed-posts", feedPostRoutes);
 
-app.use(
-"/api/report",
-require("./routes/report.routes")
-);
+app.use("/api/report",reportRoutes);
+
+app.use("/api/user-management",userManagementRoutes);
 
 module.exports = app;

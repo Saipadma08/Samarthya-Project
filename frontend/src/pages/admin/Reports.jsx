@@ -1,230 +1,230 @@
 import React,
 {
-useEffect,
-useState
+    useEffect,
+    useState
 }
-from "react";
+    from "react";
 
 import axios from "axios";
 
 import {
-Link
+    Link
 }
-from "react-router-dom";
+    from "react-router-dom";
 
 import {
-toast
+    toast
 }
-from "react-toastify";
+    from "react-toastify";
 
 
-const Reports=()=>{
+const Reports = () => {
 
-const[
-reports,
-setReports
-]=useState([]);
+    const [
+        reports,
+        setReports
+    ] = useState([]);
 
-const[
-showSuspendPopup,
-setShowSuspendPopup
-]=useState(false);
+    const [
+        showSuspendPopup,
+        setShowSuspendPopup
+    ] = useState(false);
 
-const[
-selectedReport,
-setSelectedReport
-]=useState(null);
+    const [
+        selectedReport,
+        setSelectedReport
+    ] = useState(null);
 
-const[
-days,
-setDays
-]=useState(7);
+    const [
+        days,
+        setDays
+    ] = useState(7);
 
 
 
-useEffect(()=>{
+    useEffect(() => {
 
-fetchReports();
+        fetchReports();
 
-},[]);
+    }, []);
 
 
 
-async function fetchReports(){
+    async function fetchReports() {
 
-try{
+        try {
 
-const token=
-localStorage.getItem(
-"token"
-);
+            const token =
+                localStorage.getItem(
+                    "token"
+                );
 
-const res=
+            const res =
 
-await axios.get(
+                await axios.get(
 
-"http://localhost:3000/api/report/all",
+                    "http://localhost:3000/api/report/all",
 
-{
+                    {
 
-headers:{
+                        headers: {
 
-Authorization:
-`Bearer ${token}`
+                            Authorization:
+                                `Bearer ${token}`
 
-}
+                        }
 
-}
+                    }
 
-);
+                );
 
-setReports(
-res.data
-);
+            setReports(
+                res.data
+            );
 
-}
+        }
 
-catch(err){
+        catch (err) {
 
-console.log(err);
+            console.log(err);
 
-}
+        }
 
-}
+    }
 
 
 
-async function handleAction(
-url
-){
+    async function handleAction(
+        url
+    ) {
 
-try{
+        try {
 
-const token=
-localStorage.getItem(
-"token"
-);
+            const token =
+                localStorage.getItem(
+                    "token"
+                );
 
-await axios.put(
+            await axios.put(
 
-url,
+                url,
 
-{},
+                {},
 
-{
+                {
 
-headers:{
+                    headers: {
 
-Authorization:
-`Bearer ${token}`
+                        Authorization:
+                            `Bearer ${token}`
 
-}
+                    }
 
-}
+                }
 
-);
+            );
 
-toast.success(
-"Updated"
-);
+            toast.success(
+                "Updated"
+            );
 
-fetchReports();
+            fetchReports();
 
-}
+        }
 
-catch(err){
+        catch (err) {
 
-console.log(err);
+            console.log(err);
 
-}
+        }
 
-}
+    }
 
 
 
-async function handleSuspend(){
+    async function handleSuspend() {
 
-try{
+        try {
 
-const token=
-localStorage.getItem(
-"token"
-);
+            const token =
+                localStorage.getItem(
+                    "token"
+                );
 
-await axios.put(
+            await axios.put(
 
-`http://localhost:3000/api/report/suspend/${selectedReport}`,
+                `http://localhost:3000/api/report/suspend/${selectedReport}`,
 
-{
+                {
 
-days
+                    days
 
-},
+                },
 
-{
+                {
 
-headers:{
+                    headers: {
 
-Authorization:
-`Bearer ${token}`
+                        Authorization:
+                            `Bearer ${token}`
 
-}
+                    }
 
-}
+                }
 
-);
+            );
 
-toast.success(
-"User suspended"
-);
+            toast.success(
+                "User suspended"
+            );
 
-setShowSuspendPopup(
-false
-);
+            setShowSuspendPopup(
+                false
+            );
 
-fetchReports();
+            fetchReports();
 
-}
+        }
 
-catch(err){
+        catch (err) {
 
-console.log(err);
+            console.log(err);
 
-}
+        }
 
-}
+    }
 
 
 
-return(
+    return (
 
-<div
-className="
+        <div
+            className="
 space-y-5
 pb-8
 "
->
+        >
 
-<h1
-className="
+            <h1
+                className="
 text-2xl
 font-bold
 "
->
+            >
 
-Reports
+                Reports
 
-</h1>
+            </h1>
 
 
-{
+            {
 
-reports.length===0
+                reports.length === 0
 
-?
+                    ?
 
-<div
-className="
+                    <div
+                        className="
 bg-white
 rounded-2xl
 shadow-md
@@ -232,21 +232,21 @@ p-10
 text-center
 text-gray-500
 "
->
+                    >
 
-No reports available
+                        No reports available
 
-</div>
+                    </div>
 
-:
+                    :
 
-reports.map((report)=>(
+                    reports.map((report) => (
 
-<div
+                        <div
 
-key={report._id}
+                            key={report._id}
 
-className="
+                            className="
 bg-white
 rounded-2xl
 shadow-md
@@ -257,50 +257,50 @@ md:p-6
 space-y-5
 "
 
->
+                        >
 
-<div
-className="
+                            <div
+                                className="
 flex
 flex-col
 md:flex-row
 md:justify-between
 gap-4
 "
->
+                            >
 
-<div>
+                                <div>
 
-<h2
-className="
+                                    <h2
+                                        className="
 font-bold
 text-xl
 "
->
+                                    >
 
-{report.reportedUser?.name}
+                                        {report.reportedUser?.name}
 
-</h2>
+                                    </h2>
 
-<p
-className="
+                                    <p
+                                        className="
 text-gray-500
 text-sm
 "
->
+                                    >
 
-reported by
-{" "}
-{report.reporter?.name}
+                                        reported by
+                                        {" "}
+                                        {report.reporter?.name}
 
-</p>
+                                    </p>
 
-</div>
+                                </div>
 
 
 
-<span
-className={`
+                                <span
+                                    className={`
 
 self-start
 
@@ -309,207 +309,206 @@ py-1
 rounded-full
 text-xs
 
-${
-report.status==="pending"
+${report.status === "pending"
 
-?
+                                            ?
 
-"bg-yellow-100 text-yellow-700"
+                                            "bg-yellow-100 text-yellow-700"
 
-:
+                                            :
 
-report.status==="blocked"
+                                            report.status === "blocked"
 
-?
+                                                ?
 
-"bg-red-100 text-red-700"
+                                                "bg-red-100 text-red-700"
 
-:
+                                                :
 
-report.status==="suspended"
+                                                report.status === "suspended"
 
-?
+                                                    ?
 
-"bg-orange-100 text-orange-700"
+                                                    "bg-orange-100 text-orange-700"
 
-:
+                                                    :
 
-"bg-green-100 text-green-700"
+                                                    "bg-green-100 text-green-700"
 
-}
+                                        }
 
 `}
->
+                                >
 
-{report.status}
+                                    {report.status}
 
-</span>
+                                </span>
 
-</div>
-
-
+                            </div>
 
 
-<div
-className="
+
+
+                            <div
+                                className="
 grid
 grid-cols-1
 md:grid-cols-2
 gap-5
 "
->
+                            >
 
-<div>
+                                <div>
 
-<p
-className="
+                                    <p
+                                        className="
 text-gray-400
 text-sm
 "
->
+                                    >
 
-Category
+                                        Category
 
-</p>
+                                    </p>
 
-<p>
+                                    <p>
 
-{report.category}
+                                        {report.category}
 
-</p>
+                                    </p>
 
-</div>
+                                </div>
 
 
 
-<div>
+                                <div>
 
-<p
-className="
+                                    <p
+                                        className="
 text-gray-400
 text-sm
 "
->
+                                    >
 
-Target
+                                        Target
 
-</p>
+                                    </p>
 
-<p>
+                                    <p>
 
-{report.targetType}
+                                        {report.targetType}
 
-</p>
+                                    </p>
 
-</div>
+                                </div>
 
-</div>
-
-
+                            </div>
 
 
-<div>
 
-<p
-className="
+
+                            <div>
+
+                                <p
+                                    className="
 text-gray-400
 text-sm
 "
->
+                                >
 
-Description
+                                    Description
 
-</p>
+                                </p>
 
-<p>
+                                <p>
 
-{
+                                    {
 
-report.description||
+                                        report.description ||
 
-"No details"
+                                        "No details"
 
-}
+                                    }
 
-</p>
+                                </p>
 
-</div>
-
-
+                            </div>
 
 
-<div>
 
-{
 
-report.targetType==="post"
+                            <div>
 
-?
+                                {
 
-<Link
+                                    report.targetType === "post"
 
-to={`/admin/post/${report.targetId?._id}`}
+                                        ?
 
-className="
+                                        <Link
+
+                                            to={`/admin/post/${report.targetId?._id}`}
+
+                                            className="
 text-cyan-600
 font-medium
 hover:underline
 "
 
->
+                                        >
 
-View Reported Post
+                                            View Reported Post
 
-</Link>
+                                        </Link>
 
-:
+                                        :
 
-<Link
+                                        <Link
 
-to={`/admin/profile-view/${report.reportedUser?._id}`}
+                                            to={`/admin/profile-view/${report.reportedUser?._id}`}
 
-className="
+                                            className="
 text-cyan-600
 font-medium
 hover:underline
 "
 
->
+                                        >
 
-View Profile
+                                            View Profile
 
-</Link>
+                                        </Link>
 
-}
+                                }
 
-</div>
-
-
+                            </div>
 
 
-<div
-className="
+
+
+                            <div
+                                className="
 border-t
 pt-4
 flex
 flex-wrap
 gap-3
 "
->
+                            >
 
-<button
+                                <button
 
-onClick={()=>
+                                    onClick={() =>
 
-handleAction(
+                                        handleAction(
 
-`http://localhost:3000/api/report/clear/${report._id}`
+                                            `http://localhost:3000/api/report/clear/${report._id}`
 
-)
+                                        )
 
-}
+                                    }
 
-className="
+                                    className="
 px-4
 py-2
 rounded-lg
@@ -518,27 +517,27 @@ text-white
 flex-1
 sm:flex-none
 "
->
+                                >
 
-Clear
+                                    Clear
 
-</button>
+                                </button>
 
 
 
-<button
+                                <button
 
-onClick={()=>
+                                    onClick={() =>
 
-handleAction(
+                                        handleAction(
 
-`http://localhost:3000/api/report/block/${report._id}`
+                                            `http://localhost:3000/api/report/block/${report._id}`
 
-)
+                                        )
 
-}
+                                    }
 
-className="
+                                    className="
 px-4
 py-2
 rounded-lg
@@ -547,29 +546,29 @@ text-white
 flex-1
 sm:flex-none
 "
->
+                                >
 
-Block
+                                    Block
 
-</button>
+                                </button>
 
 
 
-<button
+                                <button
 
-onClick={()=>{
+                                    onClick={() => {
 
-setSelectedReport(
-report._id
-);
+                                        setSelectedReport(
+                                            report._id
+                                        );
 
-setShowSuspendPopup(
-true
-);
+                                        setShowSuspendPopup(
+                                            true
+                                        );
 
-}}
+                                    }}
 
-className="
+                                    className="
 px-4
 py-2
 rounded-lg
@@ -578,32 +577,32 @@ text-white
 flex-1
 sm:flex-none
 "
->
+                                >
 
-Suspend
+                                    Suspend
 
-</button>
+                                </button>
 
 
-{
+                                {
 
-report.status==="blocked"
+                                    report.status === "blocked"
 
-&&
+                                    &&
 
-<button
+                                    <button
 
-onClick={()=>
+                                        onClick={() =>
 
-handleAction(
+                                            handleAction(
 
-`http://localhost:3000/api/report/unblock/${report._id}`
+                                                `http://localhost:3000/api/report/unblock/${report._id}`
 
-)
+                                            )
 
-}
+                                        }
 
-className="
+                                        className="
 px-4
 py-2
 rounded-lg
@@ -613,35 +612,35 @@ flex-1
 sm:flex-none
 "
 
->
+                                    >
 
-Unblock
+                                        Unblock
 
-</button>
+                                    </button>
 
-}
+                                }
 
 
 
-{
+                                {
 
-report.status==="suspended"
+                                    report.status === "suspended"
 
-&&
+                                    &&
 
-<button
+                                    <button
 
-onClick={()=>
+                                        onClick={() =>
 
-handleAction(
+                                            handleAction(
 
-`http://localhost:3000/api/report/remove-suspension/${report._id}`
+                                                `http://localhost:3000/api/report/remove-suspension/${report._id}`
 
-)
+                                            )
 
-}
+                                        }
 
-className="
+                                        className="
 px-4
 py-2
 rounded-lg
@@ -651,31 +650,31 @@ flex-1
 sm:flex-none
 "
 
->
+                                    >
 
-Remove Suspension
+                                        Remove Suspension
 
-</button>
+                                    </button>
 
-}
+                                }
 
-</div>
+                            </div>
 
-</div>
+                        </div>
 
-))
+                    ))
 
-}
-
-
+            }
 
 
-{
 
-showSuspendPopup &&
 
-<div
-className="
+            {
+
+                showSuspendPopup &&
+
+                <div
+                    className="
 fixed
 inset-0
 bg-black/40
@@ -684,10 +683,10 @@ justify-center
 items-center
 z-50
 "
->
+                >
 
-<div
-className="
+                    <div
+                        className="
 bg-white
 rounded-xl
 p-6
@@ -695,84 +694,84 @@ w-[90%]
 max-w-sm
 space-y-4
 "
->
+                    >
 
-<h2
-className="
+                        <h2
+                            className="
 font-semibold
 text-lg
 "
->
+                        >
 
-Suspend User
+                            Suspend User
 
-</h2>
+                        </h2>
 
-<input
+                        <input
 
-type="number"
+                            type="number"
 
-value={days}
+                            value={days}
 
-onChange={(e)=>{
+                            onChange={(e) => {
 
-setDays(
-e.target.value
-)
+                                setDays(
+                                    e.target.value
+                                )
 
-}}
+                            }}
 
-className="
+                            className="
 w-full
 border
 rounded-lg
 p-3
 "
 
-placeholder="
+                            placeholder="
 Enter days
 "
-/>
+                        />
 
 
-<div
-className="
+                        <div
+                            className="
 flex
 justify-end
 gap-3
 "
->
+                        >
 
-<button
+                            <button
 
-onClick={()=>{
+                                onClick={() => {
 
-setShowSuspendPopup(
-false
-)
+                                    setShowSuspendPopup(
+                                        false
+                                    )
 
-}}
+                                }}
 
-className="
+                                className="
 px-4
 py-2
 bg-gray-200
 rounded-lg
 "
->
+                            >
 
-Cancel
+                                Cancel
 
-</button>
+                            </button>
 
 
-<button
+                            <button
 
-onClick={
-handleSuspend
-}
+                                onClick={
+                                    handleSuspend
+                                }
 
-className="
+                                className="
 px-4
 py-2
 bg-orange-500
@@ -780,23 +779,23 @@ text-white
 rounded-lg
 "
 
->
+                            >
 
-Suspend
+                                Suspend
 
-</button>
+                            </button>
 
-</div>
+                        </div>
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-}
+            }
 
-</div>
+        </div>
 
-)
+    )
 
 };
 

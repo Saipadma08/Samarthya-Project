@@ -4,7 +4,7 @@ const roleMiddleware = require("../middlewares/role.middleware");
 
 const adminDashboardController = require("../controllers/adminDashboard.controller");
 
-const {addAdmin} = require("../controllers/adminAddAdmin.controller");
+const { addAdmin } = require("../controllers/adminAddAdmin.controller");
 
 const {
   adminJobsController,
@@ -15,7 +15,10 @@ const {
 const {
   adminUsersController,
   getSingleUser,
-  deleteUser,
+  blockUser,
+  unblockUser,
+  suspendUser,
+  removeSuspension
 } = require("../controllers/adminUsers.controller");
 
 const adminReportsController = require("../controllers/adminReports.controller");
@@ -78,13 +81,6 @@ router.get(
   getSingleUser
 );
 
-router.delete(
-  "/users/:id",
-  authMiddleware,
-  roleMiddleware("admin"),
-  deleteUser
-);
-
 router.get(
   "/reports",
   authMiddleware,
@@ -106,5 +102,55 @@ router.put(
   upload.single("profileImage"),
   adminEditDataController.editAdminData
 );
+
+
+router.put(
+
+  "/users/block/:id",
+
+  authMiddleware,
+
+  roleMiddleware("admin"),
+
+  blockUser
+
+);
+
+router.put(
+
+  "/users/unblock/:id",
+
+  authMiddleware,
+
+  roleMiddleware("admin"),
+
+  unblockUser
+
+);
+
+router.put(
+
+  "/users/suspend/:id",
+
+  authMiddleware,
+
+  roleMiddleware("admin"),
+
+  suspendUser
+
+);
+
+router.put(
+
+  "/users/remove-suspension/:id",
+
+  authMiddleware,
+
+  roleMiddleware("admin"),
+
+  removeSuspension
+
+);
+
 
 module.exports = router;
