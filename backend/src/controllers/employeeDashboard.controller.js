@@ -146,6 +146,30 @@ if (suggestedJobs.length === 0) {
         employeeId: userId,
       });
 
+      // ================= DASHBOARD STATS =================
+
+const jobsApplied =
+  applications.length;
+
+const activeJobs =
+  applications.filter(
+
+    (app) =>
+
+      app.status ===
+      "Accepted"
+
+  ).length;
+
+const completedJobs =
+  applications.filter(
+
+    (app) =>
+
+      app.status ===
+      "Completed"
+
+  ).length;
     // weekly chart data
 
     const weeklyData = [
@@ -212,6 +236,12 @@ if (suggestedJobs.length === 0) {
       skills: employeeSkills,
 
       weeklyData,
+
+     jobsApplied,
+
+     activeJobs,
+
+    completedJobs,
     });
 
   } catch (error) {
