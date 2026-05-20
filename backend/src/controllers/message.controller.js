@@ -28,6 +28,8 @@ async function sendMessage(req, res) {
     const sharedImage =
       req.body?.sharedImage || "";
 
+      //for sharing posts
+
     const sharedPostId =
       req.body?.sharedPostId || "";
 

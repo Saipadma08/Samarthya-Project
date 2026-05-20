@@ -1,49 +1,76 @@
 const express = require("express");
 
 const authMiddleware =
-require("../middlewares/auth.middleware");
+    require("../middlewares/auth.middleware");
 
 const {
 
-requestReview,
+    requestReview,
 
-getReviewUsers,
+    getReviewUsers,
 
-reviewAction,
+    reviewAction,
 
-getReviewStatus
+    getReviewStatus,
+
+    getDisabledAccounts,
+
+    unblockUser,
+
+    removeSuspension,
 
 }
 
-=
+    =
 
-require(
-"../controllers/userManagement.controller"
-);
+    require(
+        "../controllers/userManagement.controller"
+    );
 
 const router =
-express.Router();
+    express.Router();
 
 router.post(
-"/request-review",
-requestReview
+    "/request-review",
+    requestReview
 );
 
 router.get(
-"/account-review/:type",
-authMiddleware,
-getReviewUsers
+    "/account-review/:type",
+    authMiddleware,
+    getReviewUsers
 );
 
 router.put(
-"/review-action/:userId",
-authMiddleware,
-reviewAction
+    "/review-action/:userId",
+    authMiddleware,
+    reviewAction
 );
 
 router.get(
-"/review-status",
-getReviewStatus
+    "/review-status",
+    getReviewStatus
 );
+
+
+router.get(
+    "/disabled/:type",
+    authMiddleware,
+    getDisabledAccounts
+);
+
+
+router.put(
+    "/unblock/:id",
+    authMiddleware,
+    unblockUser
+);
+
+router.put(
+    "/remove-suspension/:id",
+    authMiddleware,
+    removeSuspension
+);
+
 
 module.exports = router;

@@ -19,7 +19,8 @@ import {
   FiMenu,
   FiX,
   FiMail,
-  FiGrid 
+  FiGrid,
+  FiCheckCircle
 } from "react-icons/fi";
 
 import Logo from "../assets/logo-4.png";
@@ -64,8 +65,10 @@ const Sidebar = ({ collapsed, setCollapsed, role }) => {
       { name: "Jobs", path: "/admin/jobs", icon: <FiBriefcase /> },
       { name: "Messages", path: "/admin/messages", icon: <FiMessageSquare /> },
       { name: "Reports", path: "/admin/reports", icon: <FiBarChart2 /> },
+      { name: "Verification", path: "/admin/verification", icon: <FiCheckCircle /> },
       { name: "Contacts", path: "/admin/contacts", icon: <FiMail /> },
       { name: "Settings", path: "/admin/settings", icon: <FiSettings /> },
+
     ]
   };
 

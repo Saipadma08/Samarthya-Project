@@ -76,6 +76,8 @@ import AdminReports from './pages/admin/Reports'
 import AdminEditData from './pages/admin/EditData';
 import Contacts from './pages/admin/Contacts';
 import AccountReview from './pages/admin/AccountReview';
+import DisabledAccounts from './pages/admin/DisabledAccounts';
+import VerificationRequests from './pages/admin/VerificationRequests';
 
 const App = () => {
   return (
@@ -159,8 +161,6 @@ const App = () => {
             <Route path="post/:postId" element={<SinglePostPage/>}/>
             <Route path="complaint" element={<Complaint/>}/>
 
-
-
           </Route>
 
 
@@ -184,6 +184,8 @@ const App = () => {
             <Route path="posts/:userId" element={<UserPostsPage />}/>
             <Route path="notifications" element={<NotificationsPage/>} />
             <Route path="account-review" element={<AccountReview/>} />
+            <Route path='disabled-accounts' element={<DisabledAccounts/>}/>
+            <Route path="/admin/verification" element={<VerificationRequests/>}/>
 
 
 

@@ -31,6 +31,8 @@ const reportRoutes = require("./routes/report.routes");
 
 const userManagementRoutes = require("./routes/userManagement.routes");
 
+const verificationRoutes = require("./routes/verification.routes");
+
 const app = express();
 
 
@@ -70,5 +72,7 @@ app.use("/api/feed-posts", feedPostRoutes);
 app.use("/api/report",reportRoutes);
 
 app.use("/api/user-management",userManagementRoutes);
+
+app.use("/api/verification", verificationRoutes);
 
 module.exports = app;

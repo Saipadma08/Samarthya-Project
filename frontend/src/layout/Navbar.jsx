@@ -77,7 +77,7 @@ const Navbar = () => {
 
             style={{
               backgroundImage:
-              `url(${Logo})`
+                `url(${Logo})`
             }}
           />
 
@@ -114,29 +114,46 @@ const Navbar = () => {
 
             isAdmin ?
 
-            (
+              (
 
-              <Link
+                <div className="flex gap-4">
 
-                to="/admin/account-review"
+                  <Link
 
-                className="text-sm font-medium hover:text-cyan-600"
+                    to="/admin/disabled-accounts"
 
-              >
+                    className="text-sm font-medium hover:text-cyan-600 "
 
-                Account Review
+                  >
 
-              </Link>
+                    Disabled Accounts
 
-            )
+                  </Link>
 
-            :
 
-            (
+                  <Link
 
-              <ContactAndAbout />
+                    to="/admin/account-review"
 
-            )
+                    className="text-sm font-medium hover:text-cyan-600"
+
+                  >
+
+                    Account Review
+
+                  </Link>
+
+                </div>
+
+              )
+
+              :
+
+              (
+
+                <ContactAndAbout />
+
+              )
 
           }
 

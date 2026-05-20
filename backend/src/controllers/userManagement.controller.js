@@ -394,4 +394,157 @@ async function getReviewStatus(
 
 }
 
-module.exports = { requestReview, getReviewUsers, reviewAction, getReviewStatus };
+
+
+const getDisabledAccounts =
+    async (req, res) => {
+
+        try {
+
+            const { type } =
+                req.params;
+
+            let users = [];
+
+            if (type === "blocked") {
+
+                users =
+                    await User.find({
+
+                        isBlocked: true
+
+                    });
+
+            }
+
+            else if (
+                type === "suspended"
+            ) {
+
+                users =
+                    await User.find({
+
+                        isSuspended: true
+
+                    });
+
+            }
+
+            res.status(200)
+                .json(users);
+
+        }
+
+        catch (err) {
+
+            console.log(err);
+
+            res.status(500)
+                .json({
+
+                    message:
+                        "Server error"
+
+                });
+
+        }
+
+    };
+
+
+const unblockUser =
+    async (req, res) => {
+
+        try {
+
+            await User.findByIdAndUpdate(
+
+                req.params.id,
+
+                {
+
+                    isBlocked: false,
+
+                    blockReason: null,
+
+                    blockedAt: null,
+
+                    blockedBy: null,
+
+                    deactivationAppealStatus:
+                        "none"
+
+                }
+
+            );
+
+            res.json({
+                success: true
+            });
+
+        } catch (err) {
+
+            console.log(err);
+
+            res.status(500)
+                .json({
+                    message: "Server error"
+                });
+
+        }
+
+    };
+
+
+
+const removeSuspension =
+    async (req, res) => {
+
+        try {
+
+            await User.findByIdAndUpdate(
+
+                req.params.id,
+
+                {
+
+                    isSuspended: false,
+
+                    suspensionEndsAt: null,
+
+                    suspensionReason: null,
+
+                    deactivationAppealStatus:
+                        "none"
+
+                }
+
+            );
+
+            res.json({
+                success: true
+            });
+
+        } catch (err) {
+
+            console.log(err);
+
+            res.status(500)
+                .json({
+                    message: "Server error"
+                });
+
+        }
+
+    };
+
+
+
+module.exports = { requestReview, 
+    getReviewUsers, 
+    reviewAction, 
+    getReviewStatus, 
+    getDisabledAccounts, 
+    unblockUser, 
+    removeSuspension,
+};

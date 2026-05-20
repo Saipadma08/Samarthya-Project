@@ -1,7 +1,5 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import { FiEdit, FiStar, FiCheckCircle } from "react-icons/fi";
-import { div } from "framer-motion/client";
 
 import CoverImage from '../shared/CoverImage';
 import ProfileImage from '../shared/ProfileImage';
@@ -11,7 +9,7 @@ import ProfileActions from '../shared/ProfileActions'
 import ConnectionsCount from './ConnectionsCount';
 
 
-const ProfileHeader = ({ currentUser, user, profile, isPublicView, children }) => {
+const ProfileHeader = ({ currentUser, user, profile, isPublicView, children, setShowVerification }) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="w-full min-h-100 rounded-xl shadow-md bg-white relative overflow-visible">
@@ -33,7 +31,7 @@ const ProfileHeader = ({ currentUser, user, profile, isPublicView, children }) =
         <div className="flex flex-col lg:mt-auto">
           {children}
           <div>
-            <VerificationBadge />
+            <VerificationBadge user={user} onApply={() => setShowVerification?.(true)} />
           </div>
         </div>
 

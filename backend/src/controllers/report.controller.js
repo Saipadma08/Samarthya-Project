@@ -332,7 +332,21 @@ const blockUser =
                 report.reportedUser,
 
                 {
-                    isBlocked: true
+
+                    isBlocked: true,
+
+                    blockReason:
+                        report.category,
+
+                    blockedAt:
+                        new Date(),
+
+                    blockedBy:
+                        req.user.id,
+
+                    deactivationAppealStatus:
+                        "none"
+
                 }
 
             );
@@ -421,7 +435,13 @@ const suspendUser =
                     isSuspended: true,
 
                     suspensionEndsAt:
-                        endDate
+                        endDate,
+
+                    suspensionReason:
+                        report.category,
+
+                    deactivationAppealStatus:
+                        "none"
 
                 }
 
@@ -498,7 +518,17 @@ const unblockUser =
 
                 {
 
-                    isBlocked: false
+                    isBlocked: false,
+
+                    blockReason: null,
+
+                    blockedAt: null,
+
+                    blockedBy: null,
+
+                    deactivationAppealStatus:
+                        "none"
+
 
                 }
 
@@ -576,7 +606,12 @@ const removeSuspension =
 
                     isSuspended: false,
 
-                    suspensionEndsAt: null
+                    suspensionEndsAt: null,
+
+                    suspensionReason: null,
+
+                    deactivationAppealStatus:
+                        "none"
 
                 }
 

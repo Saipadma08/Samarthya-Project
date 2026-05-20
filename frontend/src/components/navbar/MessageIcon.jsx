@@ -30,6 +30,13 @@ const MessageIcon = () => {
   const navigate =
     useNavigate();
 
+  const user =
+    JSON.parse(
+      localStorage.getItem(
+        "user"
+      )
+    );
+
 
   const [
     unseenChats,
@@ -265,13 +272,19 @@ const MessageIcon = () => {
 
     <div
 
-      onClick={() =>
+      onClick={() => {
+
+        const role =
+          user?.role;
+
+        if (!role)
+          return;
 
         navigate(
-          "/employee/messages"
-        )
+          `/${role}/messages`
+        );
 
-      }
+      }}
 
       className="
       relative

@@ -37,7 +37,10 @@ const notificationSchema =
                     "report_received",
                     "account_unblocked",
                     "suspension_removed",
-                    "review_request"
+                    "review_request",
+                    "verification_request",
+                    "verification_approved",
+                    "verification_rejected"
                 ],
 
                 required: true

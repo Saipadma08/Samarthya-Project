@@ -7,7 +7,7 @@ import React, {
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
-const AccountReview = () => {
+const DisabledAccounts = () => {
 
     const [activeTab, setActiveTab] =
         useState("blocked");
@@ -62,20 +62,16 @@ const AccountReview = () => {
                 const res =
                     await axios.get(
 
-                        `http://localhost:3000/api/user-management/account-review/${activeTab}`,
+                        `http://localhost:3000/api/user-management/disabled/${activeTab}`,
 
                         {
-
                             headers: {
-
                                 Authorization:
                                     `Bearer ${token}`
-
                             }
-
                         }
 
-                    );
+                    )
 
                 let fetchedUsers =
                     res.data;
@@ -139,46 +135,75 @@ const AccountReview = () => {
 
 
 
-    const handleReview = async (
-        userId,
-        action
-    ) => {
+    const handleUnblock =
+        async (id) => {
 
-        try {
+            try {
 
-            const token =
-                localStorage.getItem(
-                    "token"
+                const token =
+                    localStorage.getItem(
+                        "token"
+                    );
+
+                await axios.put(    
+                    `http://localhost:3000/api/user-management/unblock/${id}`,
+
+                    {},
+
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`
+                        }
+                    }
+
                 );
 
-            await axios.put(
+                fetchUsers();
 
-                `http://localhost:3000/api/user-management/review-action/${userId}`,
+            } catch (err) {
 
-                {
-                    action
-                },
+                console.log(err);
 
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
+            }
+
+        };
+
+
+    const handleRemoveSuspension =
+        async (id) => {
+
+            try {
+
+                const token =
+                    localStorage.getItem(
+                        "token"
+                    );
+
+                await axios.put(
+
+                    `http://localhost:3000/api/report/remove-suspension/${id}`,
+
+                    {},
+
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`
+                        }
                     }
-                }
 
-            );
+                );
 
-            fetchUsers();
+                fetchUsers();
 
-        }
+            } catch (err) {
 
-        catch (err) {
+                console.log(err);
 
-            console.log(err);
+            }
 
-        }
-
-    };
+        };
 
 
 
@@ -192,7 +217,7 @@ font-bold
 mb-6
 ">
 
-                Account Review
+                Disabled Accounts
 
             </h1>
 
@@ -497,18 +522,20 @@ flex
 gap-3
 ">
 
-                                        <button
+                                        {
+                                            activeTab === "blocked"
 
-                                            onClick={() =>
+                                                ?
 
-                                                handleReview(
-                                                    user._id,
-                                                    "approve"
-                                                )
+                                                <button
 
-                                            }
+                                                    onClick={() =>
+                                                        handleUnblock(
+                                                            user._id
+                                                        )
+                                                    }
 
-                                            className="
+                                                    className="
 bg-green-500
 text-white
 px-4
@@ -516,37 +543,37 @@ py-2
 rounded-lg
 "
 
-                                        >
+                                                >
 
-                                            Approve
+                                                    Unblock
 
-                                        </button>
+                                                </button>
 
+                                                :
 
-                                        <button
+                                                <button
 
-                                            onClick={() =>
+                                                    onClick={() =>
+                                                        handleRemoveSuspension(
+                                                            user._id
+                                                        )
+                                                    }
 
-                                                handleReview(
-                                                    user._id,
-                                                    "reject"
-                                                )
-
-                                            }
-
-                                            className="
-bg-red-500
+                                                    className="
+bg-orange-500
 text-white
 px-4
 py-2
 rounded-lg
 "
 
-                                        >
+                                                >
 
-                                            Reject
+                                                    Remove Suspension
 
-                                        </button>
+                                                </button>
+
+                                        }
 
                                     </div>
 
@@ -566,4 +593,4 @@ rounded-lg
 
 };
 
-export default AccountReview;
+export default DisabledAccounts

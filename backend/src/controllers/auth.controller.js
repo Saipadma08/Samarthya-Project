@@ -185,7 +185,7 @@ async function verifyOtp(req, res) {
                 email: user.email,
                 role: user.role,
                 profileImage: user.profileImage,
-                isVerified: user.isVerified
+                isVerified: user.isVerified,
             }
 
         });
@@ -413,7 +413,8 @@ async function loginUser(req, res) {
             email: user.email,
             role: user.role,
             profileImage: user.profileImage,
-            isVerified: user.isVerified
+            isVerified: user.isVerified,
+            verificationStatus: user.verificationStatus,
         }
     })
 }
@@ -435,7 +436,7 @@ async function logoutUser(req, res) {
 async function getCurrentUser(req, res) {
     try {
         const user = await userModel.findById(req.user.id)
-            .select("name email role profileImage");
+            .select("name email role profileImage isVerified verificationStatus");
 
         res.json({ user });
 
