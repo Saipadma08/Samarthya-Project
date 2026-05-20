@@ -27,6 +27,16 @@ const usersSchema = new mongoose.Schema({
         default: false
     },
 
+    trustScore: {
+    type: Number,
+    default: 0,
+    },
+
+    totalReviews: {
+        type: Number,
+        default: 0,
+    },
+    
     verificationStatus: {
         type: String,
         enum: ["none", "pending", "approved", "rejected"],
@@ -115,6 +125,8 @@ const usersSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+
+    
 
     appealHistory: [
 

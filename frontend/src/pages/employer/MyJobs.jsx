@@ -464,9 +464,9 @@ const MyJobs = () => {
                       </div>
 
                       <button
-                        onClick={() =>
+                         onClick={() =>
                           navigate(
-                            "/employer/view-applicants"
+                            "/employer/applicants"
                           )
                         }
                         className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-2xl py-3 font-semibold flex items-center justify-center gap-2 transition"

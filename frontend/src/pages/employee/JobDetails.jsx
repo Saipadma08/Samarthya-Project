@@ -110,6 +110,22 @@ const JobDetails = () => {
     setApplicationId
   ] = useState(null);
 
+  const [
+  showReviewModal,
+  setShowReviewModal
+] = useState(false);
+
+const [rating, setRating] =
+  useState(5);
+
+const [review, setReview] =
+  useState("");
+
+const [
+  reviewSubmitted,
+  setReviewSubmitted
+] = useState(false);
+
   useEffect(() => {
 
     fetchJob();
@@ -179,6 +195,14 @@ response.data.application.status
           setApplicationStatus(
             response.data.application.status
           );
+          if (
+            response.data.application.status ===
+            "Completed"
+          ) {
+
+            setShowReviewModal(true);
+
+          }
 
           setApplicationId(
             response.data.application._id
@@ -357,6 +381,65 @@ response.data.application.status
       }
 
     };
+
+    const submitReview =
+  async () => {
+
+    try {
+
+      const token =
+        localStorage.getItem(
+          "token"
+        );
+
+      await axios.post(
+
+        "http://localhost:3000/api/reviews/submit",
+
+        {
+
+          applicationId,
+
+          rating,
+
+          review,
+        },
+
+        {
+
+          headers: {
+
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
+
+      toast.success(
+        "Review submitted"
+      );
+
+      setShowReviewModal(
+        false
+      );
+
+      setReviewSubmitted(
+        true
+      );
+
+    }
+
+    catch (error) {
+
+      console.log(error);
+
+      toast.error(
+        "Failed to submit review"
+      );
+
+    }
+
+  };
 
   if (loading) {
 
@@ -1099,6 +1182,156 @@ p-5
 
       </div>
 
+    {
+showReviewModal &&
+
+!reviewSubmitted && (
+
+<div className="
+fixed
+inset-0
+bg-black/40
+z-50
+flex
+justify-center
+items-center
+p-4
+">
+
+<div className="
+bg-white
+rounded-3xl
+w-full
+max-w-md
+p-6
+space-y-5
+">
+
+<h2 className="
+text-3xl
+font-bold
+">
+Leave Review
+</h2>
+
+<p className="
+text-slate-500
+">
+Rate your employer
+</p>
+
+<select
+
+value={rating}
+
+onChange={(e)=>
+setRating(e.target.value)
+}
+
+className="
+w-full
+border
+rounded-xl
+p-3
+"
+
+>
+
+<option value={5}>
+⭐⭐⭐⭐⭐
+</option>
+
+<option value={4}>
+⭐⭐⭐⭐
+</option>
+
+<option value={3}>
+⭐⭐⭐
+</option>
+
+<option value={2}>
+⭐⭐
+</option>
+
+<option value={1}>
+⭐
+</option>
+
+</select>
+
+<textarea
+
+value={review}
+
+onChange={(e)=>
+setReview(e.target.value)
+}
+
+placeholder="
+Write review...
+"
+
+className="
+w-full
+border
+rounded-xl
+p-4
+h-32
+"
+
+/>
+
+<div className="
+flex
+gap-4
+">
+
+<button
+
+onClick={()=>
+setShowReviewModal(false)
+}
+
+className="
+flex-1
+border
+rounded-xl
+py-3
+"
+
+>
+
+Cancel
+
+</button>
+
+<button
+
+onClick={submitReview}
+
+className="
+flex-1
+bg-cyan-600
+text-white
+rounded-xl
+py-3
+font-semibold
+"
+
+>
+
+Submit
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+)
+}
+   
     </div>
   );
 };

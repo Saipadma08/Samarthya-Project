@@ -64,7 +64,7 @@ import EmployerPostJob from './pages/employer/PostJob'
 import EmployerMyJobs from './pages/employer/MyJobs'
 import EmployerApplicants from './pages/employer/Applicants'
 import EmployerConnections from './pages/employer/Connections'
-import ApplicantsPage from "./pages/employer/ApplicantsPage";
+// import ApplicantsPage from "./pages/employer/ApplicantsPage";
 
 
 // ✅ Admin pages
@@ -150,7 +150,7 @@ const App = () => {
             <Route path="search" element={<Search />} />
             <Route path="profile/:userId" element={<PublicProfile />} />
             <Route path="profile-view/:userId" element={<UserProfileView/>} />
-            <Route path="view-applicants" element={<ApplicantsPage />} />
+            {/* <Route path="view-applicants" element={<ApplicantsPage />} /> */}
             <Route path="notifications" element={<NotificationsPage/>} />
             <Route path="messages" element={<MessagesLayout/>} />
             <Route path="my-connections" element={<MyConnectionsPage/>} />

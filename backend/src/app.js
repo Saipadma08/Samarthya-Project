@@ -30,6 +30,7 @@ const feedPostRoutes = require("./routes/feedPost.routes");
 const reportRoutes = require("./routes/report.routes");
 
 const userManagementRoutes = require("./routes/userManagement.routes");
+const reviewRoutes = require("./routes/review.routes");
 
 const app = express();
 
@@ -70,5 +71,6 @@ app.use("/api/feed-posts", feedPostRoutes);
 app.use("/api/report",reportRoutes);
 
 app.use("/api/user-management",userManagementRoutes);
+app.use("/api/reviews", reviewRoutes );
 
 module.exports = app;

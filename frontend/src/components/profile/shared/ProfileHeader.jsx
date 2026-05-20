@@ -39,7 +39,8 @@ const ProfileHeader = ({ currentUser, user, profile, isPublicView, children }) =
 
         {/* trust card */}
         <div className="flex mt-auto">
-          <TrustCard />
+          <TrustCard userId={user?._id}
+          />
         </div>
 
         {/* action buttons */}
