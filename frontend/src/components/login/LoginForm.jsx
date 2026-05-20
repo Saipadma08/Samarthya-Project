@@ -37,7 +37,7 @@ const LoginForm = () => {
 
     if (error) return;
 
-   const res = await axios.post(
+    const res = await axios.post(
       'http://localhost:3000/api/auth/login',
       { email, password },
       { withCredentials: true }
@@ -90,25 +90,77 @@ const LoginForm = () => {
 
         console.log(err);
 
-        // unverified account
+        // blocked / suspended
         if (
-          err.response?.status === 403 &&
-          err.response?.data?.message.includes("verify")
+
+          err.response?.status === 403
+
+          &&
+
+          (
+
+            err.response?.data?.type === "blocked"
+
+            ||
+
+            err.response?.data?.type === "suspended"
+
+          )
+
         ) {
 
-          toast.warning("Please verify your email first");
+          localStorage.setItem(
+            "disabledEmail",
+            email
+          );
 
-          navigate("/verify-otp", {
-            state: {
-              email: email
+          window.location.href =
+            `/account-disabled?type=${err.response.data.type}
+&reason=${encodeURIComponent(
+              err.response.data.reason || ""
+            )}
+&until=${encodeURIComponent(
+              err.response.data.until || ""
+            )}
+&email=${encodeURIComponent(email)}
+`;
+          return;
+        }
+
+
+        // unverified account
+        if (
+
+          err.response?.status === 403
+
+          &&
+
+          err.response?.data?.message?.includes(
+            "verify"
+          )
+
+        ) {
+
+          toast.warning(
+            "Please verify your email first"
+          );
+
+          navigate(
+            "/verify-otp",
+            {
+              state: { email }
             }
-          });
+          );
 
           return;
         }
 
         toast.error(
-          err.response?.data?.message || "Login failed"
+
+          err.response?.data?.message ||
+
+          "Login failed"
+
         );
 
       });
@@ -154,16 +206,16 @@ const LoginForm = () => {
 
       <div className="text-right">
 
-          <Link
-              to="/forgot-password"
-              className="
+        <Link
+          to="/forgot-password"
+          className="
               text-sm
               text-cyan-700
               hover:underline
               "
-          >
-              Forgot Password?
-          </Link>
+        >
+          Forgot Password?
+        </Link>
 
       </div>
 

@@ -71,23 +71,14 @@ const ContactUs = () => {
 
   return (
 
-    <div className="w-full py-20 px-6 bg-[#f8fbff]">
+    <div className="py-20 px-6 bg-white w-[90%]">
 
       {/* TITLE */}
 
       <div className="text-center mb-12">
 
         <h2
-          className="
-          text-4xl sm:text-5xl
-          font-extrabold
-          bg-gradient-to-r
-          from-cyan-600
-          via-blue-600
-          to-violet-600
-          bg-clip-text
-          text-transparent
-        "
+          className="text-4xl font-bold text-gray-800"
         >
           Contact Us
         </h2>
@@ -269,9 +260,7 @@ const ContactUs = () => {
               type="submit"
               disabled={loading}
               className="
-              bg-gradient-to-r
-              from-cyan-600
-              to-blue-700
+              bg-cyan-600
               text-white
               py-4
               rounded-2xl
@@ -331,17 +320,6 @@ const ContactUs = () => {
 
           </div>
 
-          <div className="bg-white rounded-3xl shadow-lg p-6 border border-slate-200">
-
-            <p className="text-lg font-semibold">
-              📞 Phone Support
-            </p>
-
-            <p className="text-slate-500 mt-2">
-              +91 9876543210
-            </p>
-
-          </div>
 
           <div className="bg-white rounded-3xl shadow-lg p-6 border border-slate-200">
 

@@ -85,9 +85,6 @@ const Footer = () => {
             📧 support@samarthya.com
           </p>
 
-          <p className="text-sm mt-2">
-            📞 +91 9876543210
-          </p>
 
           <p className="text-sm mt-2">
             📍 Bhubaneswar, India

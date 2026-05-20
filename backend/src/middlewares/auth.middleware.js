@@ -58,6 +58,7 @@ async function authMiddleware(
         decoded.id
       );
 
+
     if (!user) {
 
       return res.status(404).json({
@@ -68,34 +69,140 @@ async function authMiddleware(
 
     }
 
+    const allowDisabledAccess = [
+
+      "/request-review"
+
+    ].some(route =>
+
+      req.originalUrl.includes(
+        route
+      )
+
+    );
+
+
+    if (
+
+      (decoded.version ?? 0)
+
+      !==
+
+      (user.tokenVersion ?? 0)
+
+    ) {
+
+      return res.status(401)
+        .json({
+
+          message:
+            "Session expired"
+
+        });
+
+    }
+
 
     // blocked account
-    if (user.isBlocked) {
+    // blocked account
+    if (
+
+      user.isBlocked
+
+      &&
+
+      !allowDisabledAccess
+
+    ) {
 
       return res.status(403).json({
 
-        message: "Your account is blocked"
+        type: "blocked",
+
+        reason: user.blockReason,
+
+        userId: user.id,
+
+        email: user.email,
+
+        appealStatus:
+          user.deactivationAppealStatus,
+
+        appealRejectCount:
+          user.appealRejectCount,
+
+        rejectedAt:
+
+          user.appealHistory?.length
+
+            ?
+
+            user.appealHistory[
+              user.appealHistory.length - 1
+            ]?.date
+
+            :
+
+            null,
+
+        message:
+          "Account blocked"
 
       });
 
     }
-
 
     // suspended account
     if (
 
       user.isSuspended &&
 
+      user.suspensionEndsAt &&
+
       user.suspensionEndsAt >
 
       new Date()
+
+      &&
+
+      !allowDisabledAccess
 
     ) {
 
       return res.status(403).json({
 
+        type: "suspended",
+
+        reason: user.suspensionReason,
+
+        until: user.suspensionEndsAt,
+
+        userId: user.id,
+
+        email: user.email,
+
+        appealStatus:
+          user.deactivationAppealStatus,
+
+        appealRejectCount:
+          user.appealRejectCount,
+
+        rejectedAt:
+
+          user.appealHistory?.length
+
+            ?
+
+            user.appealHistory[
+              user.appealHistory.length - 1
+            ]?.date
+
+            :
+
+            null,
+
         message:
-          "Account temporarily suspended"
+          "Account suspended"
 
       });
 
@@ -118,6 +225,8 @@ async function authMiddleware(
       user.isSuspended = false;
 
       user.suspensionEndsAt = null;
+
+      user.suspensionReason = null;
 
       await user.save();
 
