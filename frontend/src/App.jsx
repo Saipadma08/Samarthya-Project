@@ -158,7 +158,7 @@ const App = () => {
             <Route path="posts/:userId" element={<UserPostsPage />}/>
             <Route path="post/:postId" element={<SinglePostPage/>}/>
             <Route path="complaint" element={<Complaint/>}/>
-
+          
 
 
           </Route>

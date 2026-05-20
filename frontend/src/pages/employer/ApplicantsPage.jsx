@@ -17,6 +17,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import { useParams } from "react-router-dom";
+
 const ApplicantsPage = () => {
 
   const navigate =
@@ -42,11 +44,30 @@ const ApplicantsPage = () => {
     setSearch,
   ] = useState("");
 
+
+const { applicationId } = useParams();
+
   useEffect(() => {
 
     fetchApplicants();
 
   }, []);
+  useEffect(() => {
+
+  if (applicationId && applications.length > 0) {
+
+   const selected =
+  applications.find(
+    (item) =>
+      item._id === applicationId
+  );
+
+    if (selected) {
+      setSelectedApplicant(selected);
+    }
+  }
+
+}, [applicationId, applications]);
 
   const fetchApplicants =
     async () => {
@@ -401,9 +422,7 @@ const ApplicantsPage = () => {
                                 text-cyan-800
                                 max-w-md
                               ">
-                                Hiring this transgender employee
-                                for this role makes this job eligible
-                                for a 5% payment discount support initiative.
+                                Hiring this employee qualifies for gaining +1 point under inclusive hiring.
                               </div>
                             )
                           }
@@ -752,160 +771,68 @@ const ApplicantsPage = () => {
                         text-sm
                         text-cyan-800
                       ">
-                        Hiring this transgender employee
-                        for this role makes this job
-                        eligible for a 5% payment
-                        discount support initiative.
+                        Hiring this employee qualifies for gaining +1 point under inclusive hiring.
                       </div>
                     )
                   }
 
-                  {
-                    selectedApplicant.status ===
-                    "Accepted" && (
+                 
+                    
 
-                      <div className="
-                        mt-6
-                        bg-green-50
-                        border
-                        border-green-200
-                        rounded-2xl
-                        p-5
-                      ">
+                 {
+  selectedApplicant.status ===
+  "Pending" && (
 
-                        <h4 className="
-                          text-xl
-                          font-bold
-                          text-green-700
-                          mb-3
-                        ">
-                          Contact Applicant
-                        </h4>
+    <div className="
+      grid
+      grid-cols-2
+      gap-4
+      mt-6
+    ">
 
-                        <div className="
-                          space-y-2
-                          text-sm
-                        ">
+      <button
+        onClick={() =>
+          updateStatus(
+            selectedApplicant._id,
+            "Accepted"
+          )
+        }
 
-                          <p>
-                            📧
-                            {" "}
-                            {
-                              selectedApplicant.employeeEmail
-                            }
-                          </p>
+        className="
+          bg-green-500
+          hover:bg-green-600
+          text-white
+          py-3
+          rounded-2xl
+          font-semibold
+        "
+      >
+        Accept
+      </button>
 
-                          <p>
-                            📞
-                            {" "}
-                            {
-                              selectedApplicant
-                              .employeeProfile
-                              ?.phone ||
-                              "Phone not available"
-                            }
-                          </p>
+      <button
+        onClick={() =>
+          updateStatus(
+            selectedApplicant._id,
+            "Rejected"
+          )
+        }
 
-                        </div>
+        className="
+          bg-red-500
+          hover:bg-red-600
+          text-white
+          py-3
+          rounded-2xl
+          font-semibold
+        "
+      >
+        Reject
+      </button>
 
-                        <div className="
-                          flex
-                          gap-3
-                          mt-5
-                          flex-wrap
-                        ">
-
-                          <button
-                            className="
-                              bg-cyan-600
-                              hover:bg-cyan-700
-                              text-white
-                              px-5
-                              py-3
-                              rounded-xl
-                              font-medium
-                            "
-                          >
-                            In-App Chat
-                          </button>
-
-                          <button
-                            className="
-                              bg-green-600
-                              hover:bg-green-700
-                              text-white
-                              px-5
-                              py-3
-                              rounded-xl
-                              font-medium
-                            "
-                          >
-                            Contact
-                          </button>
-
-                        </div>
-
-                        <p className="
-                          text-sm
-                          text-slate-500
-                          mt-4
-                        ">
-                          You can now contact
-                          this applicant because
-                          the application has
-                          been accepted.
-                        </p>
-
-                      </div>
-                    )
-                  }
-
-                  <div className="
-                    grid
-                    grid-cols-2
-                    gap-4
-                    mt-6
-                  ">
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          selectedApplicant._id,
-                          "Accepted"
-                        )
-                      }
-                      className="
-                        bg-green-500
-                        hover:bg-green-600
-                        text-white
-                        py-3
-                        rounded-2xl
-                        font-semibold
-                      "
-                    >
-                      Accept
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        updateStatus(
-                          selectedApplicant._id,
-                          "Rejected"
-                        )
-                      }
-                      className="
-                        bg-red-500
-                        hover:bg-red-600
-                        text-white
-                        py-3
-                        rounded-2xl
-                        font-semibold
-                      "
-                    >
-                      Reject
-                    </button>
-
-                  </div>
+    </div>
+  )
+}
 
                 </div>
 

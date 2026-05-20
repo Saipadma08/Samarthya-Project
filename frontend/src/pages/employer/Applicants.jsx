@@ -432,10 +432,7 @@ const Applicants = () => {
                         font-medium
                       ">
 
-                        🌈 Hiring this employee
-                        qualifies for a
-                        5% payment discount
-                        under inclusive hiring.
+                        🌈 Hiring this employee qualifies for gaining +1 point under inclusive hiring.
 
                       </div>
                     )
@@ -756,16 +753,14 @@ const Applicants = () => {
                               Status:
                             </span>
                             {" "}
-                            {
-                              selectedApplicant.status
-                            }
+                  
                           </p>
 
                         </div>
                       </div>
                     </div>
 
-                    {/* DUMMY PROFILE BUTTON */}
+                    {/* PROFILE BUTTON */}
 
                     <button
                       className="

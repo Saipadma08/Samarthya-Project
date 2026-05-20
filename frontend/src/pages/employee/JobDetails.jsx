@@ -822,7 +822,7 @@ response.data.application.status
                   "https://ik.imagekit.io/fybgmadbnl26/samarthya/avatar-cover/ChatGPT%20Image%20May%207,%202026,%2001_22_22%20AM.png?updatedAt=177809745761"
                 }
 
-                alt="Employer"
+                alt="Employer"  
 
                 className="
         w-full
