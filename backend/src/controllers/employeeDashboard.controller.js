@@ -1,5 +1,4 @@
-const userModel =
-require("../models/user.model");
+const userModel = require("../models/user.model");
 
 const postedJobModel =
 require("../models/postedJob.model");
@@ -46,18 +45,27 @@ async function employeeDashboardController(
     const matchedJobs =
       jobs.map((job) => {
 
-        const jobSkills =
+       const jobSkills =
 
-          typeof job.skills ===
-          "string"
+      typeof job.skills ===
+      "string"
 
-            ? job.skills
-                .split(",")
-                .map((skill) =>
-                  skill.trim()
-                )
+    ? job.skills
+        .split(/[ ,]+/)
+        .map((skill) =>
+          skill
+            .trim()
+            .toLowerCase()
+        )
+        .filter(Boolean)
 
-            : job.skills || [];
+    : Array.isArray(job.skills)
+
+    ? job.skills.map((skill) =>
+        skill.toLowerCase()
+      )
+
+    : [];
 
         const matchedCount =
           jobSkills.filter((skill) =>
@@ -99,23 +107,37 @@ async function employeeDashboardController(
 
     // suggested jobs
 
-    let suggestedJobs =
-      matchedJobs
-        .filter(
-          (job) =>
-            job.matchedCount > 0
-        )
-        .slice(0, 5);
+    // suggested jobs based on skill match
 
-    // fallback
+let suggestedJobs =
+  matchedJobs
+    .filter(
+      (job) =>
+        job.matchedCount > 0
+    )
+    .slice(0, 5);
 
-    if (
-      suggestedJobs.length === 0
-    ) {
+// fallback only if absolutely no matches
 
-      suggestedJobs =
-        jobs.slice(0, 5);
-    }
+if (suggestedJobs.length === 0) {
+
+  suggestedJobs = jobs
+
+    .filter((job) => {
+
+      // remove jobs without skills
+
+      if (!job.skills) return false;
+
+      // avoid accountant/random jobs
+
+      return (
+        job.skills.trim() !== ""
+      );
+    })
+
+    .slice(0, 5);
+}
 
     // applications
 

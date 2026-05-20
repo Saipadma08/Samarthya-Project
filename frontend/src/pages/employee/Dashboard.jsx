@@ -4,7 +4,7 @@ import ProfileCard from "../../components/employee/dashboard/ProfileCard";
 import StatsCard from "../../components/employee/dashboard/StatsCard";
 
 import ActivityChart from "../../components/employee/dashboard/ActivityChart";
-import EarningsCard from "../../components/employee/dashboard/EarningsCard";
+
 import SkillsCard from "../../components/employee/dashboard/SkillsCard";
 import SuggestedJobs from "../../components/employee/dashboard/SuggestedJobs";
 import RecentActivity from "../../components/employee/dashboard/RecentActivity";
@@ -146,7 +146,7 @@ const Dashboard = () => {
 
           <RecentActivity />
 
-          <EarningsCard />
+        
 
           <TrustScoreCard />
 
