@@ -8,7 +8,7 @@ import ActivityChart from "../../components/employee/dashboard/ActivityChart";
 import SkillsCard from "../../components/employee/dashboard/SkillsCard";
 import SuggestedJobs from "../../components/employee/dashboard/SuggestedJobs";
 import RecentActivity from "../../components/employee/dashboard/RecentActivity";
-import TrustScoreCard from "../../components/employee/dashboard/TrustScoreCard";
+
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -20,6 +20,7 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [dashboardData, setDashboardData] = useState({});
+  const [trustScore,setTrustScore,] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,6 +51,36 @@ const Dashboard = () => {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+
+  if (user?._id) {
+
+    fetchTrustScore();
+  }
+
+}, [user]);
+
+const fetchTrustScore =
+  async () => {
+
+    try {
+
+      const response =
+        await axios.get(
+
+          `http://localhost:3000/api/reviews/trust-score/${user._id}`
+        );
+
+      setTrustScore(
+        response.data.trustScore || 0
+      );
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
 
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
@@ -110,25 +141,31 @@ const Dashboard = () => {
           mt-10
         ">
 
-          <StatsCard
-            title="Jobs Applied"
-            value="5"
-          />
+         <StatsCard
+  title="Jobs Applied"
+  value={
+    dashboardData.jobsApplied || 0
+  }
+/>
 
-          <StatsCard
-            title="Active Jobs"
-            value="2"
-          />
+<StatsCard
+  title="Active Jobs"
+  value={
+    dashboardData.activeJobs || 0
+  }
+/>
 
-          <StatsCard
-            title="Completed Jobs"
-            value="8"
-          />
+<StatsCard
+  title="Completed Jobs"
+  value={
+    dashboardData.completedJobs || 0
+  }
+/>
 
-          <StatsCard
-            title="Trust Score"
-            value="4.0 ⭐"
-          />
+        <StatsCard
+  title="Trust Score"
+  value={`${trustScore} ⭐`}
+/>
 
         </div>
         </div>
@@ -148,7 +185,7 @@ const Dashboard = () => {
 
         
 
-          <TrustScoreCard />
+         
 
           <SkillsCard
             skills={dashboardData.skills}
