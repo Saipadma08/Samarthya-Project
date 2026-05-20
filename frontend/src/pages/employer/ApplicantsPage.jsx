@@ -17,6 +17,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import { useParams } from "react-router-dom";
+
 const ApplicantsPage = () => {
 
   const navigate =
@@ -42,11 +44,31 @@ const ApplicantsPage = () => {
     setSearch,
   ] = useState("");
 
+const [searchParams] = useSearchParams();
+
+const { applicationId } = useParams();
+
   useEffect(() => {
 
     fetchApplicants();
 
   }, []);
+  useEffect(() => {
+
+  if (applicationId && applications.length > 0) {
+
+   const selected =
+  applications.find(
+    (item) =>
+      item._id === applicationId
+  );
+
+    if (selected) {
+      setSelectedApplicant(selected);
+    }
+  }
+
+}, [applicationId, applications]);
 
   const fetchApplicants =
     async () => {

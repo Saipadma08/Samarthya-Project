@@ -14,6 +14,17 @@ const employerDashboardController = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(4);
 
+      // RECENT APPLICANTS
+     const recentApplicants =
+        await Application.find({
+          employerId: employerId,
+        })
+          .populate({
+            path: "employeeId",
+            model: "users",
+          })
+          .sort({ createdAt: -1 })
+          .limit(3);
     // TOTAL APPLICATIONS
     const totalApplications =
       await Application.countDocuments({
@@ -21,10 +32,11 @@ const employerDashboardController = async (req, res) => {
       });
 
     res.status(200).json({
-      success: true,
-      recentJobs,
-      totalApplications,
-    });
+    success: true,
+    recentJobs,
+    recentApplicants,
+    totalApplications,
+  });
 
   } catch (error) {
 
