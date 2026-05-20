@@ -53,7 +53,7 @@ const LandingPage = () => {
       <div id="signup" className="scroll-mt-28">
         <SignupButtons />
       </div>
-      <div id="contact" className="scroll-mt-28">
+      <div id="contact" className="flex justify-center mt-5 scroll-mt-28">
         <ContactUs />
       </div>
       

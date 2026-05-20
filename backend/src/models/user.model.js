@@ -26,10 +26,6 @@ const usersSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isBlocked: {
-        type: Boolean,
-        default: false
-    },
 
     verificationStatus: {
         type: String,
@@ -76,6 +72,19 @@ const usersSchema = new mongoose.Schema({
         default: false
     },
 
+    blockReason: {
+        type: String
+    },
+
+    blockedAt: {
+        type: Date
+    },
+
+    blockedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    },
+
     isSuspended: {
         type: Boolean,
         default: false
@@ -83,7 +92,61 @@ const usersSchema = new mongoose.Schema({
 
     suspensionEndsAt: {
         type: Date
-    }
+    },
+
+    suspensionReason: {
+        type: String
+    },
+
+    deactivationAppealStatus: {
+        type: String,
+
+        enum: [
+            "none",
+            "pending",
+            "approved",
+            "rejected"
+        ],
+
+        default: "none"
+    },
+
+    tokenVersion: {
+        type: Number,
+        default: 0
+    },
+
+    appealHistory: [
+
+        {
+
+            status: {
+                type: String
+            },
+
+            reason: {
+                type: String
+            },
+
+            date: {
+                type: Date,
+                default: Date.now
+            }
+
+        }
+
+    ],
+
+    appealRejectCount: {
+        type: Number,
+        default: 0
+    },
+
+    lastAppealRejectedAt: {
+
+        type: Date
+
+    },
 },
     { timestamps: true }
 )

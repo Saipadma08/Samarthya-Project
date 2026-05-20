@@ -39,6 +39,8 @@ import SinglePostPage from './components/feed/SinglePostPage';
 
 import Complaint from './pages/complaint/Complaint';
 
+import AccountDisabled from "./pages/auth/AccountDisabled";
+
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute'
 
 // ✅ Employee pages
@@ -73,6 +75,7 @@ import AdminJobs from './pages/admin/Jobs'
 import AdminReports from './pages/admin/Reports'
 import AdminEditData from './pages/admin/EditData';
 import Contacts from './pages/admin/Contacts';
+import AccountReview from './pages/admin/AccountReview';
 
 const App = () => {
   return (
@@ -95,6 +98,8 @@ const App = () => {
 
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactUs />} />
+
+          <Route path="/account-disabled" element={<AccountDisabled/>}/>
 
 
 
@@ -177,6 +182,8 @@ const App = () => {
             <Route path="all-admins" element={<AdminList/>}/>
             <Route path="post/:postId" element={<SinglePostPage/>}/>
             <Route path="posts/:userId" element={<UserPostsPage />}/>
+            <Route path="notifications" element={<NotificationsPage/>} />
+            <Route path="account-review" element={<AccountReview/>} />
 
 
 

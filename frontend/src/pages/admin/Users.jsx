@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -20,6 +21,32 @@ const Users = () => {
   const [usersData, setUsersData] = useState([]);
 
   const [loading, setLoading] = useState(true);
+
+  const [actionModal, setActionModal] = useState(false);
+
+  const [selectedActionUser, setSelectedActionUser] =
+    useState(null);
+
+  const [actionType, setActionType] =
+    useState("");
+
+  const [reason, setReason] =
+    useState("");
+
+  const [days, setDays] =
+    useState("");
+
+  useLayoutEffect(() => {
+
+    const container = document.getElementById("main-content");
+
+    if (container) {
+
+      container.scrollTop = 0;
+
+    }
+
+  }, []);
 
   useEffect(() => {
 
@@ -52,28 +79,134 @@ const Users = () => {
 
   };
 
-  // REMOVE USER
 
-  const handleRemove = async (id) => {
+  function handleBlock(user) {
+
+    setSelectedActionUser(user);
+
+    setActionType(
+      user.isBlocked
+        ? "unblock"
+        : "block"
+    );
+
+    setReason("");
+
+    setActionModal(true);
+
+  }
+
+
+  function handleSuspend(user) {
+
+    setSelectedActionUser(user);
+
+    setActionType(
+
+      user.isSuspended
+        ? "removeSuspension"
+        : "suspend"
+
+    );
+
+    setReason("");
+
+    setDays("");
+
+    setActionModal(true);
+
+  }
+
+
+  async function confirmAction() {
 
     try {
 
-      await axios.delete(
-        `http://localhost:3000/api/admin/users/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (actionType === "block") {
+
+        await axios.put(
+
+          `http://localhost:3000/api/admin/users/block/${selectedActionUser._id}`,
+
+          {
+            reason
+          },
+
+          {
+            withCredentials: true
+          }
+
+        );
+
+      }
+
+      else if (actionType === "unblock") {
+
+        await axios.put(
+
+          `http://localhost:3000/api/admin/users/unblock/${selectedActionUser._id}`,
+
+          {},
+
+          {
+            withCredentials: true
+          }
+
+        );
+
+      }
+
+      else if (actionType === "suspend") {
+
+        await axios.put(
+
+          `http://localhost:3000/api/admin/users/suspend/${selectedActionUser._id}`,
+
+          {
+            reason,
+            days
+          },
+
+          {
+            withCredentials: true
+          }
+
+        );
+
+      }
+
+      else if (
+        actionType === "removeSuspension"
+      ) {
+
+        await axios.put(
+
+          `http://localhost:3000/api/admin/users/remove-suspension/${selectedActionUser._id}`,
+
+          {},
+
+          {
+            withCredentials: true
+          }
+
+        );
+
+      }
+
+      setActionModal(false);
 
       fetchUsers();
 
-    } catch (error) {
+    }
 
-      console.log(error);
+    catch (err) {
+
+      console.log(err);
 
     }
 
-  };
+  }
+
 
   // FILTER USERS
 
@@ -372,6 +505,16 @@ const Users = () => {
                       Status
                     </th>
 
+                    {/* {
+                      user.role !== "admin" 
+                      ?
+                      (<th className="text-center px-6 py-4">
+                      Actions
+                      </th> )
+                      : 
+                      ( null )
+                    } */}
+
                     <th className="text-center px-6 py-4">
                       Actions
                     </th>
@@ -491,35 +634,79 @@ const Users = () => {
 
                         <div className="flex flex-wrap justify-center gap-5 min-w-55">
 
-                          <button
-                            onClick={() => setSelectedUser(user)}
-                            className="text-cyan-600 hover:underline"
-                          >
-                            View
-                          </button>
 
-                          <button
-                            onClick={() => {
 
-                              const confirmDelete = window.confirm(
-                                "Are you sure you want to remove this user?"
-                              );
+                          {
+                            user.role !== "admin" && (
 
-                              if (confirmDelete) {
-                                handleRemove(user._id);
-                              }
+                              <>
 
-                            }}
-                            className="text-red-500 hover:underline"
-                          >
-                            Block
-                          </button>
+                                <button
+                                  onClick={() => setSelectedUser(user)}
+                                  className="text-cyan-600 hover:underline"
+                                >
+                                  View
+                                </button>
 
-                          <button
-                            className="text-orange-600 hover:underline"
-                          >
-                            Suspend
-                          </button>
+                                <button
+
+                                  onClick={() => handleBlock(user)}
+
+                                  className="
+text-red-500
+hover:underline
+"
+
+                                >
+
+                                  {
+
+                                    user.isBlocked
+
+                                      ?
+
+                                      "Unblock"
+
+                                      :
+
+                                      "Block"
+
+                                  }
+
+                                </button>
+
+
+                                <button
+
+                                  onClick={() => handleSuspend(user)}
+
+                                  className="
+text-orange-600
+hover:underline
+"
+
+                                >
+
+                                  {
+
+                                    user.isSuspended
+
+                                      ?
+
+                                      "Remove Suspension"
+
+                                      :
+
+                                      "Suspend"
+
+                                  }
+
+                                </button>
+
+                              </>
+
+                            )
+                          }
 
                         </div>
 
@@ -675,7 +862,7 @@ const Users = () => {
 
 
                 <Link
-                    to={`/admin/profile/${selectedUser._id}`}
+                  to={`/admin/profile/${selectedUser._id}`}
                   className="
                   bg-blue-600 hover:bg-blue-700
                   text-white mr-3 px-5 py-2 rounded-xl
@@ -684,6 +871,164 @@ const Users = () => {
                   View Profile
                 </Link>
 
+
+              </div>
+
+            </div>
+
+          </div>
+
+        )
+      }
+
+      {
+        actionModal && (
+
+          <div className="
+fixed inset-0
+bg-black/40
+flex justify-center items-center
+z-50 p-4
+">
+
+            <div className="
+bg-white
+w-full
+max-w-md
+rounded-3xl
+p-6
+shadow-2xl
+">
+
+              <h2 className="
+text-xl
+font-bold
+mb-5
+">
+
+                {
+                  actionType === "block"
+                  && "Block User"
+                }
+
+                {
+                  actionType === "suspend"
+                  && "Suspend User"
+                }
+
+                {
+                  actionType === "unblock"
+                  && "Unblock User"
+                }
+
+                {
+                  actionType === "removeSuspension"
+                  && "Remove Suspension"
+                }
+
+              </h2>
+
+              {
+                (actionType === "block" ||
+
+                  actionType === "suspend")
+
+                && (
+
+                  <textarea
+
+                    placeholder="Enter reason"
+
+                    value={reason}
+
+                    onChange={(e) =>
+
+                      setReason(
+                        e.target.value
+                      )
+                    }
+
+                    className="
+w-full
+border
+rounded-xl
+p-3
+mb-4
+"
+                  />
+
+                )
+              }
+
+              {
+                actionType === "suspend"
+                && (
+
+                  <input
+                    type="number"
+                    min="1"
+                    value={days}
+                    onChange={(e) => {
+
+                      const value =
+                        Number(e.target.value);
+
+                      if (value >= 1) {
+
+                        setDays(value);
+
+                      }
+
+                    }}
+                    className="
+w-full
+border
+rounded-xl
+p-3
+mb-4
+"
+                  />
+
+                )
+              }
+
+              <div className="
+flex justify-end gap-3
+">
+
+                <button
+
+                  onClick={() =>
+
+                    setActionModal(false)
+                  }
+
+                  className="
+px-5 py-2
+rounded-xl
+bg-gray-200
+"
+                >
+
+                  Cancel
+
+                </button>
+
+                <button
+
+                  onClick={confirmAction}
+
+                  className="
+px-5 py-2
+rounded-xl
+bg-cyan-600
+text-white
+"
+                >
+
+                  Confirm
+
+                </button>
 
               </div>
 

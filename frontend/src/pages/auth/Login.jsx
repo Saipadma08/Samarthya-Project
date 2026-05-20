@@ -12,8 +12,8 @@ import MainBackgroundImg from "../../assets/main-background-5.png";
 const Login = () => {
 
   useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
@@ -34,19 +34,19 @@ const Login = () => {
             <div className="hidden lg:block py-5">
               <AnimationText />
             </div>
-            
+
           </div>
 
-          
-            <div className=" my-5 w-full flex items-center justify-center">
-              <LoginForm/>
-            </div>
+
+          <div className=" my-5 w-full flex items-center justify-center">
+            <LoginForm />
+          </div>
 
         </div>
 
         <div className="block sm:hidden py-5">
-        <AnimationText />
-      </div>
+          <AnimationText />
+        </div>
 
       </div>
 

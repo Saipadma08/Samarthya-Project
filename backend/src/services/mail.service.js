@@ -11,15 +11,23 @@ const transporter = nodemailer.createTransport({
 
 });
 
-async function sendOtpEmail(email, otp) {
+
+// OTP mail (keep existing behavior)
+
+async function sendOtpEmail(
+    email,
+    otp
+) {
 
     await transporter.sendMail({
 
-        from: process.env.EMAIL_USER,
+        from:
+            process.env.EMAIL_USER,
 
         to: email,
 
-        subject: "Samarthya Email Verification OTP",
+        subject:
+            "Samarthya Email Verification OTP",
 
         html: `
             <h2>Email Verification</h2>
@@ -29,11 +37,55 @@ async function sendOtpEmail(email, otp) {
             <h1>${otp}</h1>
 
             <p>
-                This OTP will expire in 10 minutes.
+            This OTP expires in 10 minutes
             </p>
         `
     });
 
 }
 
-module.exports = sendOtpEmail;
+
+// Generic mail (new)
+
+async function sendMail(
+
+    email,
+    subject,
+    message
+
+) {
+
+    await transporter.sendMail({
+
+        from:
+            process.env.EMAIL_USER,
+
+        to: email,
+
+        subject,
+
+        html: `
+        <div style="
+        font-family:Arial;
+        padding:20px;
+        ">
+
+        ${message.replace(
+            /\n/g,
+            "<br>"
+        )}
+
+        </div>
+        `
+    });
+
+}
+
+
+module.exports = {
+
+    sendOtpEmail,
+
+    sendMail
+
+};
