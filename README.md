@@ -69,7 +69,7 @@ This was developed as a team project. My contributions are specifically mentione
 # Screenshots
 
 ## Login Page
-![Login page](login page.png)
+![Login page](login-page.png)
 
 ---
 
