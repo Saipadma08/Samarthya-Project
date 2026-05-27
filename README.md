@@ -64,3 +64,24 @@ npm run dev
 
 ## Note
 This was developed as a team project. My contributions are specifically mentioned above.
+
+
+# Screenshots
+
+## Login Page
+![Login page](login page.png)
+
+---
+
+## Admin Dashboard
+![Admin Dashboard](localhost_5173_admin_dashboard.png)
+
+---
+
+## Employee Dashboard
+![Employee Dashboard](Employee_dashboard.png)
+
+---
+
+## Employer Dashboard
+![Employer Dashboard](localhost_5173_employer_dashboard.png)
